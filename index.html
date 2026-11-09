@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>戦国乱世 ONLINE｜ソロプレイ版</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#211b16;background:#f4efe5}
+body{margin:0;padding:18px;max-width:850px;margin-inline:auto}
+h1{text-align:center;font-size:1.55rem;margin:8px 0}
+.sub{text-align:center;color:#665b50;margin:0 0 22px}
+.panel{background:#fffdf8;border:1px solid #d9cbb5;border-radius:14px;padding:16px;margin:14px 0;box-shadow:0 2px 8px #0000000c}
+h2{font-size:1.1rem;margin:0 0 12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+.pick{border:1px solid #b9aa95;border-radius:10px;background:#fff;padding:12px 8px;min-height:48px;color:#211b16}
+.pick.selected{background:#8d1f25;color:white;border:2px solid #5d1015;font-weight:700}
+#start{width:100%;padding:15px;border:0;border-radius:11px;background:#888;color:white;font-weight:700;font-size:1.05rem}
+#start.ready{background:#a3262d}
+#status{font-weight:700;text-align:center;min-height:1.5em;margin:10px 0}
+#game{display:none}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.stat{background:#f5efe4;border-radius:8px;padding:10px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<h1>戦国乱世 ONLINE</h1>
+<p class="sub">ソロプレイ版・動作確認プロトタイプ</p>
+
+<div id="setup">
+<section class="panel">
+<h2>① 大名を選択</h2>
+<div id="daimyoList" class="grid">
+<button class="pick" type="button" onclick="chooseDaimyo(0)">織田信長</button>
+<button class="pick" type="button" onclick="chooseDaimyo(1)">武田信玄</button>
+<button class="pick" type="button" onclick="chooseDaimyo(2)">上杉謙信</button>
+<button class="pick" type="button" onclick="chooseDaimyo(3)">徳川家康</button>
+<button class="pick" type="button" onclick="chooseDaimyo(4)">伊達政宗</button>
+<button class="pick" type="button" onclick="chooseDaimyo(5)">毛利元就</button>
+<button class="pick" type="button" onclick="chooseDaimyo(6)">豊臣秀吉</button>
+<button class="pick" type="button" onclick="chooseDaimyo(7)">今川義元</button>
+<button class="pick" type="button" onclick="chooseDaimyo(8)">北条氏康</button>
+<button class="pick" type="button" onclick="chooseDaimyo(9)">島津義久</button>
+<button class="pick" type="button" onclick="chooseDaimyo(10)">長宗我部元親</button>
+<button class="pick" type="button" onclick="chooseDaimyo(11)">明智光秀</button>
+<button class="pick" type="button" onclick="chooseDaimyo(12)">真田幸村</button>
+<button class="pick" type="button" onclick="chooseDaimyo(13)">浅井長政</button>
+<button class="pick" type="button" onclick="chooseDaimyo(14)">島津義弘</button>
+</div>
+</section>
+<section class="panel">
+<h2>② 最初に治める国を選択</h2>
+<div id="countryList" class="grid">
+<button class="pick" type="button" onclick="chooseCountry(0)">北海道</button>
+<button class="pick" type="button" onclick="chooseCountry(1)">陸奥</button>
+<button class="pick" type="button" onclick="chooseCountry(2)">出羽</button>
+<button class="pick" type="button" onclick="chooseCountry(3)">関東</button>
+<button class="pick" type="button" onclick="chooseCountry(4)">甲信越</button>
+<button class="pick" type="button" onclick="chooseCountry(5)">北陸</button>
+<button class="pick" type="button" onclick="chooseCountry(6)">東海</button>
+<button class="pick" type="button" onclick="chooseCountry(7)">近畿</button>
+<button class="pick" type="button" onclick="chooseCountry(8)">山陰</button>
+<button class="pick" type="button" onclick="chooseCountry(9)">山陽</button>
+<button class="pick" type="button" onclick="chooseCountry(10)">四国</button>
+<button class="pick" type="button" onclick="chooseCountry(11)">北九州</button>
+<button class="pick" type="button" onclick="chooseCountry(12)">南九州</button>
+<button class="pick" type="button" onclick="chooseCountry(13)">南奥羽</button>
+<button class="pick" type="button" onclick="chooseCountry(14)">東山道</button>
+</div>
+</section>
+<p id="status" aria-live="polite">大名と国を1つずつ選んでください。</p>
+<button id="start" type="button" onclick="startGame()" disabled>ゲーム開始</button>
+</div>
+
+<section id="game" class="panel">
+<h2>ゲーム開始！</h2>
+<p id="welcome"></p>
+<div class="stats">
+<div class="stat">所持金<br><strong>2,000金</strong></div>
+<div class="stat">兵士<br><strong>5,000人</strong></div>
+<div class="stat">家臣<br><strong>2人（初期）</strong></div>
+<div class="stat">経過日数<br><strong>1日目</strong></div>
+</div>
+<p>これは選択・開始ボタンの動作確認用画面です。内政・登用・戦争などのゲーム機能はこれから順番に実装します。</p>
+<button class="pick" type="button" onclick="location.reload()">最初からやり直す</button>
+</section>
+<script>
+var selectedDaimyo = -1;
+var selectedCountry = -1;
+function chooseDaimyo(index) {
+  selectedDaimyo = index;
+  var buttons = document.querySelectorAll('#daimyoList button');
+  for (var i=0;i<buttons.length;i++) buttons[i].classList.toggle('selected', i===index);
+  updateStatus();
+}
+function chooseCountry(index) {
+  selectedCountry = index;
+  var buttons = document.querySelectorAll('#countryList button');
+  for (var i=0;i<buttons.length;i++) buttons[i].classList.toggle('selected', i===index);
+  updateStatus();
+}
+function updateStatus() {
+  var d = selectedDaimyo >= 0;
+  var c = selectedCountry >= 0;
+  var button = document.getElementById('start');
+  button.disabled = !(d && c);
+  button.classList.toggle('ready', d && c);
+  document.getElementById('status').textContent =
+    d && c ? '選択完了！ゲームを開始できます。' :
+    d ? '国を1つ選んでください。' :
+    c ? '大名を1人選んでください。' :
+    '大名と国を1つずつ選んでください。';
+}
+function startGame() {
+  if (selectedDaimyo < 0 || selectedCountry < 0) return;
+  var d = document.querySelectorAll('#daimyoList button')[selectedDaimyo].textContent;
+  var c = document.querySelectorAll('#countryList button')[selectedCountry].textContent;
+  document.getElementById('welcome').textContent = d + 'として「' + c + '」から天下統一を目指します。';
+  document.getElementById('setup').style.display = 'none';
+  document.getElementById('game').style.display = 'block';
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
