@@ -1,126 +1,29 @@
-<!doctype html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>戦国乱世 ONLINE｜ソロプレイ版</title>
-<style>
-:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:#211b16;background:#f4efe5}
-body{margin:0;padding:18px;max-width:850px;margin-inline:auto}
-h1{text-align:center;font-size:1.55rem;margin:8px 0}
-.sub{text-align:center;color:#665b50;margin:0 0 22px}
-.panel{background:#fffdf8;border:1px solid #d9cbb5;border-radius:14px;padding:16px;margin:14px 0;box-shadow:0 2px 8px #0000000c}
-h2{font-size:1.1rem;margin:0 0 12px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-button{font:inherit;cursor:pointer;touch-action:manipulation}
-.pick{border:1px solid #b9aa95;border-radius:10px;background:#fff;padding:12px 8px;min-height:48px;color:#211b16}
-.pick.selected{background:#8d1f25;color:white;border:2px solid #5d1015;font-weight:700}
-#start{width:100%;padding:15px;border:0;border-radius:11px;background:#888;color:white;font-weight:700;font-size:1.05rem}
-#start.ready{background:#a3262d}
-#status{font-weight:700;text-align:center;min-height:1.5em;margin:10px 0}
-#game{display:none}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.stat{background:#f5efe4;border-radius:8px;padding:10px}
-@media(min-width:600px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-</style>
-</head>
-<body>
-<h1>戦国乱世 ONLINE</h1>
-<p class="sub">ソロプレイ版・動作確認プロトタイプ</p>
-
-<div id="setup">
-<section class="panel">
-<h2>① 大名を選択</h2>
-<div id="daimyoList" class="grid">
-<button class="pick" type="button" onclick="chooseDaimyo(0)">織田信長</button>
-<button class="pick" type="button" onclick="chooseDaimyo(1)">武田信玄</button>
-<button class="pick" type="button" onclick="chooseDaimyo(2)">上杉謙信</button>
-<button class="pick" type="button" onclick="chooseDaimyo(3)">徳川家康</button>
-<button class="pick" type="button" onclick="chooseDaimyo(4)">伊達政宗</button>
-<button class="pick" type="button" onclick="chooseDaimyo(5)">毛利元就</button>
-<button class="pick" type="button" onclick="chooseDaimyo(6)">豊臣秀吉</button>
-<button class="pick" type="button" onclick="chooseDaimyo(7)">今川義元</button>
-<button class="pick" type="button" onclick="chooseDaimyo(8)">北条氏康</button>
-<button class="pick" type="button" onclick="chooseDaimyo(9)">島津義久</button>
-<button class="pick" type="button" onclick="chooseDaimyo(10)">長宗我部元親</button>
-<button class="pick" type="button" onclick="chooseDaimyo(11)">明智光秀</button>
-<button class="pick" type="button" onclick="chooseDaimyo(12)">真田幸村</button>
-<button class="pick" type="button" onclick="chooseDaimyo(13)">浅井長政</button>
-<button class="pick" type="button" onclick="chooseDaimyo(14)">島津義弘</button>
-</div>
-</section>
-<section class="panel">
-<h2>② 最初に治める国を選択</h2>
-<div id="countryList" class="grid">
-<button class="pick" type="button" onclick="chooseCountry(0)">北海道</button>
-<button class="pick" type="button" onclick="chooseCountry(1)">陸奥</button>
-<button class="pick" type="button" onclick="chooseCountry(2)">出羽</button>
-<button class="pick" type="button" onclick="chooseCountry(3)">関東</button>
-<button class="pick" type="button" onclick="chooseCountry(4)">甲信越</button>
-<button class="pick" type="button" onclick="chooseCountry(5)">北陸</button>
-<button class="pick" type="button" onclick="chooseCountry(6)">東海</button>
-<button class="pick" type="button" onclick="chooseCountry(7)">近畿</button>
-<button class="pick" type="button" onclick="chooseCountry(8)">山陰</button>
-<button class="pick" type="button" onclick="chooseCountry(9)">山陽</button>
-<button class="pick" type="button" onclick="chooseCountry(10)">四国</button>
-<button class="pick" type="button" onclick="chooseCountry(11)">北九州</button>
-<button class="pick" type="button" onclick="chooseCountry(12)">南九州</button>
-<button class="pick" type="button" onclick="chooseCountry(13)">南奥羽</button>
-<button class="pick" type="button" onclick="chooseCountry(14)">東山道</button>
-</div>
-</section>
-<p id="status" aria-live="polite">大名と国を1つずつ選んでください。</p>
-<button id="start" type="button" onclick="startGame()" disabled>ゲーム開始</button>
-</div>
-
-<section id="game" class="panel">
-<h2>ゲーム開始！</h2>
-<p id="welcome"></p>
-<div class="stats">
-<div class="stat">所持金<br><strong>2,000金</strong></div>
-<div class="stat">兵士<br><strong>5,000人</strong></div>
-<div class="stat">家臣<br><strong>2人（初期）</strong></div>
-<div class="stat">経過日数<br><strong>1日目</strong></div>
-</div>
-<p>これは選択・開始ボタンの動作確認用画面です。内政・登用・戦争などのゲーム機能はこれから順番に実装します。</p>
-<button class="pick" type="button" onclick="location.reload()">最初からやり直す</button>
-</section>
-<script>
-var selectedDaimyo = -1;
-var selectedCountry = -1;
-function chooseDaimyo(index) {
-  selectedDaimyo = index;
-  var buttons = document.querySelectorAll('#daimyoList button');
-  for (var i=0;i<buttons.length;i++) buttons[i].classList.toggle('selected', i===index);
-  updateStatus();
-}
-function chooseCountry(index) {
-  selectedCountry = index;
-  var buttons = document.querySelectorAll('#countryList button');
-  for (var i=0;i<buttons.length;i++) buttons[i].classList.toggle('selected', i===index);
-  updateStatus();
-}
-function updateStatus() {
-  var d = selectedDaimyo >= 0;
-  var c = selectedCountry >= 0;
-  var button = document.getElementById('start');
-  button.disabled = !(d && c);
-  button.classList.toggle('ready', d && c);
-  document.getElementById('status').textContent =
-    d && c ? '選択完了！ゲームを開始できます。' :
-    d ? '国を1つ選んでください。' :
-    c ? '大名を1人選んでください。' :
-    '大名と国を1つずつ選んでください。';
-}
-function startGame() {
-  if (selectedDaimyo < 0 || selectedCountry < 0) return;
-  var d = document.querySelectorAll('#daimyoList button')[selectedDaimyo].textContent;
-  var c = document.querySelectorAll('#countryList button')[selectedCountry].textContent;
-  document.getElementById('welcome').textContent = d + 'として「' + c + '」から天下統一を目指します。';
-  document.getElementById('setup').style.display = 'none';
-  document.getElementById('game').style.display = 'block';
-  window.scrollTo(0,0);
-}
-</script>
-</body>
-</html>
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>戦国十五国・ソロ版 v0.5</title><style>:root{font-family:system-ui,-apple-system,sans-serif;color:#f1ede3;background:#131d22}*{box-sizing:border-box}body{margin:0;max-width:960px;padding:16px;margin:auto}h1{font-size:25px;margin:8px 0}h2{font-size:19px}p{line-height:1.5}.muted{color:#aab8b8}.panel{background:#223039;border:1px solid #43575b;border-radius:12px;padding:14px;margin:12px 0}button,select{font:inherit;border-radius:8px;border:1px solid #7c9999;padding:10px;background:#34494c;color:white;max-width:100%}button{cursor:pointer}button:disabled{opacity:.4}button.primary{background:#a16d24;border-color:#e5b65c;font-weight:bold}button.danger{background:#683b3b}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:8px}.country{padding:10px;border:1px solid #58706d;border-radius:8px;background:#293c40;text-align:left}.country.mine{border:2px solid #f2c26e}.country.enemy{border-color:#aa6262}.country small{display:block;color:#b5c5c2}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.stat{display:inline-block;background:#334a4b;padding:7px;border-radius:7px;margin:3px}#log{max-height:320px;overflow:auto;white-space:pre-wrap;font-size:13px;line-height:1.6}.tag{font-size:12px;background:#52615c;border-radius:5px;padding:3px 6px}.hidden{display:none}.selected{outline:3px solid #e6b862}label{display:block;margin:9px 0 4px}.note{background:#3b3930;padding:10px;border-radius:7px}</style></head><body><h1>⚔️ 戦国十五国 <span class="tag">ソロ試作 v0.5</span></h1><p class="muted">15か国・大名選択・内政・兵士雇用・登用・戦争・NPC・セーブ対応。1ターン＝12時間の想定（試作では手動進行）。</p><div id="setup" class="panel"><h2>大名を選択</h2><div id="daimyoList" class="grid"></div><h2>開始する国を選択</h2><div id="countryList" class="grid"></div><p id="picked" class="note">大名と国を選んでください。</p><button class="primary" id="start" disabled>ゲーム開始</button></div><div id="game" class="hidden"><div class="panel"><div class="row"><strong id="status"></strong><button id="save">セーブ</button><button id="reset" class="danger">最初から</button></div><div id="stats"></div><p class="muted">各ターン最大3命令。同じ種類は1回まで。命令が3つ未満ならランダムイベントが発生。</p></div><div class="panel"><h2>命令を予約</h2><label>命令</label><select id="action"><option value="domestic">内政（政治力×2の金を獲得）</option><option value="hire">兵士雇用</option><option value="recruit">登用（200金）</option><option value="attack">戦争（隣国を攻撃）</option><option value="reward">褒美（忠誠度回復）</option><option value="scout">偵察（敵の兵数を確認）</option></select><div id="options"></div><div class="row"><button id="add" class="primary">命令を追加</button><button id="clear">命令を取り消す</button></div><p id="orders"></p><button class="primary" id="next">▶ 命令を実行して次のターンへ</button></div><div class="panel"><h2>全国情勢</h2><div id="world" class="grid"></div></div><div class="panel"><h2>配下武将</h2><div id="officers"></div></div><div class="panel"><h2>出来事</h2><div id="log"></div></div></div><script>
+'use strict';
+const names=['北海道','陸奥','出羽','関東','甲信越','北陸','東海','近畿','山陰','山陽','四国','北九州','南九州','南奥羽','東山道'];
+// 各国2～3隣国のリング型。後から地図表示に置き換え可能。
+const adj=names.map((_,i)=>[(i+14)%15,(i+1)%15]);
+const daimyo=['織田信長','武田信玄','上杉謙信','徳川家康','伊達政宗','毛利元就','豊臣秀吉','今川義元','北条氏康','島津義久','長宗我部元親','明智光秀','真田幸村','浅井長政','島津義弘'];
+const base=[[98,92,95,90],[99,94,91,88],[98,99,88,82],[96,86,94,98],[99,99,99,99],[91,82,99,96],[94,90,96,98],[90,85,88,95],[95,87,92,98],[94,93,91,91],[92,94,89,90],[91,88,97,92],[93,99,91,85],[90,91,87,90],[96,99,86,83]];
+const poolNames=['前田利家','柴田勝家','竹中半兵衛','黒田官兵衛','本多忠勝','井伊直政','石田三成','加藤清正','福島正則','山本勘助','直江兼続','片倉小十郎','立花宗茂','高橋紹運','鍋島直茂','大谷吉継','島左近','山県昌景','馬場信春','真田昌幸','小早川隆景','吉川元春','宇喜多直家','蒲生氏郷','細川忠興','斎藤道三','滝川一益','丹羽長秀','佐々成政','可児才蔵','服部半蔵','藤堂高虎','榊原康政','酒井忠次','最上義光','佐竹義重','龍造寺隆信','大友宗麟','尼子経久','陶晴賢','村上武吉','山中鹿介','朝倉宗滴','浅井久政','北条綱成','武田勝頼','柿崎景家','甘粕景持','松永久秀','三好長慶'];
+const $=id=>document.getElementById(id), rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a, choose=a=>a[rnd(0,a.length-1)];
+let pickedD=null,pickedC=null,s=null;
+function officer(name){let tier=Math.random();let target=tier<.1?rnd(350,380):tier<.4?rnd(321,349):rnd(250,320);let v=[rnd(55,90),rnd(55,90),rnd(55,90),rnd(55,90)];let sum=v.reduce((a,b)=>a+b,0);while(sum<target){let i=rnd(0,3);v[i]++;sum++}while(sum>target){let i=rnd(0,3);if(v[i]>35){v[i]--;sum--}}return {name,v,loyalty:rnd(80,100)}}
+function national(c){let n=base[c.d].slice();for(const o of c.officers)for(let i=0;i<4;i++)n[i]+=o.v[i]/10;return n.map(Math.floor)}
+function log(t){s.logs.unshift('【'+(Math.floor((s.turn-1)/2)+1)+'日目 '+(s.turn%2?'朝':'夜')+'】 '+t);s.logs=s.logs.slice(0,100)}
+function init(){let p=poolNames.map(officer);let countries=names.map((name,i)=>({name,d:i,owner:i===pickedC?'player':'npc',gold:2000,troops:5000,officers:[p.pop(),p.pop()]}));countries[pickedC].d=pickedD;let used=new Set([pickedD]);for(let i=0;i<15;i++){if(i===pickedC)continue;let d=daimyo.findIndex((_,j)=>!used.has(j));countries[i].d=d;used.add(d)}s={turn:1,me:pickedC,countries,pool:p.slice(0,12),reserve:p.slice(12),orders:[],logs:[],ended:false};log('ゲーム開始！ '+daimyo[pickedD]+'が'+names[pickedC]+'で挙兵。');persist();render()}
+function persist(){try{localStorage.setItem('sengoku_v05',JSON.stringify(s))}catch(e){}}
+function render(){if(!s)return;$('setup').classList.add('hidden');$('game').classList.remove('hidden');let me=s.countries[s.me],n=national(me);$('status').textContent=`${Math.floor((s.turn-1)/2)+1}日目・${s.turn%2?'朝':'夜'} ／ ${daimyo[me.d]} ／ ${me.name}`;$('stats').innerHTML=`<span class="stat">💰 ${me.gold}金</span><span class="stat">🛡️ ${me.troops}兵</span><span class="stat">👥 家臣${me.officers.length}/15</span><span class="stat">統率${n[0]}</span><span class="stat">武力${n[1]}</span><span class="stat">知略${n[2]}</span><span class="stat">政治${n[3]}</span>`;$('orders').textContent='予約：'+(s.orders.length?s.orders.map((o,i)=>`${i+1}. ${label(o)}`).join(' ／ '):'なし');$('add').disabled=s.orders.length>=3||s.ended;$('next').disabled=s.ended;$('world').innerHTML=s.countries.map((c,i)=>`<div class="country ${i===s.me?'mine':'enemy'}"><b>${c.name}</b><small>${i===s.me?'あなた':'NPC'}：${daimyo[c.d]}</small><small>兵 ${c.troops} ／ 金 ${i===s.me?c.gold:'???'}</small><small>隣国：${adj[i].map(j=>names[j]).join('・')}</small></div>`).join('');$('officers').innerHTML=me.officers.length?me.officers.map(o=>`<div class="stat">${o.name}（忠誠${o.loyalty}） 統${o.v[0]} 武${o.v[1]} 知${o.v[2]} 政${o.v[3]}</div>`).join(''):'家臣なし';$('log').textContent=s.logs.join('\n');renderOptions();persist()}
+function label(o){return ({domestic:'内政',hire:'兵士雇用',recruit:'登用',attack:'戦争',reward:'褒美',scout:'偵察'})[o.type]+(o.detail?'（'+o.detail+'）':'')}
+function renderOptions(){if(!s)return;let type=$('action').value,me=s.countries[s.me],html='';if(type==='hire')html='<label>雇用金額</label><select id="arg">'+[100,200,500,1000].map(v=>`<option value="${v}">${v}金 → ${v*5}兵</option>`).join('')+'</select>';if(type==='recruit')html='<label>登用候補</label><select id="arg">'+s.pool.map((o,i)=>`<option value="${i}">${o.name}（統${o.v[0]} 武${o.v[1]} 知${o.v[2]} 政${o.v[3]}）</option>`).join('')+'</select>';if(type==='attack'||type==='scout')html='<label>対象国</label><select id="arg">'+adj[s.me].filter(i=>s.countries[i].owner==='npc').map(i=>`<option value="${i}">${names[i]}</option>`).join('')+'</select>'+(type==='attack'?'<label>出兵割合</label><select id="amount"><option value="25">25%</option><option value="50">50%</option><option value="75" selected>75%</option><option value="100">100%</option></select>':'');if(type==='reward')html='<label>対象家臣</label><select id="arg">'+me.officers.map((o,i)=>`<option value="${i}">${o.name}（忠誠${o.loyalty}）</option>`).join('')+'</select><label>褒美金額</label><select id="amount">'+[100,300,500,1000].map(v=>`<option value="${v}">${v}金</option>`).join('')+'</select>';$('options').innerHTML=html}
+function addOrder(){let type=$('action').value;if(s.orders.some(o=>o.type===type)){alert('同じ種類の命令は1ターンに1回までです');return}if(s.orders.length>=3)return;let arg=$('arg'),amount=$('amount'),id=arg?Number(arg.value):null;if(arg&&(!arg.options.length||!Number.isFinite(id))){alert('対象がありません');return}let detail='';if(type==='hire')detail=arg.value+'金';if(type==='recruit')detail=s.pool[id].name;if(type==='attack'||type==='scout')detail=names[id];if(type==='reward')detail=s.countries[s.me].officers[id].name;s.orders.push({type,id,amount:amount?Number(amount.value):null,detail});render()}
+function battle(from,to,pct,player){let a=s.countries[from],d=s.countries[to],sent=Math.max(0,Math.floor(a.troops*pct/100));if(sent<100){if(player)log('出兵失敗：兵力不足');return}let an=national(a),dn=national(d),weather=choose([0,-.05,-.10,-.15]),atk=(sent/100+an[1]*.5+an[2]*.3)*(1+weather)*rnd(90,110)/100,def=(d.troops/100+dn[0]*.8)*rnd(90,110)/100,ratio=atk/Math.max(1,def),win=ratio>=1.05,tier=ratio>=1.2?'大勝':ratio>=1.05?'辛勝':ratio>=.95?'接戦':ratio>=.8?'敗北':'惨敗',lossA=ratio>=1.2?.1:ratio>=1.05?.2:ratio>=.95?.25:ratio>=.8?.35:.5,lossD=ratio>=1.2?.3:ratio>=1.05?.25:ratio>=.95?.15:ratio>=.8?.1:.05;a.troops-=Math.ceil(sent*lossA);d.troops=Math.max(0,d.troops-Math.ceil(d.troops*lossD));log(`${a.name} → ${d.name}：${tier}（天候${['晴','曇','雨','豪雨'][[0,-.05,-.10,-.15].indexOf(weather)]}）`);if(win){let old=d.officers;d.owner=a.owner;d.d=a.d;d.gold=Math.floor(d.gold/2);d.officers=[];let cap=Math.min(tier==='大勝'?3:2,15-a.officers.length,old.length);for(let i=0;i<cap;i++){let o=old.splice(rnd(0,old.length-1),1)[0];o.loyalty=rnd(35,70);a.officers.push(o)}d.officers=old;log(`${a.name}が${d.name}を制圧！ 捕虜${cap}人`);if(to===s.me){s.ended=true;log('あなたの本拠地が陥落。試作版ではここで終了です。')}}}
+function execute(o){let c=s.countries[s.me],n=national(c);if(o.type==='domestic'){let v=n[3]*2;c.gold+=v;log('内政：'+v+'金獲得')}if(o.type==='hire'){if(c.gold<o.id)log('雇用失敗：資金不足');else{c.gold-=o.id;c.troops+=o.id*5;log('兵士を'+o.id*5+'人雇用')}}if(o.type==='recruit'){let ix=s.pool.findIndex(x=>x.name===o.detail);if(c.officers.length>=15)log('登用不可：家臣上限');else if(c.gold<200)log('登用不可：資金不足');else if(ix<0)log('登用失敗：候補がいない');else{c.gold-=200;let chance=Math.min(90,Math.max(50,45+Math.floor((n[0]+n[2]+n[3])/15)));if(rnd(1,100)<=chance){let a=s.pool.splice(ix,1)[0];a.loyalty=rnd(80,100);c.officers.push(a);if(s.reserve.length)s.pool.push(s.reserve.shift());log('登用成功：'+a.name+'（'+chance+'%）')}else log('登用失敗：'+o.detail+'（'+chance+'%）')}}if(o.type==='attack'){if(!adj[s.me].includes(o.id)||s.countries[o.id].owner!=='npc')log('戦争不可：対象が不適切');else battle(s.me,o.id,o.amount,true)}if(o.type==='reward'){let v=({100:10,300:18,500:25,1000:35})[o.amount],target=c.officers.find(x=>x.name===o.detail);if(!target)log('褒美不可：対象不在');else if(c.gold<o.amount)log('褒美不可：資金不足');else{c.gold-=o.amount;target.loyalty=Math.min(100,target.loyalty+v);log(target.name+'に褒美：忠誠+'+v)}}if(o.type==='scout'){let t=s.countries[o.id];if(t)log('偵察：'+t.name+'の兵力は'+t.troops+'人')}}
+function npcTurn(){for(let i=0;i<15;i++){if(i===s.me)continue;let c=s.countries[i];if(c.owner!=='npc')continue;let r=rnd(1,100);if(r<=55){c.gold+=national(c)[3]*2}else if(r<=78&&c.gold>=200){c.gold-=200;c.troops+=1000}else if(r<=90&&c.gold>=200&&c.officers.length<15&&s.pool.length){c.gold-=200;if(rnd(1,100)<=60){let ix=rnd(0,s.pool.length-1);c.officers.push(s.pool.splice(ix,1)[0]);if(s.reserve.length)s.pool.push(s.reserve.shift())}}else if(r>95){let options=adj[i].filter(j=>j!==s.me&&s.countries[j].owner==='npc'&&s.countries[j].d!==c.d);if(options.length&&c.troops>5500)battle(i,choose(options),70,false)}}}
+function loyalty(){for(const c of s.countries){for(let i=c.officers.length-1;i>=0;i--){let o=c.officers[i];o.loyalty=Math.max(0,o.loyalty-rnd(1,10));let p=o.loyalty===0?100:o.loyalty<=20?90:o.loyalty<=40?70:o.loyalty<=60?40:o.loyalty<=80?10:0;if(rnd(1,100)<=p){c.officers.splice(i,1);s.pool.push(o);if(c.owner==='player')log(o.name+'が離反した！')}}}while(s.pool.length>12)s.reserve.push(s.pool.pop())}
+function randomEvent(){let c=s.countries[s.me],k=rnd(0,3);if(k===0){let x=rnd(100,400);c.gold+=x;log('ランダムイベント：豊作！ '+x+'金獲得')}if(k===1){let x=Math.min(c.gold,rnd(100,300));c.gold-=x;log('ランダムイベント：災害！ '+x+'金損失')}if(k===2){let x=rnd(100,500);c.troops+=x;log('ランダムイベント：志願兵'+x+'人')}if(k===3){let x=Math.min(c.troops,rnd(100,300));c.troops-=x;log('ランダムイベント：疫病で'+x+'人減少')}}
+function nextTurn(){if(s.ended)return;let count=s.orders.length;for(const o of s.orders)execute(o);npcTurn();if(count<3)randomEvent();loyalty();s.orders=[];s.turn++;if(s.turn>60){s.ended=true;log('30日終了！ あなたの支配国：'+s.countries.filter(c=>c.owner==='player').length+'か国')}render()}
+function setup(){let saved;try{saved=JSON.parse(localStorage.getItem('sengoku_v05'))}catch(e){}if(saved&&saved.countries&&confirm('前回のセーブデータから再開しますか？')){s=saved;render();return}$('daimyoList').innerHTML=daimyo.map((n,i)=>`<button data-d="${i}">${n}<br><small>統${base[i][0]} 武${base[i][1]} 知${base[i][2]} 政${base[i][3]}</small></button>`).join('');$('countryList').innerHTML=names.map((n,i)=>`<button data-c="${i}">${n}</button>`).join('');document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{pickedD=+b.dataset.d;updatePick()});document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{pickedC=+b.dataset.c;updatePick()})}
+function updatePick(){document.querySelectorAll('[data-d]').forEach(b=>b.classList.toggle('selected',+b.dataset.d===pickedD));document.querySelectorAll('[data-c]').forEach(b=>b.classList.toggle('selected',+b.dataset.c===pickedC));$('picked').textContent=(pickedD===null?'大名未選択':daimyo[pickedD])+' ／ '+(pickedC===null?'国未選択':names[pickedC]);$('start').disabled=pickedD===null||pickedC===null}
+$('start').onclick=init;$('action').onchange=renderOptions;$('add').onclick=addOrder;$('clear').onclick=()=>{s.orders=[];render()};$('next').onclick=nextTurn;$('save').onclick=()=>{persist();alert('このブラウザに保存しました')};$('reset').onclick=()=>{if(confirm('現在のセーブを削除して最初から始めますか？')){localStorage.removeItem('sengoku_v05');location.reload()}};setup();
+</script></body></html>
