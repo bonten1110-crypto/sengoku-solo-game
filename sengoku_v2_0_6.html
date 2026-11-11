@@ -1,0 +1,778 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>戦国十五国 v2.0.6</title><style>:root{font-family:system-ui,-apple-system,sans-serif;color:#f1ede3;background:#131d22}*{box-sizing:border-box}body{margin:0;max-width:960px;padding:16px;margin:auto}h1{font-size:25px;margin:8px 0}h2{font-size:19px}p{line-height:1.5}.muted{color:#aab8b8}.panel{background:#223039;border:1px solid #43575b;border-radius:12px;padding:14px;margin:12px 0}button,select{font:inherit;border-radius:8px;border:1px solid #7c9999;padding:10px;background:#34494c;color:white;max-width:100%}button{cursor:pointer}button:disabled{opacity:.4}button.primary{background:#a16d24;border-color:#e5b65c;font-weight:bold}button.danger{background:#683b3b}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:8px}.country{padding:10px;border:1px solid #58706d;border-radius:8px;background:#293c40;text-align:left}.country.mine{border:2px solid #f2c26e}.country.enemy{border-color:#aa6262}.country small{display:block;color:#b5c5c2}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.stat{display:inline-block;background:#334a4b;padding:7px;border-radius:7px;margin:3px}.territory-card{display:block;width:100%;text-align:left;margin:6px 0;padding:12px;border-radius:10px;border:1px solid #678481;background:#2b4144}.territory-card strong{color:#f2c26e}.territory-card small{display:block;margin-top:5px;color:#b7c9c8}.territory-card.active{outline:2px solid #e6b862}.territory-detail{padding:12px;background:#17282c;border-radius:8px;margin:8px 0}.map-legend{font-size:13px}.map-wrap{overflow-x:auto}.map-wrap svg{min-width:340px}#log{max-height:320px;overflow:auto;white-space:pre-wrap;font-size:13px;line-height:1.6}.tag{font-size:12px;background:#52615c;border-radius:5px;padding:3px 6px}.hidden{display:none}.selected{outline:3px solid #e6b862}label{display:block;margin:9px 0 4px}.move-line{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:7px 0;padding:7px;background:#293c40;border-radius:7px}.move-line select{min-width:120px}.note{background:#3b3930;padding:10px;border-radius:7px} .event{padding:8px;margin:5px 0;border-radius:7px;background:#283a3c;border-left:4px solid #678481;font-size:13px;line-height:1.5}.event.red{border-color:#f07171}.event.orange{border-color:#ff9e53}.event.green{border-color:#67c988}.event.gold{border-color:#edc55e}.event.critical{border-color:#ff5c5c;background:#513030}.intel-officer{padding:6px;margin:5px 0;background:#263e40;border-radius:6px}.reward-row button{padding:6px 9px;font-size:13px}#log{max-height:440px} 
+/* v1.9.4: tutorial, politics, officer scaling, selectable start map */
+#latestOwn{position:sticky;top:68px;z-index:12;background:#243c3b;border:1px solid #bca05c;border-radius:9px;padding:9px 11px;margin:5px 0;box-shadow:0 2px 8px #0005}
+.latest-heading{font-weight:800;color:#f2cf79;font-size:14px;margin-bottom:4px}.latest-heading span{font-size:11px;color:#c3cfcc}
+#latestOwnText{max-height:92px;overflow-y:auto;font-size:12px;line-height:1.5}.latest-line{border-top:1px solid #49625d;padding:3px 0}
+#gameTabs{top:182px}#game>.panel:first-child{z-index:13}
+.guide{line-height:1.65}.guide h2{font-size:17px;margin:18px 0 6px;color:#f2cf79}.guide-step{border-left:3px solid #c5a05c;background:#293b3c;padding:9px 11px;margin:8px 0;border-radius:6px}.guide-step p{margin:5px 0}.guide p{font-size:14px}
+@media(max-width:420px){#latestOwn{top:80px}#gameTabs{top:195px}}
+ .guide-section{padding:9px 10px;margin:9px 0;border:1px solid #526b6a;border-radius:8px;background:#263a3d}.guide-section summary{font-weight:700;cursor:pointer;color:#f2cf79}.guide-section p{margin:8px 0}.setup-map-wrap{margin:10px 0;padding:9px;background:#1a2c30;border-radius:10px}.setup-map-wrap svg [data-pick-map]{cursor:pointer}.setup-map-wrap svg [data-pick-map]:focus{outline:2px solid #ffd45c} </style><style>
+/* v1.9.2 mobile tab navigation */
+body{padding:10px 12px 86px}#game>.panel:first-child{position:sticky;top:0;z-index:12;margin:0 0 5px;padding:9px;background:#223039f5;backdrop-filter:blur(8px)}
+#game>.panel:first-child .muted{display:none}#status{font-size:13px}#stats{display:flex;flex-wrap:wrap;gap:2px}#stats .stat{font-size:12px;padding:5px;margin:1px}
+#gameTabs{position:sticky;top:92px;z-index:11;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;background:#131d22;padding:5px 0 8px}
+#gameTabs button{font-size:12px;padding:9px 1px;white-space:nowrap;border-radius:7px}#gameTabs button[aria-selected="true"]{background:#a16d24;border-color:#e5b65c;font-weight:bold}
+.tab-view[hidden]{display:none!important}.tab-view>.panel{margin-top:8px}#gameTabs button:focus-visible{outline:2px solid #f2c26e}
+@media(max-width:420px){#gameTabs{top:105px}#game>.panel:first-child .row{gap:5px}#game>.panel:first-child button{padding:5px 8px;font-size:12px}}
+</style><style>
+/* v2.0.3: keep only tab navigation sticky; regular content scrolls naturally */
+#game>.panel:first-child{position:static;top:auto;z-index:auto;backdrop-filter:none}
+#latestOwn{position:static;top:auto;z-index:auto;box-shadow:none}
+#latestOwnText{max-height:none;overflow:visible}
+#gameTabs{position:sticky;top:0;z-index:20}
+@media(max-width:420px){#gameTabs{top:0}#latestOwn{top:auto}}
+.update-notice{margin:10px 0}
+.update-notice summary{font-weight:700;cursor:pointer;min-height:26px;list-style-position:inside}
+.update-notice .release-body{padding-top:9px;font-size:13px;line-height:1.65}
+.update-notice .release-body p{margin:4px 0 10px}
+.territory-entry{margin:7px 0;border-radius:10px}
+.territory-entry .territory-card{margin:0}
+.territory-traits{background:#1e3436;border:1px solid #557272;border-radius:8px;margin:4px 0 10px;padding:9px 11px;font-size:13px;line-height:1.6}
+.territory-traits summary{cursor:pointer;color:#f2cf79;font-weight:700;min-height:24px}
+.territory-traits p{margin:7px 0 2px;overflow-wrap:anywhere}
+</style><style>
+/* v2.0.3: explicit, high-contrast adjacency strokes separated from Japan shoreline */
+.map-edge .edge-halo{stroke:#f9faf2;stroke-width:8.5;stroke-linecap:round;opacity:.94}
+.map-edge .edge-core{stroke:#243039;stroke-width:4.6;stroke-linecap:round}
+.map-edge.active .edge-halo{stroke:#fff9de;stroke-width:10;opacity:1}
+.map-edge.active .edge-core{stroke:#ffb22a;stroke-width:6.2}
+.map-edge.dim{opacity:.16}
+.map-node.focus rect{stroke:#ffe17a;stroke-width:4.5}
+.setup-map-wrap svg .map-edge.active .edge-core{stroke:#ffb22a}
+#battleResult{white-space:pre-line;line-height:1.75;padding:12px;border-radius:8px;background:#233f43;border:1px solid #8aa9a7}
+
+/* v2.0.4: short order cards expand only on demand; no scroll-heavy always-open detail */
+.order-list{margin:8px 0 12px}
+.order-compact{margin:5px 0;background:#293c40;border:1px solid #506b6c;border-radius:8px}
+.order-compact>summary{display:block;padding:8px 11px;cursor:pointer;font-size:13px;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:35px}
+.order-compact>summary::before{content:'▸ ';color:#f1c56c}
+.order-compact[open]>summary::before{content:'▾ '}
+.order-expanded{padding:5px 11px 10px;border-top:1px solid #506b6c;font-size:13px;line-height:1.5}
+.order-expanded p{margin:4px 0}
+.order-expanded button{padding:5px 9px;margin:4px 5px 0 0;font-size:13px}
+#strategyType{width:100%}
+@media(max-width:420px){.order-compact>summary{font-size:12px;padding:8px 9px}}
+</style></head><body><h1>⚔️ 戦国十五国 <span class="tag">ソロ試作 v2.0.6</span></h1><p class="muted">15か国・大名選択・内政・兵士雇用・登用・戦争・NPC・セーブ対応。1ターン＝12時間の想定（試作では手動進行）。</p><details class="panel" id="manual"><summary><strong>📖 はじめての方へ｜遊び方・チュートリアル</strong></summary>
+<div class="guide"><h2>🎯 ゲームの目的</h2><p>好きな大名と開始国を選び、内政で資金を増やし、兵士や家臣を集め、隣国を攻略して領地を広げよう。30日（60ターン）で天下統一を目指す戦国シミュレーションです。</p>
+<h2>🌱 最初の3ターン：おすすめの進め方</h2>
+<div class="guide-step"><strong>① 大名と開始国を選ぶ</strong><p>最初は好きな大名でOK。開始国を選んで「ゲーム開始」を押そう。</p></div>
+<div class="guide-step"><strong>②「⚔️ 命令」で内政を選ぶ</strong><p>内政でお金を増やそう。次に「兵士雇用」で兵を増やし、「登用」で家臣を増やすのがおすすめ。</p></div>
+<div class="guide-step"><strong>③ 命令を予約してターンを進める</strong><p>「命令を追加」で予約し、「命令を実行して次のターンへ」を押そう。結果は画面上部の「📢 自国の最新情報」に表示されるよ。命令画面には領地の兵数と資金を表示するよ。</p></div>
+<div class="guide-step"><strong>④「🗺️ 地図」で隣国を確認</strong><p>線でつながった国に攻め込める。兵士が十分に増えたら「戦争」で出陣しよう。戦闘は自動で決まるよ。</p></div>
+<h2>🧭 画面の見方</h2><p>敵から攻められたり焼き討ちを受けたりした場合は、画面上部の「自国の最新情報」と「🏯 自国」の攻撃・被害欄に表示されます。</p><p>🏯 自国＝領地の状況 ／ ⚔️ 命令＝行動予約 ／ 🗺️ 地図＝隣国の確認 ／ 👥 武将＝配置や褒美 ／ 📜 情報＝過去の出来事と勢力一覧。</p>
+<h2>💡 覚えておくこと</h2><p>本拠地が陥落しても領地が残っていれば、大名は残った国へ移り、ゲームを続けられます。</p><p>命令は最初3つまで。領地が増えると命令できる回数も増えるよ。偵察に成功すると4ターンの間、敵の兵数・統率力や武将情報を最新の状態で確認できる。家臣は基本的に忠誠が下がるので「褒美」で維持しよう（人望のいる領地は毎ターン忠誠＋1）。ゲームは自動進行ではなく、ボタンを押してターンを進める試作版だよ。</p>
+<h2>📚 詳しい遊び方</h2>
+<details class="guide-section"><summary>⚔️ 戦争と能力の役割</summary><p>攻撃は出兵数・武力・統率・知略・天候・武将特性が影響します。防御は守備兵数・統率・知略・武力・武将特性が影響します。政治力は直接の戦闘力には加算されません。</p><p>統率＝攻守の指揮、武力＝攻撃と一騎討ち、知略＝戦闘・策略・伏兵、政治＝内政収入・登用・兵士雇用効率・兵站支援に役立ちます。戦闘結果は大勝・辛勝・優勢・接戦・惜敗・敗北・惨敗の7段階。占領には戦力比110％以上が必要です。占領時は戦闘開始時の守備兵から降伏兵を獲得します（大勝22〜47％・最大5,000兵、辛勝10〜33％、小数点以下切り捨て）。戦争イベントは1戦につき最大1件、両軍に家臣がいるときそれぞれ10％で抽選されます。</p></details>
+<details class="guide-section"><summary>🧠 策略の使い方</summary><p>🔍 偵察：成功後4ターン、敵兵数・城主・領地の統率力・武将能力と特性を常に最新の状態で確認できます。</p><p>🗣️ 調略：調略判定成功後、敵家臣の開始時忠誠が79以下なら引き抜き抽選（70〜79＝10％、60〜69＝15％、51〜59＝20％、50以下＝100％）。引き抜けなければ忠誠を10〜20下げます。</p><p>🪤 妨害：敵の次の内政収入を半減させます。</p><p>🔥 焼き討ち：隣接する敵国の兵士を減らします（700金必要）。</p><p>知略の高い領地ほど策略が成功しやすくなります。</p></details>
+<details class="guide-section"><summary>👹 武将特性の一覧</summary><p>猛将：攻撃＋5〜10％／守将：防御＋5〜10％／能吏：内政収入＋11〜15％／募兵：雇用兵数＋10％／軍師：策略成功率＋7〜10ポイント／築城：防御＋7.5％／人望：忠誠低下なし・毎ターン忠誠＋1。</p><p>奇襲：20％で攻撃＋10〜15％／鬼謀：策略成功率＋5ポイント・35％で敵策略を反射／鬼将：攻撃＋5％・26％で敵武将討死。</p><p>特性は武将がいる領地だけに有効。同じ特性を複数集めても重複しません。ランダムな補正は命令の実行時に一度だけ抽選します。特性補正は「🏯 自国」タブで領地ごとに確認できます。</p></details>
+<details class="guide-section"><summary>💰 内政・雇用・家臣の育成</summary><p>内政では政治力が高いほど収入が増えます。兵士雇用は100〜1,000金から100金刻みで選べます。政治力100を超えた分は1ポイントにつき＋0.1％（最大＋10％）、特性「募兵」はさらに＋10％。最後に端数を切り捨てます。ターン雇用上限はなく、領地総兵数は15,000兵まで。</p><p>国の能力は城主の能力を中心に、その他の家臣の能力も加算されます。家臣を増やすと統率・武力・知略・政治のすべてが強化されます。新しく仲間になった武将は、加入したターンだけ離反しません。忠誠が下がったら武将画面で褒美を与えましょう。</p></details>
+<details class="guide-section"><summary>🤝 外交について</summary><p>同盟・援軍・裏切りは今後のアップデートで実装予定です。現バージョンではまだ利用できません。</p></details>
+<p class="muted">※戦闘では敗れた側の家臣が1％、大敗時は5％で討死することがあります。一騎討ち敗者には別途5％の討死判定があります（いずれも大名は対象外）。討死は全国の情報に表示されます。細かな計算式は省略しています。</p></div></details><details class="note update-notice" id="releaseNotes"><summary>📢 v2.0.6 アップデート情報</summary><div class="release-body"><p>🏳️ 領地を制圧すると降伏兵を味方に編入します。大勝は守備側の戦闘開始兵数の22〜47％（最大5,000兵）、辛勝は10〜33％。小数点以下切り捨て・占領地の兵数上限15,000兵です。</p></div></details><div id="setup" class="panel"><h2>大名を選択</h2><div id="daimyoList" class="grid"></div><h2>開始する国を選択</h2><div class="setup-map-wrap"><p class="muted">🗾 地図の国をタップして選択できます。線は隣接関係を表します（模式図）。</p><div id="setupMap" class="map-wrap"></div><p id="setupMapDetail" class="note">国をタップすると隣国を確認できます。</p></div><div id="countryList" class="grid"></div><p id="picked" class="note">大名と国を選んでください。</p><button class="primary" id="start" disabled>ゲーム開始</button></div><div id="game" class="hidden"><section id="latestOwn" class="latest-own" aria-live="polite"><div class="latest-heading">📢 自国の最新情報 <span id="latestTurn"></span></div><div id="latestOwnText">ゲームを開始すると、ここに最新情報が表示されます。</div></section><div class="panel"><div class="row"><strong id="status"></strong><button id="save">セーブ</button><button id="reset" class="danger">最初から</button></div><div id="stats"></div><p class="muted">命令上限は3＋追加領地×2。同一領地・同一命令は1回まで。上限未満ならランダムイベントが発生。</p></div><div class="panel"><h2>命令を予約</h2><label>命令</label><select id="action"><option value="domestic">内政（政治力×4〜8の金を獲得）</option><option value="hire">兵士雇用</option><option value="recruit">登用（特性別200〜850金）</option><option value="attack">戦争（隣国を攻撃）</option><option value="transfer">兵士移動（隣接する自領へ）</option><option value="strategy">策略（偵察・調略・妨害・焼き討ち）</option></select><label>命令を行う領地</label><select id="source"></select><div id="options"></div><div class="row"><button id="add" class="primary">命令を追加</button><button id="clear">命令を取り消す</button></div><div id="orders" class="order-list"></div><button class="primary" id="next">▶ 命令を実行して次のターンへ</button></div>
+<div class="panel"><h2>📢 出来事</h2><details open><summary>最新の出来事を表示・折りたたむ</summary><div id="log"></div></details></div><div class="panel"><h2>配下武将</h2><details open><summary>自国の武将一覧を表示・折りたたむ</summary><div id="officers"></div></details></div><div class="panel"><h2>🏯 自国の領地一覧</h2><div id="territories"></div></div><div class="panel"><h2>全国情勢（模式図）</h2><p class="muted">勢力ごとに同じ色で表示。金枠＝自領、⚔️＝攻撃可能。国をタップすると詳細を表示します。</p><div id="world" class="map-wrap"></div></div><div class="panel"><h2>📊 勢力一覧</h2><div id="factions" class="grid"></div></div><div class="panel"><h2>⚔️ 最新の戦争結果</h2><div id="battleResult" class="hidden" aria-live="polite"></div></div></div><script>
+
+'use strict';
+const names=['北海道','陸奥','出羽','関東','甲信越','北陸','東海','近畿','山陰','山陽','四国','北九州','南九州','南奥羽','東山道'];
+// 各国2～3隣国のリング型。後から地図表示に置き換え可能。
+// 仮の接続図：全15か国が2隣国を持つ。正式な承認済み地図への差し替えが必要。
+// 共通の隣接データをマップ表示・プレイヤー戦争・NPC戦争で利用。
+// v2.0: 九州・東北の一本道を解消する5か所の隣接修正。15国のまま。
+// 日本列島風の簡易マップ。全領地2〜3隣接、遠隔地の直結なし。
+const links=[[0,1],[0,2],[1,13],[2,13],[2,4],[13,3],[3,4],[4,14],[14,6],[6,7],[7,5],[7,10],[5,8],[8,9],[9,10],[9,11],[11,12],[10,12],[3,6],[14,5]];
+const adj=names.map(()=>[]);
+for(const [a,b] of links){adj[a].push(b);adj[b].push(a)}
+// v2.0.3: separate short label-to-label edges 甲信越—東山道 and 北陸—山陰.
+const positions=[[450,55],[450,130],[346,145],[450,295],[365,265],[259,374],[390,390],[310,420],[133,391],[185,445],[235,515],[105,480],[70,560],[445,210],[243,300]];
+const daimyo=['織田信長','武田信玄','上杉謙信','徳川家康','伊達政宗','毛利元就','豊臣秀吉','今川義元','北条氏康','島津義久','長宗我部元親','明智光秀','真田幸村','浅井長政','島津義弘'];
+const base=[[100,100,105,85],[110,95,105,80],[115,110,85,80],[90,80,105,115],[100,105,100,85],[90,75,115,110],[85,80,110,115],[85,85,105,115],[100,85,95,110],[95,85,105,105],[100,105,95,90],[90,90,115,95],[110,115,90,75],[100,100,95,95],[110,115,85,80]];
+const poolNames=['前田利家','柴田勝家','竹中半兵衛','黒田官兵衛','本多忠勝','井伊直政','石田三成','加藤清正','福島正則','山本勘助','直江兼続','片倉小十郎','立花宗茂','高橋紹運','鍋島直茂','大谷吉継','島左近','山県昌景','馬場信春','真田昌幸','小早川隆景','吉川元春','宇喜多直家','蒲生氏郷','細川忠興','斎藤道三','滝川一益','丹羽長秀','佐々成政','可児才蔵','服部半蔵','藤堂高虎','榊原康政','酒井忠次','最上義光','佐竹義重','龍造寺隆信','大友宗麟','尼子経久','陶晴賢','村上武吉','山中鹿介','朝倉宗滴','浅井久政','北条綱成','武田勝頼','柿崎景家','甘粕景持','松永久秀','三好長慶','前田慶次','本多正信','鳥居元忠','井伊直虎','築山殿','小松姫','真田信之','真田信綱','真田昌輝','武田信繁','高坂昌信','内藤昌豊','秋山信友','原虎胤','飯富虎昌','穴山梅雪','北条氏政','北条氏照','北条氏邦','風魔小太郎','太田道灌','太田資正','上泉信綱','塚原卜伝','柳生宗厳','柳生宗矩','柳生十兵衛','島津家久','島津歳久','島津忠恒','新納忠元','伊集院忠棟','立花道雪','立花誾千代','小早川秀秋','安国寺恵瓊','清水宗治','毛利輝元','毛利隆元','吉川広家','村上通康','長宗我部信親','香宗我部親泰','谷忠澄','十河一存','三好義継','松永久通','足利義昭','足利義輝','細川藤孝','細川ガラシャ','細川忠利','宇喜多秀家','宇喜多忠家','蜂須賀小六','蜂須賀家政','増田長盛','長束正家','浅野長政','浅野幸長','堀秀政','堀直政','森長可','森蘭丸','池田恒興','池田輝政','滝川雄利','佐久間信盛','佐久間盛政','織田信忠','織田信雄','織田信孝','織田有楽斎','お市の方','濃姫','淀殿','千姫','徳川秀忠','徳川忠長','松平忠輝','榊原康勝','大久保忠世','大久保忠佐','大久保長安','酒井家次','本多康重','渡辺守綱','榊原康政','服部正成','服部正就','加藤嘉明','脇坂安治','片桐且元','黒田長政','黒田如水','栗山利安','母里太兵衛','後藤又兵衛','福島正之','山内一豊','山内千代','藤堂高吉','京極高次','京極竜子','立花直次','大友義統','大友宗麟','高橋統増','龍造寺家兼','龍造寺政家','鍋島勝茂','有馬晴信','大村純忠','相良義陽','伊東義祐','伊東祐兵','最上義康','最上駒姫','伊達成実','伊達輝宗','鬼庭綱元','鬼庭左月斎','留守政景','蘆名盛氏','蘆名義広','佐竹義宣','佐竹義久','上杉景勝','上杉景虎','上杉憲政','長尾政景','色部勝長','本庄繁長','斎藤朝信','河田長親','甘粕景継','柿崎晴家','北条高広','直江景綱','朝倉義景','朝倉景鏡','富田長繁','浅井亮政','浅井長政','浅井政元','尼子晴久','尼子勝久','山中幸盛','吉川興経','陶隆房','大内義隆','大内義興','大内晴持','浦上宗景','赤松政秀','別所長治','別所重棟','荒木村重','中川清秀','高山右近','筒井順慶','筒井定次','島清興','可児吉長','蒲生秀行','蒲生忠郷','佐々成政'];
+const traitWeights=[['なし',70],['猛将',5],['守将',5],['能吏',4],['募兵',4],['軍師',3],['築城',4],['人望',2.8],['奇襲',2],['鬼謀',.1],['鬼将',.1]];
+const traitCosts={'なし':200,'猛将':300,'守将':300,'能吏':400,'募兵':300,'軍師':400,'築城':400,'人望':400,'奇襲':550,'鬼謀':850,'鬼将':850};
+function rollTrait(){let r=Math.random()*100;for(const [name,weight] of traitWeights){r-=weight;if(r<0)return name}return 'なし'}
+function trait(o){return o.trait||'なし'}
+function hasTrait(c,name){return c.officers.some(o=>trait(o)===name)}
+function traitCost(o){return traitCosts[trait(o)]||200}
+function strategyBoost(c){return (hasTrait(c,'軍師')?rnd(7,10):0)+(hasTrait(c,'鬼謀')?5:0)}
+function reflectStrategy(target,from,kind){if(!hasTrait(target,'鬼謀')||Math.random()>=.35)return false;log('🧠 鬼謀発動！ '+target.name+'が'+({burn:'焼き討ち',scheme:'調略',sabotage:'妨害'})[kind]+'を反射！');let source=s.countries[from];if(kind==='burn'){let loss=Math.max(0,Math.min(source.troops-500,Math.floor(source.troops*rnd(5,15)/100)));source.troops-=loss;log('反射した焼き討ちで'+source.name+'の兵士'+loss+'人減少')}else if(kind==='sabotage'){source.sabotaged=true}else if(kind==='scheme'&&source.officers.length){let o=choose(source.officers);o.loyalty=Math.max(0,o.loyalty-rnd(10,20));log(o.name+'の忠誠が低下')}return true}
+function refreshPool(){let all=[...s.pool,...s.reserve];for(let i=all.length-1;i>0;i--){let j=rnd(0,i);[all[i],all[j]]=[all[j],all[i]]}s.pool=all.slice(0,12);s.reserve=all.slice(12)}
+const factionColors=['#b83b43','#2b76c0','#269a74','#c38a26','#9a59b9','#c45f35','#168c9d','#b44e84','#648b37','#6867c4','#b67a49','#397ba3','#8d6657','#ad5467','#527e70'];
+const factionColor=d=>factionColors[((Number(d)||0)%factionColors.length+factionColors.length)%factionColors.length];
+const $=id=>document.getElementById(id), rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a, choose=a=>a[rnd(0,a.length-1)];
+let pickedD=null,pickedC=null,s=null;
+function officer(name){
+ const r=Math.random(),strong=r<.1,normal=r<.4;
+ const min=strong?70:normal?60:35,max=strong?115:normal?105:95;
+ const target=strong?rnd(350,380):normal?rnd(320,349):rnd(240,319);
+ // Strengths and weaknesses are deliberately distinct, but the total ability range is unchanged.
+ const weights=[6,3,1.7,.85];for(let i=3;i>0;i--){let j=rnd(0,i);[weights[i],weights[j]]=[weights[j],weights[i]]}
+ let v=[min,min,min,min],left=target-4*min;
+ while(left>0){const available=v.map((x,i)=>x<max?i:-1).filter(i=>i>=0);if(!available.length)break;
+  const total=available.reduce((sum,i)=>sum+weights[i],0);let roll=Math.random()*total,pick=available[available.length-1];
+  for(const i of available){roll-=weights[i];if(roll<0){pick=i;break}}
+  v[pick]++;left--;
+ }
+ return {name,v,loyalty:rnd(80,100),trait:rollTrait()};
+}
+function season(t=s.turn){return '戦国'+(Math.floor((t-1)/4)+1===1?'元':Math.floor((t-1)/4)+1)+'年・'+['春','夏','秋','冬'][(t-1)%4]}
+function ownerOfficers(d){return s.countries.reduce((n,c)=>n+(c.d===d?c.officers.length:0),0)}
+function castellan(c){if(leaderHere(c))return {name:daimyo[c.d],v:base[c.d],daimyo:true};return c.officers.slice().sort((a,b)=>b.v.reduce((x,y)=>x+y,0)-a.v.reduce((x,y)=>x+y,0))[0]||null}
+function leaderHere(c){if(!s||!s.leaderPositions)return true;let ix=s.countries.indexOf(c);return s.leaderPositions[c.d]===ix}
+// Home-country succession: keep a player's daimyo and capital while any territory survives.
+function repairPlayerCapital(){
+ const owned=s.countries.map((c,i)=>c.owner==='player'?i:-1).filter(i=>i>=0);
+ if(!owned.length){s.ended=true;return false}
+ s.leaderPositions??={};
+ if(!owned.includes(s.leaderPositions[s.playerD])){
+  s.leaderPositions[s.playerD]=owned.slice().sort((a,b)=>s.countries[b].troops-s.countries[a].troops)[0];
+  log('🏇 '+daimyo[s.playerD]+'が'+names[s.leaderPositions[s.playerD]]+'へ退避しました');
+ }
+ if(!owned.includes(s.me)){
+  const old=s.me;
+  s.me=s.leaderPositions[s.playerD];
+  log('🏯 本拠地 '+names[old]+' が陥落。'+names[s.me]+'を新たな本拠地とします');
+ }
+ if(!owned.includes(s.selectedSource))s.selectedSource=s.me;
+ if(s.turn<=60)s.ended=false;
+ return true;
+}
+function national(c){let lord=castellan(c),n=lord?lord.v.slice():[0,0,0,0],extras=[0,0,0,0];for(const o of c.officers){if(o===lord)continue;for(let i=0;i<4;i++)extras[i]+=o.v[i]}return n.map((x,i)=>x+Math.ceil(extras[i]/7.5))}
+// No per-turn recruitment ceiling. Political skill over 100 adds 0.1% efficiency per point (max 10%).
+function hirePoliticsBonus(c){return Math.min(10,Math.max(0,(national(c)[3]-100)*0.1))}
+function hireAmount(c,gold){return Math.floor(gold*1.5*(1+hirePoliticsBonus(c)/100)*(hasTrait(c,'募兵')?1.1:1))}
+function hireActual(c,gold){return Math.max(0,Math.min(hireAmount(c,gold),15000-c.troops))}
+function domainTraitText(c){
+ const labels={猛将:'攻撃＋5〜10％',守将:'防御＋5〜10％',能吏:'内政＋11〜15％',募兵:'雇用＋10％',軍師:'策略＋7〜10pt',築城:'防御＋7.5％',人望:'忠誠低下なし・＋1',奇襲:'20％で攻撃＋10〜15％',鬼謀:'策略＋5pt・35％反射',鬼将:'攻撃＋5％・26％討死'};
+ const active=[...new Set(c.officers.map(trait))].filter(x=>x!=='なし');
+ return active.length?active.map(x=>x+'（'+(labels[x]||'特殊')+'）').join('・'):'なし';
+}
+const fmt=x=>String(Math.round(Number(x)));
+let logScope='own';function log(t,scope=logScope,kind=null){s.logs.unshift({text:'【'+season()+'】 '+t,turn:s.turn,scope,kind});s.logs=s.logs.slice(0,1000)}
+function init(){let unique=[...new Set(poolNames)].filter(n=>!daimyo.includes(n));for(let i=unique.length-1;i>0;i--){let j=rnd(0,i);[unique[i],unique[j]]=[unique[j],unique[i]]}let generated=unique.slice(0,230).map(officer);let countries=names.map((name,i)=>({name,d:i,owner:i===pickedC?'player':'npc',gold:2000,troops:5000,officers:[generated.pop(),generated.pop()],sabotaged:false}));countries[pickedC].d=pickedD;let used=new Set([pickedD]);for(let i=0;i<15;i++){if(i===pickedC)continue;let d=daimyo.findIndex((_,j)=>!used.has(j));countries[i].d=d;used.add(d)}s={version:206,npcIntel:{},npcScoutLastTurn:{},turn:1,me:pickedC,playerD:pickedD,countries,leaderPositions:Object.fromEntries(countries.map((c,i)=>[c.d,i])),pool:generated.slice(0,12),reserve:generated.slice(12),orders:[],logs:[],ended:false};log('ゲーム開始！ '+daimyo[pickedD]+'が'+names[pickedC]+'で挙兵。');persist();render()}
+const SAVE_KEY='sengoku_v206_save',OLD_SAVE_KEY='sengoku_v205_save',PREVIOUS_SAVE_KEY='sengoku_v204_save',EARLIER_SAVE_KEY='sengoku_v203_save',LEGACY_SAVE_KEY='sengoku_v19_fixed';
+function persist(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(s))}catch(e){}}
+function moveControl(label,kind,from,idx,pending){let opts=s.countries.map((c,i)=>c.owner==='player'?`<option value="${i}" ${from===i?'selected':''}>${names[i]}</option>`:'').join('');return `<div class="move-line"><span>${label}</span><select aria-label="${label}の移動先" data-move-kind="${kind}" data-move-from="${from}" data-move-index="${idx}" ${pending===s.turn?'disabled':''}>${opts}</select>${pending===s.turn?'<small>今ターン移動済み</small>':''}</div>`}
+function render(){if(!s)return;$('setup').classList.add('hidden');$('game').classList.remove('hidden');let me=s.countries[s.me],n=national(me),owned=s.countries.map((c,i)=>({c,i})).filter(x=>x.c.owner==='player');$('status').textContent=`${season()} ／ ${daimyo[s.playerD]} ／ 本拠地 ${me.name} ／ 第${Math.min(s.turn,60)}ターン / 全60ターン`;$('stats').innerHTML=`<span class="stat">🏯 領地 ${owned.length}/15</span><span class="stat">📜 命令 ${s.orders.length}/${orderLimit()}</span><span class="stat">💰 本拠地 ${me.gold}金</span><span class="stat">🛡️ 本拠地 ${me.troops}兵</span><span class="stat">👥 家臣${ownerOfficers(s.playerD)}人</span><span class="stat">統率${fmt(n[0])}</span><span class="stat">武力${fmt(n[1])}</span><span class="stat">知略${fmt(n[2])}</span><span class="stat">政治${fmt(n[3])}</span>`;const openedTraits=new Set([...document.querySelectorAll('#territories .territory-traits[open]')].map(el=>Number(el.dataset.territoryTraits)));$('territories').innerHTML=owned.map(({c,i})=>`<div class="territory-entry"><button type="button" class="territory-card ${i===s.selectedSource?'active':''}" data-own="${i}"><strong>🏯 ${names[i]} ${i===s.me?'（本拠地）':''}</strong><small>🪖 ${c.troops.toLocaleString()}兵　💰 ${Math.floor(c.gold).toLocaleString()}金　👥 家臣${c.officers.length}人</small><small>統${fmt(national(c)[0])} ／ 武${fmt(national(c)[1])} ／ 知${fmt(national(c)[2])} ／ 政${fmt(national(c)[3])}</small><small>隣接：${adj[i].map(j=>names[j]).join('・')}　｜　タップして命令対象に設定</small></button><details class="territory-traits" data-territory-traits="${i}" ${openedTraits.has(i)?'open':''}><summary>✨ この領地の特性補正（タップで開閉）</summary><p>${domainTraitText(c)}<br><small class="muted">効果はこの領地のみ。同じ特性は重複せず、ランダム補正は実行時に抽選します。</small></p></details></div>`).join('')||'領地なし';$('source').innerHTML=owned.map(({i})=>`<option value="${i}">${names[i]}</option>`).join('');$('source').value=String(s.selectedSource??s.me);if(!$('source').value)$('source').selectedIndex=0;$('orders').innerHTML=s.orders.length?s.orders.map((o,i)=>`<details class="order-compact"><summary title="${orderSummary(o)}">${i+1}. ${orderSummary(o)}</summary><div class="order-expanded">${orderDetail(o)}<button type="button" data-order-edit="${i}">✏️変更</button><button type="button" data-order-delete="${i}">❌削除</button></div></details>`).join(''):'<small class="muted">予約：なし</small>';$('add').disabled=(s.orders.length>=orderLimit()&&!Number.isInteger(s.editOrderIndex))||s.ended;$('next').disabled=s.ended;$('world').innerHTML=worldMap();$('factions').innerHTML=factionList();$('officers').innerHTML='<p class="muted">武将移動は即時反映。命令回数を消費せず、武将1人につき1ターン1回まで移動できます。</p>'+owned.map(({c,i})=>`<div class="territory-detail"><strong>${names[i]}（城主：${castellan(c)?.name||'不在'}・家臣${c.officers.length}人）</strong><br>${s.leaderPositions[s.playerD]===i?moveControl('大名 '+daimyo[s.playerD],'daimyo',i,-1,s.daimyoMovedTurn):''}${c.officers.length?c.officers.map((o,j)=>moveControl(o.name+'【'+trait(o)+'】（忠誠'+o.loyalty+'） 統'+o.v[0]+' 武'+o.v[1]+' 知'+o.v[2]+' 政'+o.v[3],'officer',i,j,o.movedTurn)+`<div class="row reward-row"><small>🎁 ${o.rewardTurn===s.turn?'今ターン褒美済み':'褒美（命令消費なし）'}</small>${[100,300,500].map((gold,k)=>`<button type="button" data-reward="${i}" data-officer="${j}" data-gold="${gold}" ${o.rewardTurn===s.turn||c.gold<gold?'disabled':''}>${gold}金 +${[15,40,60][k]}</button>`).join('')}</div>`).join(''):'家臣なし'}</div>`).join('');renderLogs();renderOptions();persist()}
+function factionList(){
+ const groups=new Map();
+ for(const c of s.countries){if(!groups.has(c.d))groups.set(c.d,0);groups.set(c.d,groups.get(c.d)+1)}
+ return [...groups.entries()].sort((a,b)=>b[1]-a[1]).map(([d,count])=>`<div class="stat" style="border-left:7px solid ${factionColor(d)}"><span style="display:inline-block;width:13px;height:13px;background:${factionColor(d)};border-radius:3px;margin-right:7px"></span>${daimyo[d]}${d===s.playerD?'（自軍）':''}：${count}か国　👥家臣${ownerOfficers(d)}人</div>`).join('');
+}
+// Overlay two differently coloured strokes so adjacency never blends into the shoreline.
+function mapEdge(a,b,focus=null){
+ const [x1,y1]=positions[a],[x2,y2]=positions[b];
+ const state=focus===null?'':(focus===a||focus===b?' active':' dim');
+ return `<g class="map-edge${state}" data-edge-a="${a}" data-edge-b="${b}" pointer-events="none"><line class="edge-halo" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/><line class="edge-core" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/></g>`;
+}
+let worldMapFocus=null;
+function highlightMapConnections(i){
+ worldMapFocus=i;
+ const map=$('world');
+ for(const edge of map.querySelectorAll('.map-edge')){
+  const relevant=Number(edge.dataset.edgeA)===i||Number(edge.dataset.edgeB)===i;
+  edge.classList.toggle('active',relevant);edge.classList.toggle('dim',!relevant);
+ }
+ for(const node of map.querySelectorAll('[data-map]'))node.classList.toggle('focus',Number(node.dataset.map)===i);
+}
+function worldMap(){
+ const reachable=new Set(attackTargets());
+ const edges=links.map(([a,b])=>mapEdge(a,b,worldMapFocus)).join('');
+ const nodes=s.countries.map((c,i)=>{
+  let [x,y]=positions[i],mine=c.owner==='player',can=reachable.has(i),fill=factionColor(c.d);
+  return `<g class="map-node${worldMapFocus===i?' focus':''}" data-map="${i}" role="button" tabindex="0" aria-label="${names[i]}の詳細を表示"><rect x="${x-39}" y="${y-19}" width="78" height="38" rx="9" fill="${fill}" stroke="${mine?'#ffd45c':can?'#f7f7f7':'#a9b8b8'}" stroke-width="${mine?4:can?2.5:1}"/><text x="${x}" y="${y+5}" fill="white" stroke="#182328" stroke-width="2.3" paint-order="stroke" font-size="13" text-anchor="middle" pointer-events="none">${names[i]}</text>${can?`<text x="${x+35}" y="${y-14}" font-size="16" text-anchor="middle" pointer-events="none">⚔️</text>`:''}${activeIntel(i)?`<text x="${x-36}" y="${y-14}" font-size="15" text-anchor="middle" pointer-events="none">🔍</text>`:''}</g>`;
+ }).join('');
+ return `<p class="muted">日本列島をイメージした簡易地図です（正確な地形ではありません）。国をタップすると、隣接する線がオレンジ色で強調されます。</p><div class="row"><span class="stat">🟡 金枠＝自国領</span><span class="stat">⚔️ 攻撃可能</span><span class="stat">🔍 偵察中</span><span class="stat">🎨 同色＝同じ勢力</span></div><svg viewBox="0 0 510 620" style="width:100%;max-width:520px;display:block;margin:auto" aria-label="15か国の勢力・隣接関係図"><path d="M453 22 L483 46 L474 102 L460 143 L450 200 L450 262 L470 314 L446 351 L399 375 L375 418 L323 435 L288 470 L251 490 L229 525 L192 530 L181 484 L150 462 L117 481 L103 529 L84 577 L46 593 L36 556 L70 502 L91 454 L147 433 L191 410 L232 367 L273 341 L302 299 L338 264 L354 213 L383 190 L397 139 L417 104 L425 51 Z" fill="#344d51" stroke="#71908e" stroke-width="3.5" stroke-linejoin="round"/>${edges}${nodes}</svg><div id="mapDetail" class="note">国をタップすると詳細が表示されます。</div>`;
+}
+function setupCountryMap(){
+ const edges=links.map(([a,b])=>mapEdge(a,b,pickedC)).join('');
+ const nodes=names.map((name,i)=>{const [x,y]=positions[i],chosen=i===pickedC;return `<g data-pick-map="${i}" role="button" tabindex="0" aria-label="${name}を開始国に選択"><rect x="${x-39}" y="${y-19}" width="78" height="38" rx="8" fill="${chosen?'#a16d24':'#34575a'}" stroke="${chosen?'#ffe58a':'#a2b7b6'}" stroke-width="${chosen?4:1.5}"/><text x="${x}" y="${y+5}" text-anchor="middle" fill="#fff" stroke="#1c2b2c" stroke-width="2" paint-order="stroke" font-size="12.5" pointer-events="none">${name}</text></g>`}).join('');
+ $('setupMap').innerHTML=`<svg viewBox="0 0 510 610" style="width:100%;max-width:500px;display:block;margin:auto" aria-label="開始国選択の15か国隣接地図"><path d="M453 22 L483 46 L474 102 L460 143 L450 200 L450 262 L470 314 L446 351 L399 375 L375 418 L323 435 L288 470 L251 490 L229 525 L192 530 L181 484 L150 462 L117 481 L103 529 L84 577 L46 593 L36 556 L70 502 L91 454 L147 433 L191 410 L232 367 L273 341 L302 299 L338 264 L354 213 L383 190 L397 139 L417 104 L425 51 Z" fill="#30474a" stroke="#71908e" stroke-width="3.5"/>${edges}${nodes}</svg>`;
+ if(pickedC!==null)$('setupMapDetail').textContent='🏯 '+names[pickedC]+' ／ 隣国：'+adj[pickedC].map(i=>names[i]).join('・');
+}
+document.addEventListener('click',e=>{const node=e.target.closest('[data-pick-map]');if(!node||s)return;pickedC=Number(node.dataset.pickMap);updatePick()});
+document.addEventListener('keydown',e=>{const node=e.target.closest('[data-pick-map]');if(!node||s||!['Enter',' '].includes(e.key))return;e.preventDefault();pickedC=Number(node.dataset.pickMap);updatePick()});
+// Only the reconnaissance window and target faction are stored. Display always reads the current country data.
+function activeIntel(i){
+ const c=s.countries[i],intel=s.intel?.[i];
+ return c&&c.owner!=='player'&&intel&&intel.expires>=s.turn&&intel.faction===c.d?intel:null;
+}
+function showMapDetail(i){highlightMapConnections(i);const c=s.countries[i],mine=c.owner==='player',can=attackTargets().includes(i),intel=activeIntel(i),known=mine||!!intel,info=known?{troops:c.troops,officers:c.officers.map(o=>({name:o.name,v:o.v,loyalty:o.loyalty,trait:trait(o)})),lord:castellan(c)?.name,command:national(c)[0]}:null;const box=$('mapDetail');box.innerHTML=`<strong>🏯 ${names[i]}</strong><br>所有：${mine?'あなた':daimyo[c.d]}<br>兵士：${info?info.troops.toLocaleString()+'人':'🔒 非公開'}<br>隣国：${adj[i].map(j=>names[j]).join('・')}<br>${intel?`🔍 偵察中（残り${intel.expires-s.turn+1}ターン）・情報は常に最新<br>`:''}城主：${info?info.lord||'不在':'🔒 非公開'}<br>領地の統率力：${info?fmt(info.command):'🔒 非公開'}<br>${info?info.officers.map(o=>`<div class="intel-officer">${o.name}【${o.trait}】忠誠${o.loyalty}<br>統${o.v[0]} 武${o.v[1]} 知${o.v[2]} 政${o.v[3]}</div>`).join('')||'家臣なし':'🔒 武将の能力・特性・忠誠は偵察成功で公開'}<br>${can?'⚔️ 攻撃可能':'攻撃不可'}`;if(can){const b=document.createElement('button');b.textContent='⚔️ この国を攻撃対象に設定';b.className='primary';b.onclick=()=>{let from=adj[i].includes(s.selectedSource)&&s.countries[s.selectedSource]?.owner==='player'?s.selectedSource:adj[i].find(j=>s.countries[j].owner==='player');if(from===undefined)return;s.selectedSource=from;$('source').value=String(from);$('action').value='attack';renderOptions();if($('arg'))$('arg').value=String(i);switchGameTab('orders',false);document.querySelector('#action').scrollIntoView({behavior:'smooth',block:'center'});};box.appendChild(document.createElement('br'));box.appendChild(b)}}
+function renderLogs(){
+ const f=s.logFilter||'all',history=!!s.showLogHistory;
+ const current=Math.max(1,s.turn-1),entries=s.logs.map((raw,idx)=>{
+  if(typeof raw==='string'){
+   const m=raw.match(/^【(戦国(?:元|[0-9]+)年・[春夏秋冬])】/);
+   const date=m?.[1]||'過去の記録';let scope=/自国|あなた|内政|褒美|雇用|忠誠|ランダム|本拠地/.test(raw)?'own':'world';
+   return {text:raw,turn:0,scope,date,legacy:true};
+  }
+  return {...raw,date:(raw.text.match(/^【([^】]+)】/)||[])[1]||'記録'};
+ });
+ const war=e=>/戦争|攻撃|占領|制圧|出陣|敗北|大勝|辛勝|優勢|接戦|惜敗|敗北|惨敗|一騎討ち|伏兵|兵站支援|討死|焼き討ち|陥落/.test(e.text);
+ const important=e=>/占領|制圧|滅亡|同盟|討死|死亡|陥落|離反|鬼将/.test(e.text);
+ const matches=e=>(f!=='war'||war(e))&&(f!=='important'||important(e));
+ const style=e=>/討死|陥落|離反/.test(e.text)?'critical':/制圧|占領/.test(e.text)?'gold':/焼き討ち/.test(e.text)?'orange':/登用|褒美/.test(e.text)?'green':war(e)?'red':'';
+ const item=e=>`<div class="event ${style(e)}">${e.text}</div>`;
+ const latest=entries.filter(e=>e.turn===current&&matches(e));
+ const old=entries.filter(e=>e.turn!==current&&matches(e));
+ const own=e=>e.scope==='own'||e.scope==='both';
+ const world=e=>e.scope==='world'||e.scope==='both';
+ const group=arr=>arr.length?arr.map(item).join(''):'<p class="muted">出来事はありません。</p>';
+ let html=`<div class="row">${[['all','すべて'],['own','自国のみ'],['war','戦争のみ'],['important','重要のみ']].map(([v,l])=>`<button type="button" data-log-filter="${v}" class="${f===v?'primary':''}">${l}</button>`).join('')}</div>`;
+ html+=`<h3>🏯 自国の出来事（最新1ターン）</h3>${group(latest.filter(own))}`;
+ if(f!=='own')html+=`<h3>🌏 天下の出来事（最新1ターン）</h3>${group(latest.filter(world))}`;
+ html+=`<button type="button" data-history-toggle="1" class="primary">📜 ${history?'過去の出来事を閉じる':'過去の出来事を見る'}（${old.length}件）</button>`;
+ if(history){let groups=new Map();for(const e of old){if(!groups.has(e.date))groups.set(e.date,[]);groups.get(e.date).push(e)}
+  for(const [date,items] of groups){html+=`<details class="history-group"><summary>📜 ${date}（${items.length}件）</summary><h4>🏯 自国の出来事</h4>${group(items.filter(own))}`;
+   if(f!=='own')html+=`<h4>🌏 天下の出来事</h4>${group(items.filter(world))}`;
+   html+='</details>';
+  }
+ }
+ $('log').innerHTML=html;
+ const completedTurn=Math.max(1,s.turn-1);
+ const incoming=entries.filter(e=>e.kind==='incoming'&&e.turn>=completedTurn-2&&e.turn<=completedTurn);
+ const homeThreats=$('homeThreatsText');
+ if(homeThreats){homeThreats.innerHTML=incoming.length?incoming.slice(0,10).map(item).join(''):'<p class="muted">直近3ターンに敵の攻撃や焼き討ちはありません。</p>';}
+ const ownLatest=entries.filter(e=>own(e));
+ const newestTurn=ownLatest.length?Math.max(...ownLatest.map(e=>e.turn||0)):0;
+ const sameTurn=ownLatest.filter(e=>e.turn===newestTurn);
+ const urgent=sameTurn.filter(e=>e.kind==='incoming'||e.kind==='scheme');
+ const recent=[...urgent,...sameTurn.filter(e=>e.kind!=='incoming'&&e.kind!=='scheme').slice(0,Math.max(0,4-urgent.length))];
+ const summary=$('latestOwnText');
+ if(summary){summary.replaceChildren();for(const e of recent){const line=document.createElement('div');line.className='latest-line';line.textContent=e.text;summary.appendChild(line)}if(!recent.length)summary.textContent='自国の出来事はまだありません。';$('latestTurn').textContent=newestTurn?'（最新の記録）':'';}
+
+}
+document.addEventListener('click',e=>{const del=e.target.closest('[data-order-delete]');if(del&&s){s.orders.splice(Number(del.dataset.orderDelete),1);s.editOrderIndex=null;render();return}const edit=e.target.closest('[data-order-edit]');if(edit&&s){const ix=Number(edit.dataset.orderEdit),o=s.orders[ix];if(!o)return;s.orders.splice(ix,1);s.editOrderIndex=ix;render();$('action').value=isStrategyKind(o.type)?'strategy':o.type;if(isStrategyKind(o.type))s.strategyChoice=o.type;$('source').value=String(o.from??s.me);renderOptions();if($('arg')&&o.id!==null){$('arg').value=String(o.id);if(o.type==='scheme')$('arg').dispatchEvent(new Event('change',{bubbles:false}));}if($('amount')&&o.amount!==null)$('amount').value=String(o.amount);$('action').scrollIntoView({behavior:'smooth',block:'center'});return}});
+document.addEventListener('click',e=>{const own=e.target.closest('[data-own]');if(own&&s){s.selectedSource=Number(own.dataset.own);render();document.querySelector('#action').scrollIntoView({behavior:'smooth',block:'center'});return}const toggle=e.target.closest('[data-history-toggle]');if(toggle&&s){s.showLogHistory=!s.showLogHistory;renderLogs();return}const filter=e.target.closest('[data-log-filter]');if(filter&&s){s.logFilter=filter.dataset.logFilter;renderLogs();persist();return}const reward=e.target.closest('[data-reward]');if(reward&&s){let c=s.countries[Number(reward.dataset.reward)],o=c?.officers[Number(reward.dataset.officer)],gold=Number(reward.dataset.gold);if(c?.owner==='player'&&o&&o.rewardTurn!==s.turn&&c.gold>=gold){c.gold-=gold;o.loyalty=Math.min(100,o.loyalty+({100:15,300:40,500:60})[gold]);o.rewardTurn=s.turn;log('🎁 '+o.name+'に褒美：'+gold+'金、忠誠+'+({100:15,300:40,500:60})[gold]);render()}return}const node=e.target.closest('[data-map]');if(node)showMapDetail(Number(node.dataset.map))});
+document.addEventListener('keydown',e=>{const node=e.target.closest('[data-map]');if(node&&(e.key==='Enter'||e.key===' ')){e.preventDefault();showMapDetail(Number(node.dataset.map))}});
+function orderLimit(){return 3+2*Math.max(0,s.countries.filter(c=>c.owner==='player').length-1)}
+function label(o){return ({domestic:'内政',hire:'兵士雇用',recruit:'登用',attack:'戦争',transfer:'兵士移動',reward:'褒美',scout:'偵察',scheme:'調略',sabotage:'妨害',burn:'焼き討ち'})[o.type]+(o.detail?'（'+o.detail+'）':'')}
+// Internal command types stay unchanged, so existing saved orders continue to work.
+const strategyKinds=['scout','scheme','sabotage','burn'];
+function isStrategyKind(type){return strategyKinds.includes(type)}
+function currentCommandType(){
+ if($('action').value!=='strategy')return $('action').value;
+ return $('strategyType')?.value||s.strategyChoice||'scout';
+}
+function countryLabel(i){const c=s.countries[i];return names[i]+'（'+daimyo[c.d]+'軍）'}
+function targetDistances(from){
+ const dist=Array(names.length).fill(Infinity),queue=[from];dist[from]=0;
+ for(let k=0;k<queue.length;k++)for(const next of adj[queue[k]])if(dist[next]===Infinity){dist[next]=dist[queue[k]]+1;queue.push(next)}
+ return dist;
+}
+function sortedTargets(indices,from){const dist=targetDistances(from);return indices.slice().sort((a,b)=>dist[a]-dist[b]||a-b)}
+function orderSummary(o){
+ const from=o.from??s.me,c=s.countries[from],target=(o.id!=null&&s.countries[o.id])?countryLabel(o.id):'';
+ if(o.type==='attack')return `⚔️ ${names[from]}→${names[o.id]}｜${o.amount}％・予定${Math.floor((c?.troops||0)*o.amount/100).toLocaleString()}兵`;
+ if(o.type==='hire')return `🪖 ${names[from]}｜${o.id}金・予定${hireActual(c,o.id).toLocaleString()}兵`;
+ if(o.type==='recruit')return `👥 ${names[from]}｜登用・${o.detail}`;
+ if(o.type==='domestic')return `💰 ${names[from]}｜内政`;
+ if(o.type==='transfer')return `🪖 ${names[from]}→${names[o.id]}｜移動${o.amount}％`;
+ if(o.type==='scheme')return `🧠 ${names[from]}→${names[o.id]}｜調略・${o.officerName||o.detail}`;
+ if(isStrategyKind(o.type))return `🧠 ${names[from]}→${names[o.id]}｜${({scout:'偵察',sabotage:'妨害',burn:'焼き討ち'})[o.type]}`;
+ return `${names[from]}：${label(o)}`;
+}
+function orderDetail(o){
+ const from=o.from??s.me,c=s.countries[from];let parts=[`命令元：${names[from]}（${daimyo[c.d]}軍）`];
+ if(o.type==='attack')parts.push(`侵攻先：${countryLabel(o.id)}`,`出兵割合：${o.amount}％`,`予定出兵数：${Math.floor(c.troops*o.amount/100).toLocaleString()}兵`);
+ else if(o.type==='hire')parts.push(`雇用金額：${o.id}金`,`予定雇用：${hireActual(c,o.id).toLocaleString()}兵`);
+ else if(o.type==='transfer')parts.push(`移動先：${countryLabel(o.id)}`,`移動割合：${o.amount}％`,`予定移動兵数：${Math.floor(c.troops*o.amount/100).toLocaleString()}兵`);
+ else if(isStrategyKind(o.type))parts.push(`策略：${({scout:'偵察',scheme:'調略',sabotage:'妨害',burn:'焼き討ち'})[o.type]}`,`対象国：${countryLabel(o.id)}`,...(o.type==='scheme'?[`対象武将：${o.officerName||'不明'}`]:[]));
+ else if(o.type==='recruit')parts.push(`対象武将：${o.detail}`);
+ if(o.type==='attack'||o.type==='transfer')parts.push('※予定兵数は実行時の兵力・状況で変動します。');
+ else if(o.type==='hire')parts.push('※予定雇用人数は実行時の兵数・状況で変動します。');
+ return `<p>${parts.join('<br>')}</p>`;
+}
+function attackTargets(){const owned=s.countries.map((c,i)=>c.owner==='player'?i:-1).filter(i=>i>=0);return [...new Set(owned.flatMap(i=>adj[i]))].filter(i=>s.countries[i].owner!=='player')}
+function strategyChance(target,from=s.me){return Math.max(10,Math.min(90,Math.floor(50+(national(s.countries[from])[2]-national(target)[2])/4)+strategyBoost(s.countries[from])))}
+function battleReport(message){$('battleResult').textContent=message;$('battleResult').classList.remove('hidden')}
+function renderOptions(){
+ if(!s)return;
+ const from=Number($('source').value),me=s.countries[from];
+ if(!me)return;
+ const parent=$('action').value,subtype=parent==='strategy'?($('strategyType')?.value||s.strategyChoice||'scout'):null;
+ const type=parent==='strategy'?subtype:parent;
+ s.selectedSource=from;
+ let html=parent==='strategy'?'<label>策略の種類</label><select id="strategyType">'+[
+  ['scout','偵察（4ターン最新の敵情報を確認）'],['scheme','調略（忠誠低下・引き抜き）'],
+  ['sabotage','妨害（次の内政収入を半減）'],['burn','焼き討ち（700金・敵兵5〜15％減）']
+ ].map(([key,title])=>`<option value="${key}" ${key===type?'selected':''}>${title}</option>`).join('')+'</select>':'';
+ if(type==='hire')html+='<p class="muted">政治力 '+national(me)[3]+' ／ 政治補正＋'+Number(hirePoliticsBonus(me).toFixed(1))+'％ ／ 募兵特性 '+(hasTrait(me,'募兵')?'＋10％':'なし')+'<br>ターン雇用上限なし・領地兵数上限15,000兵</p><label>雇用金額（100金刻み）</label><select id="arg">'+Array.from({length:10},(_,i)=>(i+1)*100).map(v=>`<option value="${v}">${v}金 → ${hireAmount(me,v).toLocaleString()}兵</option>`).join('')+'</select><div id="hireEstimate" class="note" aria-live="polite"></div>';
+ if(type==='recruit')html+='<label>登用候補</label><select id="arg">'+s.pool.map((o,i)=>`<option value="${i}">${o.name}【${trait(o)}】${traitCost(o)}金（統${o.v[0]} 武${o.v[1]} 知${o.v[2]} 政${o.v[3]}）</option>`).join('')+'</select>';
+ if(['attack','scout','scheme','sabotage','burn'].includes(type)){
+  let targets=type==='attack'||type==='burn'?adj[from].filter(i=>s.countries[i].owner!=='player'):
+   s.countries.map((c,i)=>c.owner==='npc'?i:-1).filter(i=>i>=0);
+  if(type==='scheme')targets=targets.filter(i=>s.countries[i].officers.length>0);
+  targets=sortedTargets(targets,from);
+  const dist=targetDistances(from);
+  html+='<label>対象国</label><select id="arg">'+targets.map(i=>`<option value="${i}">${countryLabel(i)}${dist[i]===1?'【隣国】':`【${dist[i]}国先】`}</option>`).join('')+'</select>';
+  if(type==='attack')html+='<label>出兵割合（選択した領地から出兵）</label><select id="amount"><option value="25">25%</option><option value="50">50%</option><option value="75" selected>75%</option><option value="100">100%</option></select>';
+  if(type==='scheme')html+='<label>対象家臣</label><select id="amount">'+(targets.length?s.countries[targets[0]].officers.map((o,i)=>`<option value="${i}">${o.name}（忠誠${o.loyalty}）</option>`).join(''):'')+'</select>';
+ }
+ if(type==='transfer')html+='<label>移動先（隣接する自領のみ）</label><select id="arg">'+adj[from].filter(i=>s.countries[i].owner==='player').map(i=>`<option value="${i}">${countryLabel(i)}（${s.countries[i].troops}兵）</option>`).join('')+'</select><label>移動兵数</label><select id="amount"><option value="25">兵力の25%</option><option value="50">兵力の50%</option><option value="75">兵力の75%</option><option value="100">兵力の100%</option></select>';
+ $('options').innerHTML='<div class="note">🪖 現在の兵数：'+me.troops.toLocaleString()+'兵　💰 現在の資金：'+Math.floor(me.gold).toLocaleString()+'金</div><div class="note">🗺️ '+names[from]+'の隣国：'+adj[from].map(i=>countryLabel(i)).join('・')+'</div>'+html;
+ if(parent==='strategy'){$('strategyType').onchange=()=>{s.strategyChoice=$('strategyType').value;renderOptions();};s.strategyChoice=type;}
+ if(type==='scheme'&&$('arg'))$('arg').onchange=()=>{let i=Number($('arg').value);$('amount').innerHTML=s.countries[i].officers.map((o,j)=>`<option value="${j}">${o.name}（忠誠${o.loyalty}）</option>`).join('')};
+ if(type==='hire'&&$('arg')){
+  const updateHire=()=>{const gold=Number($('arg').value),n=hireActual(me,gold);
+   $('hireEstimate').textContent=me.gold<gold?'💰 資金不足（必要'+gold+'金）':n===0?'🪖 兵数上限15,000兵に達しています':'🪖 実際の雇用予定：'+n.toLocaleString()+'兵'+(n<hireAmount(me,gold)?'（領地上限で調整）':'')+' ※命令実行時に再計算';};
+  $('arg').addEventListener('change',updateHire);updateHire();
+ }
+}
+function addOrder(){
+ const type=currentCommandType(),from=Number($('source').value);
+ if(s.countries[from]?.owner!=='player'){alert('自分の領地を選択してください');return}
+ if(s.orders.some(o=>o.type===type&&(o.from??s.me)===from)){alert('同じ領地で同じ命令は1ターンに1回までです');return}
+ if(s.orders.length>=orderLimit()&&!Number.isInteger(s.editOrderIndex))return;
+ const arg=$('arg'),amount=$('amount'),id=arg?Number(arg.value):null;
+ if(arg&&(!arg.options.length||!Number.isFinite(id))){alert('対象がありません');return}
+ let detail='';if(type==='hire')detail=arg.value+'金';if(type==='recruit')detail=s.pool[id].name;
+ if(['attack','scout','scheme','sabotage','burn','transfer'].includes(type))detail=names[id];
+ if(type==='scheme')detail+='・'+s.countries[id].officers[Number(amount.value)].name;
+ if(type==='reward')detail=s.countries[from].officers[id].name;
+ const entry={type,from,id,amount:amount?Number(amount.value):null,detail,officerName:type==='scheme'?s.countries[id].officers[Number(amount.value)].name:null};
+ if(Number.isInteger(s.editOrderIndex)){s.orders.splice(s.editOrderIndex,0,entry);s.editOrderIndex=null}else{s.orders.push(entry)}
+ render();
+}
+function combatTier(ratio){
+ if(ratio>=1.20)return {name:'大勝',a:[5,18],d:null,major:true};
+ if(ratio>=1.10)return {name:'辛勝',a:[15,30],d:null,major:false};
+ if(ratio>=1.05)return {name:'優勢',a:[20,35],d:[25,40],major:false};
+ if(ratio>=.95)return {name:'接戦',a:[10,30],d:[15,30],major:false};
+ if(ratio>=.90)return {name:'惜敗',a:[15,35],d:[10,25],major:false};
+ if(ratio>=.75)return {name:'敗北',a:[20,40],d:[5,18],major:false};
+ return {name:'惨敗',a:[30,55],d:[3,13],major:true};
+}
+function duelRepresentative(c,abilityIndex){
+ if(!c.officers.length)return null; // daimyo are never stored in c.officers
+ const highest=Math.max(...c.officers.map(o=>o.v[abilityIndex]));
+ return choose(c.officers.filter(o=>o.v[abilityIndex]===highest));
+}
+function rollWarEvent(a,d){
+ // One and only one event is drawn before combat; an ineligible event is skipped.
+ const roll=rnd(1,100);
+ const type=roll<=10?'一騎討ち':roll<=20?'伏兵':roll<=30?'兵站支援':null;
+ if(!type||!a.officers.length||!d.officers.length)return null;
+ const index=type==='一騎討ち'?1:type==='伏兵'?2:3;
+ const ao=duelRepresentative(a,index),doo=duelRepresentative(d,index);
+ const as=ao.v[index]+rnd(-10,10),ds=doo.v[index]+rnd(-10,10);
+ const aWon=as===ds?rnd(0,1)===0:as>ds;
+ const rate=type==='一騎討ち'?rnd(5,8):type==='伏兵'?rnd(2,10):rnd(5,15);
+ return {type,attacker:ao,defender:doo,attackerScore:as,defenderScore:ds,
+         aWon,winner:aWon?ao:doo,loser:aWon?doo:ao,rate};
+}
+// v2.0.6: New recruits after occupation are based on the defenders' *starting* strength,
+// not the defender's zero post-capture strength. All rounding is downward.
+function surrenderTroops(defenderStart,winName,freeSpaces){
+ const bracket=winName==='大勝'?[22,47]:winName==='辛勝'?[10,33]:null;
+ if(!bracket)return {rate:0,rolled:0,gained:0};
+ const rate=rnd(bracket[0],bracket[1]);
+ const rolled=Math.min(winName==='大勝'?5000:Infinity,Math.floor(Math.max(0,defenderStart)*rate/100));
+ const gained=Math.min(rolled,Math.max(0,Math.floor(freeSpaces)));
+ return {rate,rolled,gained};
+}
+function battle(from,to,pct,player){
+ if(s.capturedThisTurn?.includes(to)){log('出陣中止：'+names[to]+'はこのターンに占領済み（次ターンから攻撃可能）');return}
+ const a=s.countries[from],d=s.countries[to];
+ if(!a||!d||a.d===d.d){log('出陣中止：攻撃対象はすでに味方領です');return}
+ const requestedSent=Math.max(0,Math.floor(a.troops*pct/100));
+ if(requestedSent<100){if(player)log('出兵失敗：兵力不足');return}
+ const battleScope=a.owner==='player'||d.owner==='player'?'both':'world';
+ const playerDefending=d.owner==='player';
+ const an=national(a),dn=national(d);
+ const initialDefenseTroops=d.troops;
+ const weather=choose([0,-.05,-.10,-.15]);
+ const event=rollWarEvent(a,d);
+ let sent=requestedSent,ambushAttackLoss=0,ambushDefenseLoss=0;
+ // 伏兵 is a genuine pre-battle troop loss; the remaining troops calculate combat strength.
+ if(event?.type==='伏兵'){
+  if(event.aWon){
+   ambushDefenseLoss=Math.floor(d.troops*event.rate/100);
+   d.troops-=ambushDefenseLoss;
+  }else{
+   ambushAttackLoss=Math.floor(sent*event.rate/100);
+   sent-=ambushAttackLoss;
+  }
+ }
+ const attackEvent=event?.type==='一騎討ち'&&event.aWon?1+event.rate/100:1;
+ const defenseEvent=event?.type==='一騎討ち'&&!event.aWon?1+event.rate/100:1;
+ // Different traits stack; the same trait in one province does not stack.
+ const atk=(sent/80+an[1]*.4+an[0]*.2+an[2]*.2)*(1+weather)
+  *(hasTrait(a,'猛将')?1+rnd(5,10)/100:1)
+  *(hasTrait(a,'鬼将')?1.05:1)
+  *(hasTrait(a,'奇襲')&&Math.random()<.20?1+rnd(10,15)/100:1)
+  *attackEvent*rnd(90,110)/100;
+ const def=(d.troops/90+dn[0]*.4+dn[2]*.3+dn[1]*.1)
+  *(hasTrait(d,'守将')?1+rnd(5,10)/100:1)
+  *(hasTrait(d,'築城')?1.075:1)
+  *(d.captureTurn===s.turn-1?1.2:d.captureTurn===s.turn-2?1.1:1)
+  *defenseEvent*rnd(90,110)/100;
+ const ratio=atk/Math.max(1,def),win=ratio>=1.10,tier=combatTier(ratio);
+ const rateA=rnd(tier.a[0],tier.a[1]);
+ const rateD=tier.d?rnd(tier.d[0],tier.d[1]):null;
+ let casualtiesA=Math.min(sent,Math.ceil(sent*rateA/100));
+ let casualtiesD=rateD===null?0:Math.min(d.troops,Math.ceil(d.troops*rateD/100));
+ const originalLossA=casualtiesA,originalLossD=casualtiesD;
+ if(event?.type==='兵站支援'){
+  // A fraction of the *loss count*, not percentage points, is protected.
+  if(event.aWon)casualtiesA=Math.max(0,Math.ceil(casualtiesA*(100-event.rate)/100));
+  else if(!win)casualtiesD=Math.max(0,Math.ceil(casualtiesD*(100-event.rate)/100));
+ }
+ const survivors=Math.max(0,sent-casualtiesA);
+ const totalLossA=ambushAttackLoss+casualtiesA;
+ const totalLossD=ambushDefenseLoss+casualtiesD;
+ const pctLost=(loss,starting)=>starting?Number((loss*100/starting).toFixed(1)):0;
+ const fmtTroops=n=>Number(n).toLocaleString();
+ const w=['晴','曇','雨','豪雨'][[0,-.05,-.10,-.15].indexOf(weather)];
+ const eventWinnerSide=event?(event.aWon?daimyo[a.d]:daimyo[d.d]):'';
+ let eventText='';
+ if(event){
+  const teamA=daimyo[a.d]+'軍・'+a.name,teamD=daimyo[d.d]+'軍・'+d.name;
+  let effect='';
+  if(event.type==='一騎討ち')effect=eventWinnerSide+'軍の戦闘力＋'+event.rate+'％';
+  if(event.type==='伏兵')effect=(event.aWon?teamD:teamA)+'の兵士'+fmtTroops(event.aWon?ambushDefenseLoss:ambushAttackLoss)+'人減少（'+event.rate+'％）';
+  if(event.type==='兵站支援')effect=eventWinnerSide+'軍の戦闘損失を'+event.rate+'％軽減（'+fmtTroops(event.aWon?originalLossA-casualtiesA:originalLossD-casualtiesD)+'兵保護'+(!event.aWon&&win?'、ただし領地陥落時に旧守備軍は解体される':'')+'）';
+  eventText='【'+event.type+'】'+event.attacker.name+'（'+teamA+'） VS '+event.defender.name+'（'+teamD+'） → '+event.winner.name+'（'+eventWinnerSide+'軍）の勝利！ '+effect;
+  log('⚔️ '+eventText,battleScope);
+ }
+ const deathMessages=[];
+ const killOfficer=(victimCountry,victim,cause)=>{
+  const ix=victimCountry.officers.indexOf(victim);
+  if(ix<0)return false; // Never report/remove an already deceased or daimyo officer twice.
+  victimCountry.officers.splice(ix,1);
+  const statement='💀【討死】'+daimyo[victimCountry.d]+'軍の'+victim.name+'が'+a.name+'と'+d.name+'の戦いで討死！'+cause;
+  deathMessages.push(statement);log(statement,battleScope);
+  return true;
+ };
+ const killRandom=(victimCountry,cause)=>victimCountry.officers.length?killOfficer(victimCountry,choose(victimCountry.officers),cause):false;
+ // One-on-one death roll is independent of standard battle and the rare 鬼将 trait.
+ if(event?.type==='一騎討ち'&&Math.random()<.05){
+  killOfficer(event.aWon?d:a,event.loser,'（一騎討ち敗者）');
+ }
+ const defeated=win?d:a,majorDefeat=win?ratio>=1.2:ratio<.75;
+ if(Math.random()<(majorDefeat?.05:.01))killRandom(defeated,majorDefeat?'（大敗）':'');
+ const oniCandidates=[];
+ if(hasTrait(a,'鬼将')&&d.officers.length)oniCandidates.push(d);
+ if(hasTrait(d,'鬼将')&&a.officers.length)oniCandidates.push(a);
+ if(oniCandidates.length&&Math.random()<.26){
+  const chosen=choose(oniCandidates);if(killRandom(chosen,'（👹 鬼将発動）'))log('👹 鬼将の討死効果が発動！',battleScope);
+ }
+ // Dispatch the original army, including any men lost to the enemy's pre-battle ambush.
+ a.troops-=requestedSent;
+ if(!win)d.troops=Math.max(0,d.troops-casualtiesD);
+ const attackerAfter=survivors,defenderAfter=win?0:d.troops;
+ const attLine=`攻撃側：${fmtTroops(requestedSent)}兵 → ${fmtTroops(attackerAfter)}兵（損失${pctLost(totalLossA,requestedSent)}％／${fmtTroops(totalLossA)}兵）`;
+ const defLine=win?`防御側：${fmtTroops(initialDefenseTroops)}兵 → 領地陥落（旧守備軍は解体。降伏兵は別途編入）`
+  :`防御側：${fmtTroops(initialDefenseTroops)}兵 → ${fmtTroops(defenderAfter)}兵（損失${pctLost(initialDefenseTroops-defenderAfter,initialDefenseTroops)}％／${fmtTroops(initialDefenseTroops-defenderAfter)}兵）`;
+ const outcome=win?'領地占領成功':tier.name==='優勢'?'優勢だが占領失敗':'防衛側が領地を守った';
+ const combatLine=`⚔️ ${a.name}（${daimyo[a.d]}軍）→ ${d.name}（${daimyo[d.d]}軍）：${tier.name}（攻防比${(ratio*100).toFixed(1)}％、天候：${w}、${outcome}）`;
+ log(`${combatLine} ／ ${attLine} ／ ${defLine}`,battleScope);
+ let msg=[combatLine,eventText?'⚔️ '+eventText:'',attLine,defLine,...deathMessages].filter(Boolean).join('\n');
+ let oldCount=s.countries.filter(c=>c.owner==='player').length;
+ if(win){
+  s.capturedThisTurn??=[];s.capturedThisTurn.push(to);
+  const occupation=Math.floor(survivors*.7);
+  const surrender=surrenderTroops(initialDefenseTroops,tier.name,15000-occupation);
+  a.troops+=survivors-occupation;
+  d.troops=Math.min(15000,occupation+surrender.gained);
+  // Both the player and CPU receive the same surrender benefit, and it applies
+  // solely to the newly conquered province.  Original garrisons do not survive.
+  const surrenderLine='🏳️ 降伏兵：守備側の戦闘開始時'+fmtTroops(initialDefenseTroops)+'兵 × '+surrender.rate+'％ = '+fmtTroops(surrender.rolled)+'兵'+(surrender.gained<surrender.rolled?'（兵数上限により'+fmtTroops(surrender.gained)+'兵を編入）':'を編入')+'。占領地の兵力は'+fmtTroops(d.troops)+'兵。';
+  log(surrenderLine,battleScope);
+  msg+='\n'+surrenderLine;
+  let old=d.officers,defeatedLeader=d.d,defeatedOwner=d.owner,defeatedPosition=s.leaderPositions[defeatedLeader];
+  d.owner=a.owner;d.d=a.d;d.captureTurn=s.turn;if(s.intel)delete s.intel[to];
+  if(defeatedPosition===to){
+   let other=s.countries.findIndex((z,k)=>k!==to&&z.d===defeatedLeader&&z.owner===defeatedOwner);
+   if(other>=0){s.leaderPositions[defeatedLeader]=other;if(defeatedOwner==='player')log('🏇 '+daimyo[defeatedLeader]+'が'+names[other]+'へ退避しました')}
+   else delete s.leaderPositions[defeatedLeader];
+  }
+  if(defeatedOwner==='player')repairPlayerCapital();
+  d.gold=Math.floor(d.gold/2);d.officers=[];
+  const capturedNames=[];
+  // The second prisoner draw (30%) occurs only if the first draw (50%) succeeded.
+  for(const chance of [50,30]){
+   if(!old.length||rnd(1,100)>chance)break;
+   const o=old.splice(rnd(0,old.length-1),1)[0];
+   o.loyalty=rnd(35,70);o.joinedTurn=s.turn;
+   d.officers.push(o);capturedNames.push(o.name);
+   log('🎉 捕虜獲得！敵将・'+o.name+'（'+daimyo[defeatedLeader]+'軍）を捕らえ、味方に加えた！',battleScope);
+  }
+  const cap=capturedNames.length;
+  // Remaining defenders are not killed or erased: they withdraw to a surviving allied province.
+  // If their faction has been completely eliminated, they become free officers instead.
+  if(old.length){
+   const remaining=s.countries.map((z,k)=>({z,k})).filter(({z,k})=>k!==to&&z.d===defeatedLeader&&z.owner===defeatedOwner);
+   if(remaining.length){
+    // Prefer the surviving lord's position, then the new player capital, then a nearby province.
+    const preferred=remaining.find(({k})=>k===s.leaderPositions[defeatedLeader])
+     ||(defeatedOwner==='player'?remaining.find(({k})=>k===s.me):null)
+     ||remaining.find(({k})=>adj[to].includes(k))
+     ||remaining.slice().sort((l,r)=>r.z.troops-l.z.troops)[0];
+    preferred.z.officers.push(...old);
+    const info='🏇 '+daimyo[defeatedLeader]+'軍の家臣'+old.length+'人（'+old.map(o=>o.name).join('・')+'）が'+d.name+'から'+names[preferred.k]+'へ退避';
+    log(info,defeatedOwner==='player'?'own':'world');
+    if(defeatedOwner==='player')msg+='\n'+info;
+   }else{
+    for(const o of old){delete o.movedTurn;delete o.moveTo;s.reserve.push(o)}
+    log('🍃 '+daimyo[defeatedLeader]+'軍が滅亡。捕らわれなかった家臣'+old.length+'人は在野へ下った',battleScope);
+   }
+  }
+  if(!d.officers.length&&a.officers.length){
+   let eligible=a.officers.filter(o=>o.movedTurn!==s.turn);
+   let chosen=(eligible.length?eligible:a.officers).slice().sort((x,y)=>y.v.reduce((m,n)=>m+n,0)-x.v.reduce((m,n)=>m+n,0))[0];
+   a.officers.splice(a.officers.indexOf(chosen),1);d.officers.push(chosen);chosen.movedTurn=s.turn;
+   log('👑 '+chosen.name+'を'+d.name+'の城主に即時任命',a.owner==='player'?'own':'world');
+  }else if(!d.officers.length){log('🏯 '+d.name+'は城主不在。後から家臣を配置できます',a.owner==='player'?'own':'world')}
+  log(`${a.name}（${daimyo[a.d]}軍）が${d.name}（${daimyo[defeatedLeader]}軍）を制圧！ 捕虜獲得${cap}人${cap?'（'+capturedNames.join('・')+'）':''}`,a.owner==='player'||defeatedLeader===s.playerD?'both':'world');
+  msg+=`\n🏯 ${d.name}を占領！ 生存${fmtTroops(survivors)}兵のうち${fmtTroops(occupation)}兵を占領地へ、${fmtTroops(survivors-occupation)}兵を出陣元へ配置。捕虜獲得${cap}人${cap?'：'+capturedNames.join('、')+'が味方に加入！':'。'}`;
+  if(a.owner==='player')msg+=` 領地：${oldCount} → ${s.countries.filter(c=>c.owner==='player').length}か国。`;
+  if(defeatedOwner==='player'&&!s.countries.some(c=>c.owner==='player')){s.ended=true;log('あなたの全領地が陥落。ゲーム終了です。')}
+ }else{a.troops+=survivors;msg+='\n占領失敗。生存兵は出陣元へ帰還。'}
+ if(playerDefending)log((win?'🚨 領地陥落':'🛡️ 防衛成功')+'：'+names[to]+'へ'+daimyo[a.d]+'軍が'+names[from]+'から'+fmtTroops(requestedSent)+'兵で侵攻。'+(win?'領地を奪われました。':'敵を退けました。')+' '+defLine+'（天候：'+w+'）','own','incoming');
+ if(player||playerDefending)battleReport(msg);
+}
+function execute(o){let from=o.from??s.me,c=s.countries[from],n=national(c);if(c?.owner!=='player'){log('命令不可：領地を失っています');return}if(o.type==='domestic'){let multiplier=rnd(4,8),v=Math.floor(n[3]*multiplier*(hasTrait(c,'能吏')?1+rnd(11,15)/100:1));if(c.sabotaged){v=Math.floor(v/2);c.sabotaged=false;log('妨害を受け、内政収入が半減！')}c.gold+=v;log('内政：政治力'+n[3]+' × '+multiplier+'倍 = '+v+'金獲得')}if(o.type==='hire'){if(c.gold<o.id)log('雇用失敗：資金不足');else{let qty=hireActual(c,o.id);if(!qty)log('雇用不可：領地の総兵力上限15,000兵です');else{c.gold-=o.id;c.troops+=qty;log('🪖 '+o.id+'金で兵士'+qty.toLocaleString()+'人雇用（政治補正＋'+Number(hirePoliticsBonus(c).toFixed(1))+'％'+(hasTrait(c,'募兵')?'、募兵＋10％':'')+'）')}}}if(o.type==='recruit'){let ix=s.pool.findIndex(x=>x.name===o.detail);if(false)log('登用不可：家臣上限なし');else if(ix<0)log('登用失敗：候補がいない');else if(c.gold<traitCost(s.pool[ix]))log('登用不可：資金不足');else{c.gold-=traitCost(s.pool[ix]);let chance=Math.min(90,Math.max(50,45+Math.floor((n[0]+n[2]+n[3])/15)));if(rnd(1,100)<=chance){let a=s.pool.splice(ix,1)[0];a.loyalty=rnd(80,100);a.joinedTurn=s.turn;c.officers.push(a);if(s.reserve.length)s.pool.push(s.reserve.shift());log('登用成功：'+a.name+'（'+chance+'%）')}else log('登用失敗：'+o.detail+'（'+chance+'%）')}}if(o.type==='attack'){if(c.attackedTurn===s.turn){log('出陣不可：この領地は今ターン出陣済み');return}if(!adj[from].includes(o.id)||s.countries[o.id].owner==='player')log('戦争不可：隣接する敵国ではありません');else{c.attackedTurn=s.turn;battle(from,o.id,o.amount,true)}}if(o.type==='transfer'){let t=s.countries[o.id];if(!adj[from].includes(o.id)||t.owner!=='player')log('移動不可：隣接する自領ではありません');else{let v=Math.floor(c.troops*o.amount/100);if(v<=0)log('移動不可：兵力不足');else{let moved=Math.max(0,Math.min(v,15000-t.troops));if(!moved)log('移動不可：移動先は15000兵の上限です');else{c.troops-=moved;t.troops+=moved;log(c.name+'から'+t.name+'へ'+moved+'兵を移動')}}}}if(o.type==='burn'){let t=s.countries[o.id];if(!t||!adj[from].includes(o.id)||t.d===c.d){log('焼き討ち不可：隣接する敵国ではありません')}else if(c.gold<700){log('焼き討ち不可：700金が必要')}else if(s.burnedThisTurn?.includes(o.id)){log('焼き討ち不可：対象領地は今ターン成功済み')}else{c.gold-=700;let chance=strategyChance(t,from);if(rnd(1,100)>chance)log('焼き討ち失敗（成功率'+chance+'%）');else if(!reflectStrategy(t,from,'burn')){let loss=Math.max(0,Math.min(t.troops-500,Math.floor(t.troops*rnd(5,15)/100)));t.troops-=loss;s.burnedThisTurn.push(o.id);log('🔥 焼き討ち成功：'+t.name+'の兵士'+loss+'人減少')}}}if(['scout','scheme','sabotage'].includes(o.type)){let t=s.countries[o.id];if(!t||t.owner!=='npc'){log('策略不可：対象国がありません');return}let chance=strategyChance(t,from);if(rnd(1,100)>chance){log('策略失敗：'+o.detail+'（成功率'+chance+'%）');return}if(o.type!=='scout'&&reflectStrategy(t,from,o.type))return;if(o.type==='scout'){s.intel??={};s.intel[o.id]={faction:t.d,expires:s.turn+4};log('🔍 偵察成功：'+t.name+'の兵力と武将情報を4ターン公開（'+chance+'%）')}if(o.type==='sabotage'){t.sabotaged=true;log('妨害成功：'+t.name+'の次の内政収入を半減（'+chance+'%）')}if(o.type==='scheme'){
+ let officer=t.officers.find(x=>x.name===o.officerName);
+ if(!officer){log('調略不可：対象家臣がいません');return}
+ const before=officer.loyalty;
+ const pullRate=before>=80?0:before>=70?10:before>=60?15:before>=51?20:100;
+ if(rnd(1,100)<=pullRate){
+  t.officers=t.officers.filter(x=>x!==officer);
+  officer.loyalty=rnd(35,70);officer.joinedTurn=s.turn;c.officers.push(officer);
+  log('🎉 調略大成功！ '+officer.name+'（'+daimyo[t.d]+'軍／'+t.name+'、忠誠'+before+'）が'+daimyo[c.d]+'軍へ加入！ 引き抜き率'+pullRate+'％、調略成功率'+chance+'％','own','scheme');
+ }else{
+  const drop=rnd(10,20);officer.loyalty=Math.max(0,before-drop);
+  log('🧠 調略成功：'+officer.name+'（'+daimyo[t.d]+'軍／'+t.name+'） 忠誠度 '+before+' → '+officer.loyalty+'（−'+(before-officer.loyalty)+'）／引き抜きは不成立（引き抜き率'+pullRate+'％、調略成功率'+chance+'％）','own','scheme');
+ }
+}}}
+// CPU intelligence is separated by daimyo, so one CPU never sees another faction's scouting.
+function npcIntelFor(leader,target){
+ const intel=s.npcIntel?.[leader]?.[target],c=s.countries[target];
+ return intel&&c&&intel.faction===c.d&&intel.expires>=s.turn?intel:null;
+}
+function npcScout(from,target){
+ const scout=s.countries[from],defender=s.countries[target];
+ if(!scout||!defender||scout.d===defender.d||!adj[from].includes(target))return;
+ s.npcScoutLastTurn??={};
+ if(s.turn-(s.npcScoutLastTurn[scout.d]??-999)<3||npcIntelFor(scout.d,target))return;
+ s.npcScoutLastTurn[scout.d]=s.turn;
+ // Actual knowledge is granted only after a successful scouting roll.
+ const chance=strategyChance(defender,from);
+ if(rnd(1,100)<=chance){
+  s.npcIntel??={};s.npcIntel[scout.d]??={};
+  s.npcIntel[scout.d][target]={faction:defender.d,expires:s.turn+4};
+  log('🔍 '+daimyo[scout.d]+'軍が'+defender.name+'への偵察に成功（4ターン有効）','world');
+  if(defender.owner==='player')log('🔍 '+daimyo[scout.d]+'軍が'+defender.name+'を偵察した！','own','scout');
+ }
+}
+function planNpcAttacks(){
+ const plans={};
+ for(let i=0;i<s.countries.length;i++){
+  const x=s.countries[i];if(x.owner!=='npc'||x.troops<1600)continue;
+  const leader=x.d,personality=leader%4,pct=[80,40,60,70][personality];
+  const targets=adj[i].filter(j=>s.countries[j].d!==leader);
+  const good=targets.map(j=>{
+   const enemy=s.countries[j],hasIntel=!!npcIntelFor(leader,j);
+   // Before scouting, estimate BOTH enemy troop strength and defense aptitude.
+   // This is deliberately an approximation and never reads hidden national(enemy).
+   const estimatedTroops=hasIntel?enemy.troops:rnd(1500,8500);
+   const estimatedDefense=hasIntel?national(enemy)[0]:rnd(95,180);
+   const power=(x.troops*pct/100)/80+national(x)[1]*.5+national(x)[2]*.3;
+   const def=estimatedTroops/100+estimatedDefense*.8;
+   return {j,ratio:power/Math.max(1,def),hasIntel};
+  }).sort((a,b)=>b.ratio-a.ratio);
+  const best=good[0];if(best&&(best.ratio>=1.3||(best.ratio>=1.1&&rnd(1,100)<(personality===0?80:personality===3?65:35))))plans[i]={target:best.j,pct,leader};
+ }
+ return plans;
+}
+// v2.0.5: Keep ~70% of a CPU faction's officers on the front line.
+// All provinces are front-line when there is no hinterland (the percentage cannot apply).
+function npcRepositionOfficers(leader){
+ const lands=s.countries.map((c,i)=>c.owner==='npc'&&c.d===leader?i:-1).filter(i=>i>=0);
+ if(lands.length<2)return;
+ const front=lands.filter(i=>adj[i].some(j=>s.countries[j].d!==leader));
+ const rear=lands.filter(i=>!front.includes(i));
+ if(!front.length)return;
+ const ownedOfficers=lands.flatMap(i=>s.countries[i].officers.map(o=>({o,from:i})));
+ const count=ownedOfficers.length;
+ if(!count)return;
+ // Allocate 70% to the border when safe rear lands exist. Round to whole officers.
+ const frontTotal=rear.length?Math.min(count,Math.max(1,Math.round(count*.70))):count;
+ const targets={};for(const i of lands)targets[i]=0;
+ const threatWeight=i=>{
+  const neighboringEnemies=adj[i].filter(j=>s.countries[j].d!==leader).length;
+  const offensivePlan=s.npcAttackPlans?.[i]?.leader===leader?2:0;
+  return 1+2*neighboringEnemies+offensivePlan;
+ };
+ // First guarantee coverage of the border when officers are available.
+ const urgent=front.slice().sort((a,b)=>threatWeight(b)-threatWeight(a)||a-b);
+ let toAssign=frontTotal;
+ if(toAssign>=front.length){for(const i of front){targets[i]++;toAssign--}}
+ // Weighted deficit assignment avoids leaving one province with almost everyone.
+ while(toAssign>0){
+  let best=urgent[0],bestRatio=-Infinity;
+  for(const i of urgent){
+   const ratio=threatWeight(i)/(targets[i]+1);
+   if(ratio>bestRatio){bestRatio=ratio;best=i}
+  }
+  targets[best]++;toAssign--;
+ }
+ // Keep the remaining 30% distributed among rear provinces.
+ let rearCount=count-frontTotal;
+ const rearOrder=rear.slice().sort((a,b)=>s.countries[b].gold-s.countries[a].gold||a-b);
+ for(let k=0;k<rearCount&&rearOrder.length;k++)targets[rearOrder[k%rearOrder.length]]++;
+ const combatScore=o=>o.v[0]*1.2+o.v[1]*1.3+o.v[2]*1.1+o.v[3]*.15+
+   ({'猛将':35,'守将':35,'築城':25,'奇襲':30,'鬼将':30,'軍師':18,'鬼謀':18}[trait(o)]||0);
+ const politicsScore=o=>o.v[3]*1.5+o.v[2]*.3+({'能吏':35,'募兵':20,'人望':15}[trait(o)]||0);
+ const ranked=ownedOfficers.slice().sort((x,y)=>combatScore(y.o)-combatScore(x.o)||x.o.name.localeCompare(y.o.name));
+ const assigned=Object.fromEntries(lands.map(i=>[i,[]]));
+ // Spread valuable war generals across active front lines rather than stacking them.
+ let frontOfficers=ranked.slice(0,frontTotal),rearOfficers=ranked.slice(frontTotal);
+ const slots=Object.fromEntries(urgent.map(i=>[i,targets[i]]));
+ for(const entry of frontOfficers){
+  const options=urgent.filter(i=>slots[i]>0);
+  const best=options.sort((a,b)=>threatWeight(b)/slots[b]-threatWeight(a)/slots[a]||a-b)[0];
+  assigned[best].push(entry.o);slots[best]--;
+ }
+ rearOfficers.sort((x,y)=>politicsScore(y.o)-politicsScore(x.o)||x.o.name.localeCompare(y.o.name));
+ let rearSlots=Object.fromEntries(rear.map(i=>[i,targets[i]]));
+ for(const entry of rearOfficers){
+  const best=rearOrder.find(i=>rearSlots[i]>0);
+  if(best===undefined)break;
+  assigned[best].push(entry.o);rearSlots[best]--;
+ }
+ const moved=ownedOfficers.filter(({o,from})=>!assigned[from].includes(o)).length;
+ if(moved){
+  for(const i of lands)s.countries[i].officers=assigned[i];
+  // An aggregate message is easier to read than logging every single move.
+  log('🏇 '+daimyo[leader]+'軍が家臣を再配置：前線'+frontTotal+'人／全'+count+'人（'+front.map(i=>names[i]).join('・')+'）','world');
+ }
+}
+function npcTurn(){logScope='world';
+ const factions=[...new Set(s.countries.filter(c=>c.owner==='npc').map(c=>c.d))];
+ for(const leader of factions){
+  const territory=()=>s.countries.map((c,i)=>c.owner==='npc'&&c.d===leader?i:-1).filter(i=>i>=0);
+  // Army commanders and frontline traits are available before this turn's actions.
+  npcRepositionOfficers(leader);
+  let lands=territory(),budget=3+2*(lands.length-1),acted=new Set();
+  let personality=leader%4; // 0好戦、1内政、2策略、3野心
+  const ownGold=()=>territory().reduce((t,i)=>t+s.countries[i].gold,0);
+  for(let step=0;step<budget;step++){
+   lands=territory();if(!lands.length)break;
+   let front=lands.filter(i=>adj[i].some(j=>s.countries[j].d!==leader));
+   let pick=front.length?choose(front):choose(lands),c=s.countries[pick];
+   let candidates=[];
+   const can=(i,kind)=>!acted.has(i+':'+kind);
+   // Defensive recruitment and economy are considered first; every action uses the same costs as player.
+   for(const i of lands){let x=s.countries[i];
+    if(can(i,'domestic')&&(x.gold<650||personality===1))candidates.push({i,kind:'domestic',weight:x.gold<300?12:5});
+    if(can(i,'hire')&&x.gold>=100&&x.troops<15000){let danger=adj[i].some(j=>s.countries[j].d!==leader),priority=danger?(x.troops<3000?18:x.troops<8000?13:x.troops<12000?10:6):(x.troops<3000?5:0);if(priority)candidates.push({i,kind:'hire',weight:priority});}
+    // Scouting competes for the same limited CPU command slots as other actions.
+    if(can(i,'scout')&&s.turn-(s.npcScoutLastTurn?.[leader]??-999)>=3&&adj[i].some(j=>s.countries[j].d!==leader&&!npcIntelFor(leader,j)))
+     candidates.push({i,kind:'scout',weight:personality===2?7:5});
+    if(can(i,'burn')&&x.gold>=1500&&adj[i].some(j=>s.countries[j].d!==leader&&s.countries[j].troops>=5000&&!s.burnedThisTurn?.includes(j)))candidates.push({i,kind:'burn',weight:personality===2?7:4});
+    if(can(i,'recruit')&&x.gold>=200&&ownerOfficers(leader)<30&&s.pool.length)candidates.push({i,kind:'recruit',weight:x.officers.length<=3?10:2});
+    if(can(i,'reward')&&x.gold>=100&&x.officers.some(o=>o.loyalty<85&&o.rewardTurn!==s.turn))candidates.push({i,kind:'reward',weight:9});
+    if(can(i,'transfer')&&x.troops>3500&&adj[i].some(j=>lands.includes(j)&&adj[j].some(k=>s.countries[k].d!==leader)&&s.countries[j].troops<x.troops))candidates.push({i,kind:'transfer',weight:11});
+    if(can(i,'attack')&&s.npcAttackPlans?.[i]?.leader===leader&&x.troops>=1600)candidates.push({i,kind:'attack',weight:personality===0?12:personality===3?10:6});
+    if(can(i,'domestic')&&x.gold<3000)candidates.push({i,kind:'domestic',weight:3});
+   }
+   if(!candidates.length)break;
+   candidates.sort((a,b)=>b.weight-a.weight);let top=candidates.slice(0,Math.min(5,candidates.length));let action=choose(top),i=action.i,x=s.countries[i],kind=action.kind;
+   acted.add(i+':'+kind);
+   if(kind==='domestic'){let income=Math.floor(national(x)[3]*rnd(4,8)*(hasTrait(x,'能吏')?1+rnd(11,15)/100:1));if(x.sabotaged){income=Math.floor(income/2);x.sabotaged=false}x.gold+=income}
+   if(kind==='hire'){
+    const remaining=15000-x.troops;
+    // Spend a sensible multiple of 100 gold without wasting a large amount at the cap.
+    let amt=Array.from({length:10},(_,k)=>(10-k)*100).find(v=>v<=x.gold&&hireAmount(x,v)<=remaining);
+    if(!amt&&remaining>0&&x.gold>=100)amt=100;
+    if(amt){const gain=hireActual(x,amt);if(gain){x.gold-=amt;x.troops+=gain}}
+   }
+   if(kind==='scout'){
+    const targets=adj[i].filter(j=>s.countries[j].d!==leader&&!npcIntelFor(leader,j));
+    if(targets.length){
+     // Scout planned attack targets first, then other directly adjacent enemy provinces.
+     const preferred=targets.filter(j=>s.npcAttackPlans?.[i]?.target===j);
+     npcScout(i,choose(preferred.length?preferred:targets));
+    }
+   }
+   if(kind==='burn'){
+    let targets=adj[i].filter(j=>s.countries[j].d!==leader&&!s.burnedThisTurn?.includes(j));
+    if(targets.length&&x.gold>=1500){
+     targets=targets.filter(j=>s.countries[j].troops>=5000);
+     if(targets.length){
+      let to=targets.sort((a,b)=>s.countries[b].troops-s.countries[a].troops)[0],enemy=s.countries[to],playerTarget=enemy.owner==='player';
+      x.gold-=700;
+      let chance=strategyChance(enemy,i),success=rnd(1,100)<=chance,reflected=success&&reflectStrategy(enemy,i,'burn');
+      if(success&&!reflected){
+       let rate=rnd(5,15),loss=Math.max(0,Math.min(enemy.troops-500,Math.floor(enemy.troops*rate/100)));
+       enemy.troops-=loss;s.burnedThisTurn.push(to);
+       log('🔥 NPC焼き討ち：'+names[i]+'から'+names[to]+'へ。'+loss+'兵減少','world');
+       if(playerTarget&&loss>0)log('🔥 '+names[to]+'：'+names[i]+'から焼き討ちを受けた！被害：'+loss.toLocaleString()+'兵','own','incoming');
+      }
+     }
+    }
+   }
+   if(kind==='recruit'){let affordable=s.pool.filter(o=>traitCost(o)<=x.gold);if(!affordable.length)continue;let candidate=choose(affordable);x.gold-=traitCost(candidate);let n=national(x),chance=Math.max(50,Math.min(90,45+Math.floor((n[0]+n[2]+n[3])/15)));if(rnd(1,100)<=chance){let ix=s.pool.indexOf(candidate),o=s.pool.splice(ix,1)[0];o.loyalty=rnd(80,100);o.joinedTurn=s.turn;x.officers.push(o);if(s.reserve.length)s.pool.push(s.reserve.shift());log('🟢 '+daimyo[leader]+'が'+o.name+'を登用！','world')}}
+   if(kind==='reward'){let o=x.officers.filter(o=>o.loyalty<85&&o.rewardTurn!==s.turn).sort((a,b)=>a.loyalty-b.loyalty)[0];if(o){let amt=o.loyalty<45&&x.gold>=500?500:x.gold>=300?300:100;x.gold-=amt;o.loyalty=Math.min(100,o.loyalty+({100:15,300:40,500:60})[amt]);o.rewardTurn=s.turn}}
+   if(kind==='transfer'){let to=adj[i].filter(j=>lands.includes(j)&&adj[j].some(k=>s.countries[k].d!==leader)).sort((a,b)=>s.countries[a].troops-s.countries[b].troops)[0];if(to!==undefined&&s.countries[to].troops<x.troops){let qty=Math.max(0,Math.min(Math.floor(x.troops*.35),15000-s.countries[to].troops));x.troops-=qty;s.countries[to].troops+=qty}}
+   if(kind==='attack'){
+    const plan=s.npcAttackPlans?.[i];
+    if(plan&&plan.leader===leader){
+     if(s.capturedThisTurn?.includes(plan.target))log('NPC出陣中止：'+names[plan.target]+'は同ターン占領済み');
+     else if(adj[i].includes(plan.target)&&s.countries[plan.target].d!==leader)battle(i,plan.target,plan.pct,false);
+     else log('NPC出陣中止：予定していた攻撃先の支配勢力が変化');
+    }
+   }
+  }
+  // Refresh garrisons after territorial conquests and late recruitment.
+  npcRepositionOfficers(leader);
+ }
+}
+function loyalty(){for(const c of s.countries){for(let i=c.officers.length-1;i>=0;i--){let o=c.officers[i];o.loyalty=Math.max(0,Math.min(100,o.loyalty+(hasTrait(c,'人望')?1:-rnd(0,5))));if(o.joinedTurn===s.turn)continue;let p=o.loyalty===0?100:o.loyalty<=20?50:o.loyalty<=40?30:o.loyalty<=60?20:o.loyalty<=80?8:0;if(rnd(1,100)<=p){c.officers.splice(i,1);s.pool.push(o);if(c.owner==='player')log(o.name+'が離反した！')}}}while(s.pool.length>12)s.reserve.push(s.pool.pop())}
+function randomEvent(){let c=s.countries[s.me],k=rnd(0,3);if(k===0){let x=rnd(100,400);c.gold+=x;log('ランダムイベント：豊作！ '+x+'金獲得')}if(k===1){let x=Math.min(c.gold,rnd(100,300));c.gold-=x;log('ランダムイベント：災害！ '+x+'金損失')}if(k===2){let x=rnd(100,500);let gain=Math.max(0,Math.min(x,15000-c.troops));c.troops+=gain;log('ランダムイベント：志願兵'+gain+'人')}if(k===3){let x=Math.min(c.troops,rnd(100,300));c.troops-=x;log('ランダムイベント：疫病で'+x+'人減少')}}
+function applyMoves(){let pending=[];for(let i=0;i<s.countries.length;i++){let c=s.countries[i];for(const o of c.officers){if(o.moveTo!==undefined){pending.push({o,from:i,to:Number(o.moveTo)});delete o.moveTo}}}for(const m of pending){let from=s.countries[m.from],to=s.countries[m.to];if(from.owner==='player'&&to?.owner==='player'){let ix=from.officers.indexOf(m.o);if(ix>=0){from.officers.splice(ix,1);to.officers.push(m.o);log(m.o.name+'が'+names[m.from]+'から'+names[m.to]+'へ移動')}}else log(m.o.name+'の移動失敗：移動先を失いました')}if(s.daimyoMove!==undefined){let to=Number(s.daimyoMove);if(s.countries[to]?.owner==='player'){s.leaderPositions[s.playerD]=to;log(daimyo[s.playerD]+'が'+names[to]+'へ移動')}else log('大名の移動失敗：移動先を失いました');delete s.daimyoMove}}
+function nextTurn(){if(s.ended)return;let count=s.orders.length;s.capturedThisTurn=[];s.burnedThisTurn=[];s.npcAttackPlans=planNpcAttacks();for(const o of s.orders)execute(o);npcTurn();logScope='own';delete s.npcAttackPlans;delete s.capturedThisTurn;delete s.burnedThisTurn;if(count<orderLimit())randomEvent();loyalty();refreshPool();s.orders=[];s.turn++;if(s.turn>60){s.ended=true;log('30日終了！ あなたの支配国：'+s.countries.filter(c=>c.owner==='player').length+'か国')}render()}
+function setup(){
+ let saved=null,imported=false;
+ try{
+  const current=localStorage.getItem(SAVE_KEY);
+  if(current)saved=JSON.parse(current);
+  else{const older=localStorage.getItem(OLD_SAVE_KEY)||localStorage.getItem(PREVIOUS_SAVE_KEY)||localStorage.getItem(EARLIER_SAVE_KEY)||localStorage.getItem(LEGACY_SAVE_KEY);if(older){saved=JSON.parse(older);imported=true}}
+ }catch(e){saved=null}
+ if(saved&&saved.countries&&confirm(imported?'旧版のセーブをコピーしてv2.0.6で再開しますか？（旧版のセーブは残ります）':'v2.0.6のセーブから再開しますか？')){s=saved;s.playerD??=s.countries[s.me].d;delete s.daimyoMove;for(const c of s.countries)for(const o of c.officers)delete o.moveTo;for(const c of s.countries)c.troops=Math.min(15000,Math.max(0,c.troops||0));s.version=206;s.npcIntel??={};s.npcScoutLastTurn??={};s.intel??={};for(const intel of Object.values(s.intel)){if(!intel||typeof intel!=='object')continue;delete intel.troops;delete intel.lord;delete intel.officers;delete intel.date;}delete s.scouted;s.orders=s.orders.filter(o=>o.type!=='reward');if(s.countries.some(c=>c.owner==='player'))repairPlayerCapital();render();return}$('daimyoList').innerHTML=daimyo.map((n,i)=>`<button data-d="${i}">${n}<br><small>統${base[i][0]} 武${base[i][1]} 知${base[i][2]} 政${base[i][3]}</small></button>`).join('');$('countryList').innerHTML=names.map((n,i)=>`<button data-c="${i}">${n}</button>`).join('');document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{pickedD=+b.dataset.d;updatePick()});document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{pickedC=+b.dataset.c;updatePick()});setupCountryMap()}
+function updatePick(){document.querySelectorAll('[data-d]').forEach(b=>b.classList.toggle('selected',+b.dataset.d===pickedD));document.querySelectorAll('[data-c]').forEach(b=>b.classList.toggle('selected',+b.dataset.c===pickedC));$('picked').textContent=(pickedD===null?'大名未選択':daimyo[pickedD])+' ／ '+(pickedC===null?'国未選択':names[pickedC]);$('start').disabled=pickedD===null||pickedC===null;setupCountryMap()}
+document.addEventListener('change',e=>{let el=e.target;if(!el.matches('[data-move-kind]')||!s)return;let from=Number(el.dataset.moveFrom),to=Number(el.value);if(s.countries[to]?.owner!=='player'||s.countries[from]?.owner!=='player'||to===from){render();return}if(el.dataset.moveKind==='daimyo'){if(s.daimyoMovedTurn===s.turn){alert('大名は今ターン移動済みです');render();return}s.leaderPositions[s.playerD]=to;s.daimyoMovedTurn=s.turn;log(daimyo[s.playerD]+'が'+names[to]+'へ即時移動')}else{let src=s.countries[from],o=src.officers[Number(el.dataset.moveIndex)];if(!o||o.movedTurn===s.turn){alert('この武将は今ターン移動済みです');render();return}src.officers.splice(src.officers.indexOf(o),1);s.countries[to].officers.push(o);o.movedTurn=s.turn;delete o.moveTo;log(o.name+'が'+names[to]+'へ即時移動')}persist();render()});$('start').onclick=init;$('action').onchange=renderOptions;$('source').onchange=renderOptions;$('add').onclick=addOrder;$('clear').onclick=()=>{if(confirm('予約した命令をすべて削除しますか？')){s.orders=[];s.editOrderIndex=null;render()}};$('next').onclick=()=>{if(Number.isInteger(s.editOrderIndex)){alert('命令の編集中です。「命令を追加」で確定してください');return}nextTurn()};$('save').onclick=()=>{persist();alert('このブラウザに保存しました')};$('reset').onclick=()=>{if(confirm('現在のセーブを削除して最初から始めますか？')){localStorage.removeItem(SAVE_KEY);location.reload()}};setup();
+
+// Tab navigation keeps the existing game state and map intact.
+const tabDefs=[['home','🏯 自国'],['orders','⚔️ 命令'],['map','🗺️ 地図'],['officers','👥 武将'],['info','📜 情報']];
+let activeGameTab='home';
+function switchGameTab(tab,scroll=true){
+ if(!tabDefs.some(x=>x[0]===tab))return;
+ activeGameTab=tab;
+ document.querySelectorAll('.tab-view').forEach(v=>v.hidden=v.dataset.tabView!==tab);
+ document.querySelectorAll('#gameTabs button').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.tab===tab)));
+ if(scroll){window.scrollTo({top:0,behavior:'instant'});}
+}
+function setupGameTabs(){
+ const game=$('game');const panels=[...game.children].filter(x=>x.classList.contains('panel'));
+ if(panels.length<8)return;
+ const nav=document.createElement('nav');nav.id='gameTabs';nav.setAttribute('aria-label','ゲーム画面切り替え');
+ for(const [key,title] of tabDefs){const b=document.createElement('button');b.type='button';b.dataset.tab=key;b.textContent=title;b.onclick=()=>switchGameTab(key);nav.appendChild(b)}
+ panels[0].after($('latestOwn'));$('latestOwn').after(nav);
+ const views={};for(const [key] of tabDefs){const v=document.createElement('section');v.className='tab-view';v.dataset.tabView=key;v.hidden=true;game.appendChild(v);views[key]=v}
+ // Original panel order: status, orders, events, officers, territories, map, factions, battle.
+ views.orders.append(panels[1]);views.info.append(panels[2]);views.officers.append(panels[3]);views.home.append(panels[4]);
+ const homeThreatPanel=document.createElement('div');
+ homeThreatPanel.className='panel';
+ homeThreatPanel.innerHTML='<h2>🚨 自国への攻撃・被害</h2><p class="muted">直近3ターンの侵攻と焼き討ちを確認できます。過去の記録は「📜 情報」に残ります。</p><div id="homeThreatsText" aria-live="polite"></div>';
+ views.home.append(homeThreatPanel);
+ views.map.append(panels[5]);views.info.append(panels[6]);views.info.append(panels[7]);
+ switchGameTab('home',false);
+ // Existing map/territory actions should bring the order form into view.
+ document.addEventListener('click',e=>{if(e.target.closest('[data-own]'))switchGameTab('orders',false)},true);
+ const mapPanel=views.map;
+ mapPanel.addEventListener('click',e=>{if(e.target.closest('#mapDetail button'))switchGameTab('orders',false)},true);
+}
+setupGameTabs();
+if(s)renderLogs();
+
+</script></body></html>
