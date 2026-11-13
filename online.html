@@ -98,6 +98,28 @@ async function logout() {
 db.auth.getSession().then(({data})=>{
   if(data.session) showGame();
 });
+async function createRoom() {
+  const { data, error } = await db.rpc("create_game_room");
+
+  if (error) {
+    alert("部屋作成エラー：" + error.message);
+    return;
+  }
+
+  const room = Array.isArray(data) ? data[0] : data;
+
+  if (!room) {
+    alert("部屋の情報を取得できませんでした");
+    return;
+  }
+
+  alert("🏯 部屋を作成しました！\n招待コード：" + room.new_code);
+}
+
+const roomButton = document.createElement("button");
+roomButton.textContent = "🏯 部屋を作る";
+roomButton.onclick = createRoom;
+document.getElementById("game").appendChild(roomButton);</script>
 </script>
 </body>
 </html>
