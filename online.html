@@ -2,124 +2,450 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>戦国十五国 ONLINE</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>戦国十五国 ONLINE v0.2</title>
 <style>
-body {
-  background:#14221c;
-  color:white;
-  font-family:sans-serif;
-  text-align:center;
-  padding:30px 15px;
-}
-h1 {color:#e8c66a}
-input,button {
-  display:block;
-  width:90%;
-  max-width:350px;
-  padding:14px;
-  margin:12px auto;
-  font-size:16px;
-  border-radius:8px;
-}
-button {
-  background:#c6a34b;
-  border:0;
-  font-weight:bold;
-}
-#message {margin-top:20px}
+*{box-sizing:border-box}
+body{margin:0;background:#14221c;color:#fff;font-family:system-ui,sans-serif;padding:18px}
+main{max-width:540px;margin:auto}
+h1{text-align:center;color:#e8c66a;font-size:27px}
+h2{color:#e8c66a;font-size:20px}
+.card{background:#21382d;border:1px solid #47604d;border-radius:12px;padding:16px;margin:14px 0}
+input,select,button{width:100%;padding:13px;margin:7px 0;font-size:16px;border-radius:8px}
+input,select{background:#fff;color:#111;border:0}
+button{background:#d5b35c;color:#1b2118;border:0;font-weight:bold}
+button:disabled{opacity:.45}
+.secondary{background:#a9b9ac}
+.danger{background:#bd8585}
+.small{font-size:13px;color:#cad5c9}
+.notice{white-space:pre-wrap;overflow-wrap:anywhere;background:#304537;padding:12px;border-radius:8px}
+.row{display:flex;gap:8px}
+.row button{flex:1}
+.player{padding:10px;border-bottom:1px solid #4a6653}
+.good{color:#9ef0ae}
+.bad{color:#ffb3a8}
+code{overflow-wrap:anywhere}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
-
+<main>
 <h1>🏯 戦国十五国 ONLINE</h1>
-<p>通信試作 v0.1</p>
+<p style="text-align:center">通信試作 v0.2｜2〜3人対戦</p>
 
-<div id="login">
-  <h2>ログイン</h2>
-  <input id="email" type="email"
-    placeholder="メールアドレス">
-  <input id="password" type="password"
-    placeholder="パスワード">
-  <button onclick="login()">ログイン</button>
-  <button onclick="signup()">新規登録</button>
+<div id="message" class="notice" hidden></div>
+
+<section id="loginPanel" class="card">
+<h2>ログイン</h2>
+<input id="email" type="email" placeholder="メールアドレス">
+<input id="password" type="password" placeholder="パスワード">
+<button id="loginBtn">ログイン</button>
+<button id="signupBtn" class="secondary">新規登録</button>
+<p class="small">登録後、メール認証が必要な場合があります。</p>
+</section>
+
+<section id="homePanel" hidden>
+<div class="card">
+<h2>⚔️ 出陣準備</h2>
+<p id="userLabel" class="small"></p>
+<label>プレイヤー名</label>
+<input id="playerName" maxlength="18" placeholder="名前を入力">
+<label>部屋の最大人数</label>
+<select id="maxPlayers">
+<option value="2">2人</option>
+<option value="3" selected>3人</option>
+</select>
+<button id="createBtn">🏯 部屋を作る</button>
 </div>
 
-<div id="game" hidden>
-  <h2>⚔️ 出陣準備完了！</h2>
-  <p>オンライン接続に成功しました。</p>
-  <button onclick="logout()">ログアウト</button>
+<div class="card">
+<h2>🔑 招待コードで参加</h2>
+<input id="inviteInput" maxlength="20" placeholder="招待コード">
+<button id="joinBtn">部屋に参加</button>
 </div>
 
-<p id="message"></p>
+<button id="logoutBtn" class="danger">ログアウト</button>
+</section>
+
+<section id="roomPanel" hidden>
+<div class="card">
+<h2>🏯 部屋情報</h2>
+<p>招待コード：<strong id="inviteLabel"></strong></p>
+<p id="roomStatus"></p>
+<p id="turnLabel"></p>
+<button id="copyCodeBtn" class="secondary">招待コードをコピー</button>
+<button id="refreshBtn" class="secondary">情報を更新</button>
+</div>
+
+<div class="card">
+<h2>👥 参加プレイヤー</h2>
+<div id="players"></div>
+</div>
+
+<div id="waitingPanel" class="card">
+<h2>👑 大名選択</h2>
+<select id="daimyoSelect"></select>
+<button id="chooseBtn">この大名を選ぶ</button>
+<p class="small">他のプレイヤーが選択した大名は選べません。</p>
+<button id="startBtn" hidden>⚔️ ゲーム開始</button>
+</div>
+
+<div id="playingPanel" class="card" hidden>
+<h2>📜 命令予約</h2>
+<p class="small">通信テスト版：命令は記録のみで、戦闘計算などは未実装です。</p>
+<select id="orderSelect">
+<option>内政</option>
+<option>登用</option>
+<option>策略</option>
+<option>戦争</option>
+<option>募兵</option>
+<option>外交</option>
+<option>待機</option>
+</select>
+<button id="orderBtn">命令を予約・準備完了</button>
+<p id="myOrderLabel"></p>
+<h2>📣 前ターンの命令</h2>
+<div id="actions"></div>
+</div>
+
+<button id="backBtn" class="secondary">部屋画面を閉じる</button>
+</section>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+"use strict";
+
 const db = supabase.createClient(
   "https://jwvuuwxynqfbgoxxiilv.supabase.co",
   "sb_publishable_Xa3VWvHo2H63QnEOkupYJw_HkaEYQtY"
 );
 
-const msg = document.getElementById("message");
+const $ = id => document.getElementById(id);
+
+const DAIMYO = [
+  "伊達政宗","最上義光","上杉謙信",
+  "武田信玄","北条氏康","徳川家康",
+  "織田信長","豊臣秀吉","浅井長政",
+  "毛利元就","尼子晴久","長宗我部元親",
+  "大友宗麟","島津義弘","龍造寺隆信"
+];
+
+let currentUser = null;
+let currentRoomId = null;
+let snapshot = null;
+let busy = false;
+let refreshTimer = null;
+
+function showMessage(text, error=false) {
+  $("message").hidden = !text;
+  $("message").textContent = text || "";
+  $("message").className = "notice " + (error ? "bad" : "good");
+}
+
+function showPanel(name) {
+  $("loginPanel").hidden = name !== "login";
+  $("homePanel").hidden = name !== "home";
+  $("roomPanel").hidden = name !== "room";
+}
+
+function errorText(error) {
+  return error && error.message ? error.message : String(error);
+}
+
+async function runAction(action) {
+  if (busy) return;
+  busy = true;
+  showMessage("");
+  try {
+    await action();
+  } catch (error) {
+    showMessage("エラー：" + errorText(error), true);
+  } finally {
+    busy = false;
+  }
+}
+
+async function rpc(name, params={}) {
+  const {data,error} = await db.rpc(name,params);
+  if (error) throw error;
+  return data;
+}
 
 async function login() {
-  const {data,error} = await db.auth.signInWithPassword({
-    email:document.getElementById("email").value,
-    password:document.getElementById("password").value
+  await runAction(async () => {
+    const email = $("email").value.trim();
+    const password = $("password").value;
+    if (!email || !password) throw Error("メールとパスワードを入力してください");
+
+    const {data,error} = await db.auth.signInWithPassword({
+      email,password
+    });
+    if (error) throw error;
+    currentUser = data.user;
+    showHome();
   });
-  if(error) {
-    msg.textContent=error.message;
-  } else {
-    showGame();
-  }
 }
 
 async function signup() {
-  const {data,error} = await db.auth.signUp({
-    email:document.getElementById("email").value,
-    password:document.getElementById("password").value
+  await runAction(async () => {
+    const email = $("email").value.trim();
+    const password = $("password").value;
+    if (!email || password.length < 6) {
+      throw Error("メールと6文字以上のパスワードを入力してください");
+    }
+    const {error} = await db.auth.signUp({email,password});
+    if (error) throw error;
+    showMessage("登録を受け付けました。必要なら確認メールを開いてください。");
   });
-  msg.textContent=error
-    ? error.message
-    : "登録しました。メール確認が必要な場合は確認してください。";
 }
 
-function showGame() {
-  document.getElementById("login").hidden=true;
-  document.getElementById("game").hidden=false;
-  msg.textContent="";
+function showHome() {
+  stopRefresh();
+  currentRoomId = null;
+  snapshot = null;
+  showPanel("home");
+  $("userLabel").textContent = "ログイン中：" + (currentUser?.email || "");
 }
 
 async function logout() {
-  await db.auth.signOut();
-  location.reload();
+  await runAction(async () => {
+    const {error} = await db.auth.signOut();
+    if (error) throw error;
+    currentUser = null;
+    stopRefresh();
+    currentRoomId = null;
+    showPanel("login");
+  });
 }
 
-db.auth.getSession().then(({data})=>{
-  if(data.session) showGame();
-});
+function getPlayerName() {
+  const name = $("playerName").value.trim();
+  if (name.length < 1 || name.length > 18) {
+    throw Error("プレイヤー名を1〜18文字で入力してください");
+  }
+  return name;
+}
+
 async function createRoom() {
-  const { data, error } = await db.rpc("create_game_room");
-
-  if (error) {
-    alert("部屋作成エラー：" + error.message);
-    return;
-  }
-
-  const room = Array.isArray(data) ? data[0] : data;
-
-  if (!room) {
-    alert("部屋の情報を取得できませんでした");
-    return;
-  }
-
-  alert("🏯 部屋を作成しました！\n招待コード：" + room.room_invite_code);
+  await runAction(async () => {
+    const id = await rpc("online_room_create",{
+      p_name:getPlayerName(),
+      p_max_players:Number($("maxPlayers").value)
+    });
+    await openRoom(id);
+    showMessage("部屋を作成しました！");
+  });
 }
 
-const roomButton = document.createElement("button");
-roomButton.textContent = "🏯 部屋を作る";
-roomButton.onclick = createRoom;
-document.getElementById("game").appendChild(roomButton);</script>
+async function joinRoom() {
+  await runAction(async () => {
+    const code = $("inviteInput").value.trim().toUpperCase();
+    if (!code) throw Error("招待コードを入力してください");
+    const id = await rpc("online_room_join",{
+      p_code:code,
+      p_name:getPlayerName()
+    });
+    await openRoom(id);
+    showMessage("部屋に参加しました！");
+  });
+}
+
+async function openRoom(id) {
+  currentRoomId = id;
+  showPanel("room");
+  await refreshRoom();
+  startRefresh();
+}
+
+function startRefresh() {
+  stopRefresh();
+  refreshTimer = setInterval(() => {
+    if (currentRoomId && !document.hidden) {
+      refreshRoom().catch(error => {
+        showMessage("更新エラー：" + errorText(error),true);
+      });
+    }
+  },5000);
+}
+
+function stopRefresh() {
+  if (refreshTimer) clearInterval(refreshTimer);
+  refreshTimer = null;
+}
+
+async function refreshRoom() {
+  if (!currentRoomId) return;
+  const roomId = currentRoomId;
+  const data = await rpc("online_room_snapshot",{
+    p_room_id:roomId
+  });
+  if (currentRoomId !== roomId) return;
+  snapshot = data;
+  renderRoom();
+}
+
+function renderRoom() {
+  if (!snapshot) return;
+
+  const room = snapshot;
+  const players = room.players || [];
+  const me = players.find(p => p.user_id === currentUser?.id);
+
+  $("inviteLabel").textContent = room.invite_code || "不明";
+  $("roomStatus").textContent =
+    "状態：" + (room.status === "waiting" ? "参加待ち" : "対戦中") +
+    "｜参加：" + players.length + "/" + room.max_players + "人";
+  $("turnLabel").textContent = "ターン：" + room.turn_number;
+
+  const playerBox = $("players");
+  playerBox.replaceChildren();
+
+  players.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "player";
+    const index = p.daimyo_index;
+    const daimyo = Number.isInteger(index) && DAIMYO[index]
+      ? DAIMYO[index] : "未選択";
+    const ready = p.ready ? "✅ 準備完了" : "⏳ 未完了";
+    div.textContent =
+      p.display_name + "｜" + daimyo +
+      (room.status === "playing" ? "｜" + ready : "");
+    playerBox.appendChild(div);
+  });
+
+  const waiting = room.status === "waiting";
+  $("waitingPanel").hidden = !waiting;
+  $("playingPanel").hidden = waiting;
+
+  if (waiting) {
+    const selected = players
+      .filter(p => p.user_id !== currentUser?.id)
+      .map(p => p.daimyo_index)
+      .filter(x => Number.isInteger(x));
+
+    const select = $("daimyoSelect");
+    const previous = select.value;
+    select.replaceChildren();
+
+    DAIMYO.forEach((name,index) => {
+      if (selected.includes(index)) return;
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent = name;
+      select.appendChild(option);
+    });
+
+    if ([...select.options].some(o => o.value === previous)) {
+      select.value = previous;
+    } else if (me && Number.isInteger(me.daimyo_index)) {
+      select.value = String(me.daimyo_index);
+    }
+
+    $("startBtn").hidden = room.host_id !== currentUser?.id;
+    $("startBtn").disabled =
+      players.length < 2 ||
+      players.some(p => !Number.isInteger(p.daimyo_index));
+  } else {
+    $("myOrderLabel").textContent =
+      me?.ready
+        ? "✅ 命令予約済み：" + (room.my_order || "")
+        : "⏳ 命令を選んで準備完了してください";
+
+    $("orderBtn").disabled = Boolean(me?.ready);
+
+    const actions = $("actions");
+    actions.replaceChildren();
+
+    const logs = Array.isArray(room.last_actions)
+      ? room.last_actions : [];
+
+    if (!logs.length) {
+      actions.textContent = "まだ前ターンの記録はありません。";
+    } else {
+      logs.forEach(log => {
+        const p = document.createElement("p");
+        p.textContent =
+          (log.display_name || "不明") +
+          "： " + (log.order_type || "待機");
+        actions.appendChild(p);
+      });
+    }
+  }
+}
+
+async function chooseDaimyo() {
+  await runAction(async () => {
+    const index = Number($("daimyoSelect").value);
+    await rpc("online_choose_daimyo",{
+      p_room_id:currentRoomId,
+      p_daimyo_index:index
+    });
+    await refreshRoom();
+    showMessage("大名を選択しました！");
+  });
+}
+
+async function startGame() {
+  await runAction(async () => {
+    await rpc("online_start_game",{
+      p_room_id:currentRoomId
+    });
+    await refreshRoom();
+    showMessage("⚔️ ゲーム開始！");
+  });
+}
+
+async function submitOrder() {
+  await runAction(async () => {
+    const order = $("orderSelect").value;
+    const turn = await rpc("online_submit_order",{
+      p_room_id:currentRoomId,
+      p_order_type:order
+    });
+    await refreshRoom();
+    showMessage("命令を送信しました。現在ターン：" + turn);
+  });
+}
+
+async function copyCode() {
+  if (!snapshot) return;
+  const code = snapshot.invite_code || "";
+  try {
+    await navigator.clipboard.writeText(code);
+    showMessage("招待コードをコピーしました！");
+  } catch {
+    showMessage("招待コード：" + code);
+  }
+}
+
+$("loginBtn").onclick = login;
+$("signupBtn").onclick = signup;
+$("logoutBtn").onclick = logout;
+$("createBtn").onclick = createRoom;
+$("joinBtn").onclick = joinRoom;
+$("chooseBtn").onclick = chooseDaimyo;
+$("startBtn").onclick = startGame;
+$("orderBtn").onclick = submitOrder;
+$("refreshBtn").onclick = () =>
+  refreshRoom().catch(e => showMessage(errorText(e),true));
+$("copyCodeBtn").onclick = copyCode;
+$("backBtn").onclick = showHome;
+
+(async function init() {
+  try {
+    const {data,error} = await db.auth.getUser();
+    if (error && error.name !== "AuthSessionMissingError") {
+      console.warn(error);
+    }
+    currentUser = data?.user || null;
+    if (currentUser) showHome();
+    else showPanel("login");
+  } catch (error) {
+    showPanel("login");
+    showMessage("初期化エラー：" + errorText(error),true);
+  }
+})();
 </script>
 </body>
 </html>
