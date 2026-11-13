@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>戦国十五国 ONLINE v0.3 | 国力テスト</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;background:#10191e;color:#eff2e8;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh}main{max-width:790px;margin:0 auto;padding:17px 14px 48px}
+h1{font-size:24px;margin:4px 0 5px;letter-spacing:.03em}h2{font-size:19px;margin:0 0 12px}h3{font-size:16px;margin:15px 0 8px}
+header{padding:17px 0 16px;border-bottom:1px solid #30494d;margin-bottom:15px}header small{display:block;color:#a8c5c3;font-weight:600;margin-top:3px}
+.notice{background:#152d31;border-left:3px solid #d7ad6a;padding:11px 12px;border-radius:7px;font-size:13px;line-height:1.65;color:#dde8dc;margin-bottom:17px}
+.box{background:#1b2b32;border:1px solid #395159;border-radius:12px;padding:17px;margin:13px 0}
+label{display:block;font-size:14px;margin:13px 0 5px;font-weight:600;color:#d9e9e6}
+input,select{display:block;width:100%;font-size:16px;min-height:45px;padding:10px 12px;border:1px solid #587178;background:#111f25;color:white;border-radius:8px;outline-offset:2px}
+input:focus,select:focus{outline:2px solid #b5d9a1}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+button{font:inherit;min-height:44px;border:1px solid #57717c;border-radius:9px;color:#f7f8ef;background:#304753;padding:10px 15px;font-weight:600;cursor:pointer}
+button.primary{background:#2b694d;border-color:#508c67;color:#fff}button.gold{background:#66502a;border-color:#a88a55}button.soft{background:#202f35}button:disabled{opacity:.45;cursor:default}
+button:hover:not(:disabled){filter:brightness(1.11)}.muted{color:#abbcbd;font-size:13px;line-height:1.65}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;background:#33474f;font-size:12px;color:#d6eae8;margin-left:5px}
+.success{color:#a6e1b4}.warn{color:#f3c68b}.danger{color:#f5aaab}.hidden{display:none!important}
+#message{margin:0 0 12px;padding:10px 12px;border-radius:8px;white-space:pre-wrap;font-size:13px;line-height:1.6;display:none}
+#message.error{display:block;background:#4b282c;border:1px solid #ad6064;color:#ffe0de}
+#message.info{display:block;background:#204139;border:1px solid #5b987f;color:#ecfff4}
+.player{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid #34454b}.player:last-child{border-bottom:0}
+.player>div{min-width:0}.player b{font-size:15px}.player small{display:block;color:#b8c7c8;font-size:12px;line-height:1.5}
+.chip{font-size:12px;white-space:nowrap;padding:6px 10px;border-radius:20px;background:#425059;color:#fff}
+.chip.ready{background:#235944}.code{font-size:23px;letter-spacing:.09em;font-weight:800;color:#eac88d;word-break:break-all}
+.kpi{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.kpi strong{font-size:27px}.divider{height:1px;background:#3d5156;margin:17px 0}
+#connectionStatus{font-size:12px;color:#9dcbc0;margin-top:5px}footer{font-size:12px;color:#819e9e;margin:20px 0 0;line-height:1.6}
+@media(max-width:510px){h1{font-size:21px}.split{grid-template-columns:1fr}.box{padding:14px}.player b{font-size:14px}.code{font-size:20px}}
+</style></head><body><main>
+<header><h1>🏯 戦国十五国 ONLINE <span class="badge">v0.2</span></h1><small>2〜3人・招待制・全員準備完了でターン進行</small><div id="connectionStatus">接続準備中…</div></header>
+<div class="notice"><b>通信テスト用の試作品です。</b> 本版では「ログイン → 部屋作成 → 大名選択 → 命令予約 → 全員準備完了でターン更新」を確認します。戦闘・領地支配・NPC行動などの<strong>v3.0本編ルールはまだ実装していません</strong>。ソロ版のセーブとは別管理です。</div>
+<div id="message" role="status" aria-live="polite"></div>
+<section id="authView" class="box"><h2>🔐 プレイヤーログイン</h2>
+<label for="email">メールアドレス</label><input id="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com">
+<label for="password">パスワード</label><input id="password" type="password" autocomplete="current-password" placeholder="8文字以上推奨">
+<div class="actions"><button class="primary" id="loginBtn">ログイン</button><button class="soft" id="signupBtn">新規登録</button></div>
+<p class="muted">新規登録にはメール確認が必要です。Supabaseの標準メール機能は送信先に制限があります。確認メールが届かない場合は管理者側の認証設定が必要です。</p></section>
+<section id="homeView" class="hidden"><div class="box"><div class="kpi"><h2 style="margin:0">👑 ようこそ</h2><button id="logoutBtn" class="soft" style="margin-left:auto">ログアウト</button></div><p id="userEmail" class="muted"></p><div id="resume" class="hidden"><button id="resumeBtn" class="gold">前の部屋に戻る</button></div></div>
+<div class="split"><div class="box"><h2>🏯 部屋を作る</h2><label for="createName">表示名</label><input id="createName" maxlength="18" placeholder="例：信長好き">
+<label for="maxPlayers">参加人数の上限</label><select id="maxPlayers"><option value="2">2人</option><option value="3" selected>3人</option></select><div class="actions"><button id="createBtn" class="primary">新しい部屋を作成</button></div></div>
+<div class="box"><h2>🔑 招待コードで参加</h2><label for="joinName">表示名</label><input id="joinName" maxlength="18" placeholder="例：政宗好き"><label for="inviteCode">友達から教わったコード</label><input id="inviteCode" autocapitalize="characters" spellcheck="false" placeholder="XXXXXXXXXX" maxlength="12"><div class="actions"><button id="joinBtn" class="primary">部屋に参加</button></div></div></div></section>
+<section id="roomView" class="hidden"><div class="box"><div class="kpi"><h2 style="margin:0" id="roomTitle">ゲーム部屋</h2><button class="soft" id="backBtn" style="margin-left:auto">部屋選択へ</button></div><p class="muted" id="roomStatus"></p><div class="divider"></div><div class="kpi"><div><div class="muted">招待コード（友達に共有）</div><div class="code" id="roomCode">----------</div></div><button id="copyBtn" class="gold" style="margin-left:auto">コピー</button></div><div class="divider"></div><h3>👥 参加プレイヤー</h3><div id="playerList"></div></div>
+<div class="box" id="waitingPanel"><h2>👑 大名を選ぶ</h2><p class="muted">大名は重複不可。残りの勢力は将来NPCが担当する予定です。</p><label for="daimyoSelect">担当する大名</label><select id="daimyoSelect"></select><div class="actions"><button id="chooseBtn" class="primary">大名を決定</button><button id="startBtn" class="gold hidden">この部屋を開始</button></div><p id="waitingHint" class="muted"></p></div>
+<div class="box hidden" id="playingPanel"><div id="worldState" class="notice"></div><h2>📜 今ターンの命令</h2><p class="muted">命令を確定すると、全員確定後にサーバーが内政・募兵を計算します。登用・偵察・戦争は次の移植対象です。</p><label for="orderSelect">命令</label><select id="orderSelect"><option value="内政">🏯 内政</option><option value="募兵">🪖 募兵</option></select><div class="actions"><button id="readyBtn" class="primary">✅ 準備完了</button><button id="unreadyBtn" class="soft hidden">準備完了を解除</button></div><p id="readyHint" class="muted"></p></div>
+<div class="box hidden" id="lastPanel"><h2>📜 前ターンの処理結果</h2><div id="lastActions"></div><p class="muted">これは同期確認用の命令一覧です。戦争勝敗・内政収入等はまだ発生しません。</p></div></section>
+<footer>セキュリティ：本人確認をしたユーザーだけがRPC経由で部屋を操作します。参加者以外は部屋の情報にアクセスできません。予約命令はターン確定まで他プレイヤーに表示しません。</footer>
+</main>
+<script type="module">
+import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/+esm';
+const URL='https://jwvuuwxynqfbgoxxiilv.supabase.co';
+const PUBLISHABLE='sb_publishable_Xa3VWvHo2H63QnEOkupYJw_HkaEYQtY';
+const sb=createClient(URL,PUBLISHABLE);
+const DAIMYO=['織田信長','武田信玄','上杉謙信','徳川家康','伊達政宗','毛利元就','豊臣秀吉','今川義元','北条氏康','島津義久','長宗我部元親','明智光秀','真田幸村','浅井長政','島津義弘'];
+const $=(id)=>document.getElementById(id);
+const st={user:null,roomId:localStorage.getItem('sengoku_online_v01_room')||null,room:null,busy:false,draftDaimyo:null,draftOrder:'内政',pollTimer:null};
+function escapeHtml(input){return String(input??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function show(id,yes){$(id).classList.toggle('hidden',!yes)}
+function notice(msg,error=false){const el=$('message');el.style.display='';el.className=error?'error':'info';el.textContent=msg;el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function clearNotice(){$('message').className='';$('message').style.display='';}
+function status(s){$('connectionStatus').textContent=s}
+function accountUI(){show('authView',!st.user);show('homeView',!!st.user&&!st.roomId);show('roomView',!!st.user&&!!st.roomId);if(st.user)$('userEmail').textContent=st.user.email||'ログイン中';show('resume',!!localStorage.getItem('sengoku_online_v01_room')&&!st.roomId)}
+async function rpc(name,params){const {data,error}=await sb.rpc(name,params);if(error)throw new Error(error.message||'通信に失敗しました');return data}
+async function run(fn){if(st.busy)return;st.busy=true;document.querySelectorAll('button').forEach(b=>b.disabled=true);try{clearNotice();await fn()}catch(e){notice(e.message||'エラーが発生しました',true)}finally{st.busy=false;document.querySelectorAll('button').forEach(b=>b.disabled=false);if(st.room?.status==='waiting'&&st.room?.host_id===st.user?.id){$('startBtn').disabled=!(st.room.players.length>=2&&st.room.players.every(p=>p.daimyo_index!==null));}}}
+function openRoom(id){st.roomId=id;st.room=null;localStorage.setItem('sengoku_online_v01_room',id);accountUI()}
+async function refresh(silent=false){if(!st.user||!st.roomId)return;try{const room=await rpc('online_room_snapshot',{p_room_id:st.roomId});const old=JSON.stringify(st.room);st.room=room;status('● 接続中 ／ 約4秒ごとに自動更新');if(old!==JSON.stringify(room))renderRoom()}catch(e){if(!silent)notice('部屋の情報を取得できません：'+e.message,true);else status('● 接続を再確認中…')}}
+function renderRoom(){if(!st.room)return;const r=st.room;const me=r.players.find(p=>p.user_id===st.user.id);if(!me){notice('この部屋への参加権がありません',true);return}
+ $('roomTitle').textContent=r.status==='waiting'?'🏯 参加者募集中':r.status==='finished'?'🏆 通信テスト完了':'⚔️ 第'+r.turn_number+'ターン';
+ $('roomStatus').textContent=r.status==='waiting'?'参加 '+r.players.length+'/'+r.max_players+'人 ／ 全員が大名を選んでから開始できます':r.status==='finished'?'60ターンの同期確認が完了しました':'現在第'+r.turn_number+'ターン ／ 全員準備完了で次に進みます';
+ $('roomCode').textContent=r.invite_code;
+ $('playerList').innerHTML=r.players.map(p=>'<div class="player"><div><b>'+escapeHtml(p.display_name)+(p.user_id===st.user.id?'（あなた）':'')+'</b><small>'+(p.daimyo_index===null?'大名未選択':escapeHtml(DAIMYO[p.daimyo_index]||'大名未選択'))+'</small></div><span class="chip '+(p.ready?'ready':'')+'">'+(r.status==='waiting'?(p.daimyo_index===null?'選択待ち':'選択済み'):r.status==='finished'?'完了':p.ready?'✅ 準備完了':'⏳ 入力中')+'</span></div>').join('');
+ show('waitingPanel',r.status==='waiting');show('playingPanel',r.status==='playing');
+ if(r.status==='waiting'){
+  $('daimyoSelect').innerHTML='<option value="">選んでください</option>'+DAIMYO.map((d,i)=>{const owner=r.players.find(p=>p.daimyo_index===i);return '<option value="'+i+'" '+(owner&&owner.user_id!==st.user.id?'disabled':'')+'>'+escapeHtml(d)+(owner&&owner.user_id!==st.user.id?'（選択済）':'')+'</option>'}).join('');
+  $('daimyoSelect').value=String(st.draftDaimyo??me.daimyo_index??'');
+  $('waitingHint').textContent=r.players.length<2?'友達に招待コードを伝えて、2人以上で開始しよう。':'全員の大名選択が終わったら部屋主が開始できます。';
+  show('startBtn',r.host_id===st.user.id);$('startBtn').disabled=!(r.players.length>=2&&r.players.every(p=>p.daimyo_index!==null));
+ }
+ if(r.status==='playing'){
+   $('orderSelect').value=r.my_order||st.draftOrder;
+   const land=r.lands||[];const mine=land.find(x=>x.owner_id===st.user.id);
+   $('worldState').innerHTML='<b>🏯 領地状況（全15か国）</b><br>'+land.map(x=>'<div style="padding:5px 0;border-bottom:1px solid #466">'+escapeHtml(x.name)+' ／ '+escapeHtml(x.owner_name||'NPC')+' ／ 🪖'+x.troops+' ／ 💰'+x.gold+'</div>').join('')+(mine?'':'<br>あなたの領地はありません');
+   $('orderSelect').disabled=!!me.ready;
+   show('readyBtn',!me.ready);show('unreadyBtn',!!me.ready);
+   $('readyHint').textContent=me.ready?'他の人の準備が終わるまで命令内容は非公開。全員完了で自動進行します。':'準備完了後も、全員が完了する前なら解除して変更できます。';
+ }
+ const last=r.last_actions||[];show('lastPanel',last.length>0);$('lastActions').innerHTML=last.map(x=>'<div class="player"><b>'+escapeHtml(x.name)+'</b><span class="chip">'+escapeHtml(x.command)+'</span></div>').join('');
+}
+$('loginBtn').addEventListener('click',()=>run(async()=>{const email=$('email').value.trim(),password=$('password').value;const {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw new Error(error.message);st.user=data.user;accountUI();notice('ログインしました');if(st.roomId)await refresh()}));
+$('signupBtn').addEventListener('click',()=>run(async()=>{const email=$('email').value.trim(),password=$('password').value;if(!email||password.length<8)throw new Error('メールアドレスと8文字以上のパスワードを入力してください');const {data,error}=await sb.auth.signUp({email,password});if(error)throw new Error('新規登録できませんでした：'+error.message+'。Supabase標準メールは送信先制限があります。');if(data.session){st.user=data.user;accountUI();notice('登録してログインしました')}else notice('登録を受け付けました。届いた確認メールから認証してください。※メールが届かない場合は管理者に相談してください。')}));
+$('logoutBtn').addEventListener('click',()=>run(async()=>{const {error}=await sb.auth.signOut();if(error)throw error;st.user=null;st.roomId=null;st.room=null;accountUI();notice('ログアウトしました')}));
+$('createBtn').addEventListener('click',()=>run(async()=>{const name=$('createName').value.trim();if(!name)throw new Error('表示名を入力してください');localStorage.setItem('sengoku_online_v01_name',name);const id=await rpc('online_room_create',{p_name:name,p_max_players:Number($('maxPlayers').value)});openRoom(id);await refresh();notice('部屋を作成しました！ 招待コードを友達に共有してください。')}));
+$('joinBtn').addEventListener('click',()=>run(async()=>{const name=$('joinName').value.trim();const code=$('inviteCode').value.trim();if(!name||!code)throw new Error('表示名と招待コードを入力してください');localStorage.setItem('sengoku_online_v01_name',name);const id=await rpc('online_room_join',{p_name:name,p_code:code});openRoom(id);await refresh();notice('部屋に参加しました！')}));
+$('backBtn').addEventListener('click',()=>{st.roomId=null;st.room=null;accountUI();notice('部屋を閉じました。データは残るので「前の部屋に戻る」から復帰できます。')});
+$('resumeBtn').addEventListener('click',()=>{const id=localStorage.getItem('sengoku_online_v01_room');if(id){openRoom(id);refresh()}});
+$('copyBtn').addEventListener('click',async()=>{const code=st.room?.invite_code;if(!code)return;try{await navigator.clipboard.writeText(code);notice('招待コードをコピーしました：'+code)}catch{notice('招待コード：'+code+'　長押しでコピーしてください')}});
+$('daimyoSelect').addEventListener('change',e=>{st.draftDaimyo=e.target.value===''?null:Number(e.target.value)});
+$('chooseBtn').addEventListener('click',()=>run(async()=>{const n=Number($('daimyoSelect').value);if($('daimyoSelect').value==='')throw new Error('大名を選んでください');await rpc('online_room_choose',{p_room_id:st.roomId,p_daimyo:n});st.draftDaimyo=n;await refresh();notice('担当する大名を登録しました')}));
+$('startBtn').addEventListener('click',()=>run(async()=>{await rpc('online_room_start',{p_room_id:st.roomId});await refresh();notice('ゲームを開始しました！ 全員の準備完了で次のターンへ進みます。')}));
+$('orderSelect').addEventListener('change',e=>{st.draftOrder=e.target.value});
+$('readyBtn').addEventListener('click',()=>run(async()=>{const t=st.room.turn_number;await rpc('online_room_prepare',{p_room_id:st.roomId,p_order:$('orderSelect').value,p_ready:true});await refresh();if(st.room?.turn_number!==t)notice('全員準備完了！ 第'+st.room.turn_number+'ターンへ進みました。');else notice('準備完了にしました。全員の完了を待っています。')}));
+$('unreadyBtn').addEventListener('click',()=>run(async()=>{await rpc('online_room_prepare',{p_room_id:st.roomId,p_order:null,p_ready:false});await refresh();notice('準備完了を解除しました。命令を変更できます。')}));
+(async()=>{try{const {data,error}=await sb.auth.getUser();if(error&&!(/session|missing/i.test(error.message||'')))throw error;st.user=data.user||null;status('● 接続準備完了');accountUI();const saved=localStorage.getItem('sengoku_online_v01_name')||'';$('createName').value=saved;$('joinName').value=saved;if(st.user&&st.roomId)await refresh();sb.auth.onAuthStateChange((_event,session)=>{const next=session?.user||null;if(next?.id!==st.user?.id){st.user=next;if(!next){st.roomId=null;st.room=null}accountUI()}});st.pollTimer=setInterval(()=>{if(document.visibilityState==='visible'&&st.roomId)refresh(true)},4000)}catch(e){status('接続に失敗しました');notice('Supabase接続エラー：'+e.message,true);accountUI()}})();
+</script></body></html>
