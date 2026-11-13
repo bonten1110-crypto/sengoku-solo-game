@@ -94,7 +94,7 @@ $('backBtn').addEventListener('click',()=>{st.roomId=null;st.room=null;accountUI
 $('resumeBtn').addEventListener('click',()=>{const id=localStorage.getItem('sengoku_online_v01_room');if(id){openRoom(id);refresh()}});
 $('copyBtn').addEventListener('click',async()=>{const code=st.room?.invite_code;if(!code)return;try{await navigator.clipboard.writeText(code);notice('招待コードをコピーしました：'+code)}catch{notice('招待コード：'+code+'　長押しでコピーしてください')}});
 $('daimyoSelect').addEventListener('change',e=>{st.draftDaimyo=e.target.value===''?null:Number(e.target.value)});
-$('chooseBtn').addEventListener('click',()=>run(async()=>{const n=Number($('daimyoSelect').value);if($('daimyoSelect').value==='')throw new Error('大名を選んでください');await rpc('online_room_choose',{p_room_id:st.roomId,p_daimyo:n});st.draftDaimyo=n;await refresh();notice('担当する大名を登録しました')}));
+$('chooseBtn').addEventListener('click',()=>run(async()=>{const n=Number($('daimyoSelect').value);if($('daimyoSelect').value==='')throw new Error('大名を選んでください');await rpc('online_choose_daimyo',{p_room_id:st.roomId,p_daimyo_index:n}});st.draftDaimyo=n;await refresh();notice('担当する大名を登録しました')}));
 $('startBtn').addEventListener('click',()=>run(async()=>{await rpc('online_room_start',{p_room_id:st.roomId});await refresh();notice('ゲームを開始しました！ 全員の準備完了で次のターンへ進みます。')}));
 $('orderSelect').addEventListener('change',e=>{st.draftOrder=e.target.value});
 $('readyBtn').addEventListener('click',()=>run(async()=>{const t=st.room.turn_number;await rpc('online_room_prepare',{p_room_id:st.roomId,p_order:$('orderSelect').value,p_ready:true});await refresh();if(st.room?.turn_number!==t)notice('全員準備完了！ 第'+st.room.turn_number+'ターンへ進みました。');else notice('準備完了にしました。全員の完了を待っています。')}));
