@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>戦国十五国 ONLINE</title>
+<style>
+body {
+  background:#14221c;
+  color:white;
+  font-family:sans-serif;
+  text-align:center;
+  padding:30px 15px;
+}
+h1 {color:#e8c66a}
+input,button {
+  display:block;
+  width:90%;
+  max-width:350px;
+  padding:14px;
+  margin:12px auto;
+  font-size:16px;
+  border-radius:8px;
+}
+button {
+  background:#c6a34b;
+  border:0;
+  font-weight:bold;
+}
+#message {margin-top:20px}
+</style>
+</head>
+<body>
+
+<h1>🏯 戦国十五国 ONLINE</h1>
+<p>通信試作 v0.1</p>
+
+<div id="login">
+  <h2>ログイン</h2>
+  <input id="email" type="email"
+    placeholder="メールアドレス">
+  <input id="password" type="password"
+    placeholder="パスワード">
+  <button onclick="login()">ログイン</button>
+  <button onclick="signup()">新規登録</button>
+</div>
+
+<div id="game" hidden>
+  <h2>⚔️ 出陣準備完了！</h2>
+  <p>オンライン接続に成功しました。</p>
+  <button onclick="logout()">ログアウト</button>
+</div>
+
+<p id="message"></p>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const db = supabase.createClient(
+  "https://jwvuuwxynqfbgoxxiilv.supabase.co",
+  "sb_publishable_Xa3VWvHo2H63QnEOkupYJw_HkaEYQtY"
+);
+
+const msg = document.getElementById("message");
+
+async function login() {
+  const {data,error} = await db.auth.signInWithPassword({
+    email:document.getElementById("email").value,
+    password:document.getElementById("password").value
+  });
+  if(error) {
+    msg.textContent=error.message;
+  } else {
+    showGame();
+  }
+}
+
+async function signup() {
+  const {data,error} = await db.auth.signUp({
+    email:document.getElementById("email").value,
+    password:document.getElementById("password").value
+  });
+  msg.textContent=error
+    ? error.message
+    : "登録しました。メール確認が必要な場合は確認してください。";
+}
+
+function showGame() {
+  document.getElementById("login").hidden=true;
+  document.getElementById("game").hidden=false;
+  msg.textContent="";
+}
+
+async function logout() {
+  await db.auth.signOut();
+  location.reload();
+}
+
+db.auth.getSession().then(({data})=>{
+  if(data.session) showGame();
+});
+</script>
+</body>
+</html>
