@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>戦国十六国 ONLINE | 第10段階・ソロ版v5.2準拠UI</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",system-ui,sans-serif;color:#eeeadd;background:#101a20;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;min-height:100dvh}main{max-width:900px;margin:auto;padding:17px 13px 60px}
+h1{font-size:25px;margin:5px 0 6px}h2{font-size:19px;margin:0 0 13px}h3{font-size:16px;margin:12px 0}
+p{line-height:1.7}small,.muted{color:#a8b9b8}header{border-bottom:1px solid #3a5356;margin-bottom:17px;padding:8px 0 15px}
+.subtitle{font-size:13px;color:#debd7f}.box{background:#1b2b33;border:1px solid #40585e;border-radius:13px;padding:16px;margin:13px 0}
+.notice{background:#28382f;border-left:4px solid #e9be77;border-radius:7px;padding:12px;font-size:13px;line-height:1.7}
+.warn{background:#442e2c;border-left-color:#ee8e83}.good{background:#203c33;border-left-color:#7ed8a0}
+label{display:block;font-size:13px;color:#bfd6cf;font-weight:700;margin:14px 0 5px}
+input,select{display:block;width:100%;font-size:16px;min-height:45px;padding:10px;border:1px solid #678482;background:#102126;color:#f6f5ee;border-radius:9px}
+button{font:inherit;min-height:45px;padding:10px 14px;background:#344d53;color:#fcf8ed;border:1px solid #76928f;border-radius:9px;cursor:pointer}
+button.primary{background:#996a29;border-color:#d7ac62;font-weight:800}button.soft{background:#2b464a}button.danger{background:#633d40;border-color:#a6676b}button:disabled{opacity:.44;cursor:not-allowed}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1 1 125px}.hidden{display:none!important}
+.code{font-size:25px;letter-spacing:.12em;color:#ffe1a2;font-weight:850}.player{background:#243942;border:1px solid #405f66;border-radius:9px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:7px 0}
+.player b{display:block}.player small{display:block;margin-top:4px}.tag{border-radius:30px;background:#334a49;color:#c9ded5;font-size:12px;padding:5px 9px;white-space:nowrap}
+.tag.chosen{background:#315843;color:#ddffdc}.countries{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:10px 0}
+.land{padding:9px 4px;min-height:61px;font-size:13px;background:#253b45;text-align:center;border-radius:9px;border:1px solid #45606b}
+.land small{display:block;font-size:10px;line-height:1.2}.land.occupied{background:#3d3336;border-color:#775458}.land.mine{background:#4b3d27;border-color:#e3b55d}
+.land:disabled{opacity:1;cursor:default}@media(max-width:430px){.countries{grid-template-columns:repeat(3,minmax(0,1fr))}}
+#status{font-size:13px;line-height:1.6;color:#a9cbc1;margin:6px 0}#message{margin-top:10px}code{overflow-wrap:anywhere}
+
+/* 第4段階 */
+.game-head{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.game-head>div{background:#263e3e;border:1px solid #547477;border-radius:10px;padding:10px;text-align:center}
+.game-head b{font-size:20px;display:block;color:#ffdfa4}.game-head small{font-size:11px;display:block}
+#provinceGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+.province{background:#263c46;border-radius:10px;border:1px solid #47606c;padding:9px 6px;text-align:center;font-size:13px;min-height:96px}
+.province.mine{border-color:#f0bc60;background:#493e2e}.province.npc{border-color:#5b6771}
+.province strong,.province small{display:block}.province small{font-size:11px;color:#bed0cd;line-height:1.6}.province .lord{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.draft{background:#283e43;border:1px solid #52706d;border-radius:9px;padding:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0}
+.draft button{min-height:32px;padding:5px 9px;flex:0 0 auto}.event{border-bottom:1px solid #486162;padding:8px 2px;font-size:13px;line-height:1.6}
+#gameSummary{line-height:1.7}.phase-badge{display:inline-block;border-radius:22px;padding:5px 9px;background:#214836;color:#a2f4b9}
+#provinceGrid .mine .lord{color:#ffe0a5}.game-notice{border-left:4px solid #8ab2c4;background:#20353f}
+@media(max-width:460px){#provinceGrid{grid-template-columns:repeat(3,minmax(0,1fr))}.game-head{gap:5px}.game-head b{font-size:16px}}
+
+.p06-panel{background:#1b3035;border-color:#698782}.p06-panel .notice{margin:10px 0}
+.p06-panel h3{color:#ffe0a1}.p06-rel{padding:6px 8px;border-bottom:1px solid #496665;font-size:13px}
+.p06-relation-good{color:#94f3b5}.p06-relation-danger{color:#ffb0a8}.p06-relation-neutral{color:#c6d7d5}
+
+/* integrated mobile first control center */
+:root{--gold:#f4c879;--sky:#c5e4de;--panel:#1d3035}
+main{max-width:1050px;padding:14px 12px 45px}
+header{background:linear-gradient(115deg,#233439,#14252c);border:1px solid #415d5f;border-radius:14px;padding:16px;margin-bottom:13px}
+header h1{font-size:clamp(23px,5vw,33px);letter-spacing:.01em}
+.box{border-radius:15px;padding:14px;margin:11px 0;background:var(--panel)}
+button{transition:background .12s ease,border .12s ease}
+button:focus-visible, select:focus-visible, input:focus-visible,[role="button"]:focus-visible{outline:3px solid #ffe1a4;outline-offset:2px}
+button.primary{background:#ae752a;color:#fff;border-color:#f4c879}
+button.soft{background:#294b4d;border-color:#78a09c}
+.game-title{display:flex;gap:12px;justify-content:space-between;align-items:center;padding:7px 1px 4px}
+.game-title h2{margin:5px 0;font-size:21px}.game-title button{flex-shrink:0;min-width:78px}
+.game-head{margin:8px 0 13px}.game-head>div{background:#244047}
+.game-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;position:sticky;top:0;z-index:20;background:#101a20;padding:10px 0;border-bottom:1px solid #405d62;margin:4px 0 9px}
+.game-tabs button{min-height:58px;font-size:20px;border-radius:10px;background:#1e3339;border:1px solid #3e5658;padding:7px 3px;line-height:1.1}
+.game-tabs button span{display:block;font-size:12px;margin-top:5px;font-weight:700}
+.game-tabs button.active{background:#594528;border-color:#f0bb68;box-shadow:inset 0 -3px 0 #eab96b;color:#fff0cb}
+.game-page{scroll-margin-top:85px}.game-page.hidden{display:none!important}
+.atlas-box{background:linear-gradient(180deg,#203840,#182a31)}.atlas-box h3{margin:0 0 7px;color:#f9d996}
+.tiny{font-size:12px;line-height:1.55}
+.atlas-wrap{margin:6px auto 10px;max-width:720px;min-width:0}
+.atlas-wrap svg{display:block;width:100%;height:auto;max-height:660px;margin:auto;overflow:visible;touch-action:pan-y}
+.atlas-link{stroke:#9aafaa;stroke-width:4;opacity:.72;stroke-linecap:round}
+.atlas-link.hl{stroke:#f7c971;stroke-width:8;opacity:1}
+.atlas-node{cursor:pointer;outline:none}
+.atlas-node:focus-visible rect.node-main{stroke:#fff;stroke-width:5}
+.atlas-node .node-main{stroke:#839ba0;stroke-width:3.8}
+.atlas-node.mine .node-main{stroke:#ffd36f;stroke-width:5}
+.atlas-node.selected .node-main{stroke:#fff0a7;stroke-width:6.5}
+.atlas-node.dim{opacity:.83}
+.atlas-node text{fill:#fff7eb;paint-order:stroke;stroke:#18262d;stroke-width:4;stroke-linejoin:round;font-size:27px;font-weight:800;pointer-events:none;text-anchor:middle}
+.atlas-node .node-icon{font-size:22px;stroke-width:2.7}
+.atlas-detail{border:1px solid #6d827f;background:#253f43;border-radius:11px;padding:13px;line-height:1.6;min-height:72px}
+.atlas-detail .detail-title{font-weight:800;font-size:18px;color:#f7d594}
+.atlas-detail .detail-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:9px 0}
+.atlas-detail .detail-kpis>div{border-radius:7px;background:#193037;padding:8px 5px;text-align:center;word-break:break-word}
+.atlas-detail .detail-kpis small{display:block;font-size:10px;color:#c3d5cf}
+.atlas-detail .detail-actions{display:flex;gap:8px;flex-wrap:wrap}
+.atlas-detail .detail-actions button{flex:1 1 130px}
+.territory-details summary{cursor:pointer;padding:4px;font-weight:800;font-size:15px;color:#f7d594}
+#provinceGrid{margin-top:13px}
+.rank-row{display:grid;grid-template-columns:minmax(105px,1fr) minmax(70px,3fr) 40px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #486261;font-size:13px}
+.rank-meter{height:12px;border-radius:20px;background:#14272d;overflow:hidden}.rank-fill{height:100%;background:#b0ad90;border-radius:20px}.rank-row.mine-rank .rank-fill{background:#edbe6b}
+.other-ranks summary{font-size:13px;font-weight:700;padding:12px 0;color:#f7cf85;cursor:pointer}.rank-row small{font-size:11px;color:#bdcecb}.rank-row strong{text-align:right;font-variant-numeric:tabular-nums}
+#commandSection{margin-top:12px}#commandSection .row{gap:8px}
+#commandHelp{min-height:56px}#commandSection>h3{margin-top:17px}
+.release-tip{font-size:13px}.release-tip summary{cursor:pointer;font-weight:800;color:#ffe1a2}.release-tip[open] p{margin:12px 0 3px}
+#gameRefreshBtn{margin:14px 0}
+@media(max-width:430px){.game-tabs{gap:3px}.game-tabs button{font-size:18px;min-height:56px;padding:7px 1px}.game-tabs button span{font-size:11px}.atlas-wrap svg{max-height:510px}.game-head b{font-size:18px}.box{padding:12px}}
+@media(min-width:800px){.game-tabs{max-width:100%}.game-tabs button{min-height:65px}}
+
+/* v09 - campaign progress, historical log and final results */
+.endgame{border:2px solid #d5ae67;background:linear-gradient(155deg,#4a3c28,#1b3035 70%);box-shadow:inset 0 0 0 1px #f5ddad33}
+.endgame-eyebrow{color:#f6d99c;font-size:13px;font-weight:800;letter-spacing:.15em}
+.endgame-headline{font-size:clamp(24px,6vw,37px);line-height:1.32;font-weight:900;margin:9px 0;color:#ffdf92}
+.final-ranking{margin:14px 0;display:grid;gap:6px}
+.final-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid #58716e;border-radius:10px;padding:10px 10px;background:#22383b}
+.final-more{padding:8px 0;border-top:1px solid #526c67}.final-more summary{cursor:pointer;color:#fbd99b;font-weight:700;min-height:44px;padding:10px 0}.final-row.champion{border-color:#e8c376;background:#4b422e}
+.final-row.self{outline:2px solid #efcf8c}
+.final-medal{font-weight:900;text-align:center;color:#ffe3a2;font-size:17px}
+.final-main{min-width:0;overflow-wrap:anywhere}
+.final-main b{display:block}.final-main small{display:block;color:#bdcfca;line-height:1.6}
+.final-count{font-size:21px;font-weight:900;color:#f2d29b;white-space:nowrap}
+.final-count small{font-size:10px;color:#bacdc4;font-weight:600;display:block;text-align:right}
+.history-details{background:#223840;border:1px solid #54716b;border-radius:11px;padding:12px;margin-top:16px}
+.history-details summary{cursor:pointer;font-weight:800;color:#f9d99e;min-height:42px;display:flex;align-items:center}
+.history-turn{background:#192c34;border:1px solid #3f5b5f;border-radius:9px;margin:10px 0;padding:10px 11px}
+.history-turn>summary{color:#e1e9de;font-weight:800;min-height:38px}
+.history-turn .event{overflow-wrap:anywhere}
+#campaignCurrentHint{margin-top:10px}
+@media(max-width:410px){.final-row{grid-template-columns:32px minmax(0,1fr) auto;padding:9px 7px}.final-count{font-size:18px}}
+
+/* 第10段階：実際のソロ版v5.2ソースを参照し、見た目と操作順を揃える。 */
+:root{background:#131d22;color:#f1ede3}
+body{background:#131d22}
+main{max-width:1100px;padding:10px 12px 74px}
+.box{background:#223039;border:1px solid #43575b;border-radius:12px;padding:14px;margin:11px 0}
+.notice{background:#273e39;border-left-color:#e5b65c}
+button,select{border-radius:8px;border-color:#7c9999;background-color:#34494c;color:white}
+button.primary{background:#a16d24;border-color:#e5b65c;font-weight:bold}
+button.danger{background:#683b3b}
+.game-title h2{font-size:19px;margin:4px 0}
+.game-head{gap:5px;margin:7px 0 6px}
+.game-head>div{background:#334a4b;border-color:#567473;padding:6px 4px}
+.game-head b{font-size:16px;color:#f3d088}
+.game-head small{font-size:10px}
+.game-tabs{gap:3px;background:#131d22;padding:5px 0 8px;top:0;z-index:30;border:0}
+.game-tabs button{min-height:48px;font-size:14px;padding:7px 1px;white-space:nowrap;border-radius:7px;background:#34494c;border-color:#7c9999;line-height:1.15}
+.game-tabs button span{font-size:11px;margin-top:2px}
+.game-tabs button.active{background:#a16d24;border-color:#e5b65c;box-shadow:none;color:#fff}
+.game-page{scroll-margin-top:58px}
+.solo-home-box h3,#commandSection h3,.atlas-box h3{font-size:18px;color:#f2cf79}
+.solo-home-summary{background:#334a4b;border-radius:8px;padding:9px;font-size:13px;line-height:1.5}
+.solo-home-cards{margin-top:8px}
+.solo-territory{width:100%;border-radius:10px;border:1px solid #678481;background:#2b4144;margin:6px 0;padding:11px 12px;text-align:left;min-height:57px;display:block}
+.solo-territory strong{color:#f2c26e}
+.solo-territory small{display:block;color:#b7c9c8;font-size:12px;margin-top:5px;line-height:1.6}
+.solo-order-form{display:grid;grid-template-columns:1fr;gap:2px}
+.solo-order-field>label{margin-top:9px;font-size:15px;color:#f1ede3}
+.solo-order-field>select{min-height:48px;font-size:16px;max-width:100%}
+.solo-order-land-brief{padding:9px 10px;background:#263d3e;border:1px solid #506d6c;border-radius:9px;font-size:13px;line-height:1.65;margin:8px 0;color:#d5e3df}
+#commandHelp{background:#3b3930;border:1px solid #756546}
+#commandSection #addCommandBtn{background:#a16d24}
+#commandSection #submitOrdersBtn{background:#a16d24}
+#draftList{margin:10px 0 15px}
+#draftList .solo-draft{margin:9px 0;border:1px solid #698589;background:#283f43;border-radius:11px;overflow:hidden}
+#draftList .solo-draft>summary{list-style:none;cursor:pointer;line-height:1.55;padding:11px 12px;min-height:63px}
+#draftList .solo-draft>summary::-webkit-details-marker{display:none}
+#draftList .solo-draft>summary::before{content:'▸ ';color:#f1c56c}
+#draftList .solo-draft[open]>summary::before{content:'▾ '}
+#draftList .solo-draft strong{color:#f7d17b}
+#draftList .solo-draft .solo-draft-meta{display:block;font-size:13px;color:#d4e4e1;margin:2px 0 0 18px}
+#draftList .solo-draft-actions{padding:9px 12px;background:#1e3337;border-top:1px solid #506b6c}
+#draftList .solo-draft-actions button{min-height:44px}
+.atlas-box{background:#223039}
+.atlas-wrap{background:#182d31;border:1px solid #537174;border-radius:10px;padding:5px}
+.atlas-wrap svg{max-height:520px}
+.atlas-link{stroke:#fafaf0;stroke-width:8;opacity:.94;stroke-linecap:round}
+.atlas-link.hl{stroke:#ffd177;stroke-width:9;opacity:1}
+.atlas-node .node-main{stroke:#e2e8dc;stroke-width:3}
+.atlas-node.mine .node-main{stroke:#f2c26e;stroke-width:4.5}
+.atlas-node.selected .node-main{stroke:#ffe17a;stroke-width:5.5}
+.atlas-node text{font-size:26px}
+.atlas-node.dim{opacity:.68}
+#atlasDetail{background:#233f43;border:1px solid #8aa9a7}
+#factionRanks .rank-row{border-color:#506c6a}
+@media(max-width:420px){
+ .box{padding:11px 10px}
+ .game-tabs button{font-size:12px;min-height:43px;padding:6px 0}
+ .game-tabs button span{font-size:10px}
+ #gamePanel .game-title{gap:6px}
+ .atlas-wrap svg{max-height:none}
+ .game-head b{font-size:14px}
+}
+</style>
+</head>
+<body><main>
+<header><div class="subtitle">招待制オンライン対戦 ／ ソロ版v5.2準拠UI（第10段階）</div><h1>🏯 戦国十六国 ONLINE</h1><div class="muted">招待制2〜6人・全員命令確定で自動進行・1日のターン数は無制限</div></header>
+<details class="notice release-tip"><summary>🔰 使い方・ゲームの進め方</summary><p>① 招待部屋を作る／参加 → ② 国と大名を選ぶ → ③ 全員準備完了で開始 → ④ 命令を予約して確定 → ⑤ 全員確定で自動進行。1日あたりのターン数制限なし。画面上部のタブで「地図・命令・外交・武将・委任・戦況」を切り替えます。</p><p>第9段階では、終戦順位（領地数→兵数→資金の順で比較）、過去12ターンの戦況記録、NPCの防衛・宣戦判断、次の対戦への切替を追加しました。まだソロ版v5.2の全機能・全数値を完全に一致させた版ではありません。</p></details>
+<div aria-live="polite" id="message" role="alert"></div><div id="status">● 自動接続の準備中</div>
+<section class="box" id="configPanel"><h2>🔧 ① サーバー設定（接続できないときのみ確認）</h2>
+<p class="muted">SupabaseのProject URLと公開キーは入力済みです。読み込み時に接続します。接続できない場合はこの画面から再接続できます。<strong>service_role や secret key は絶対に入力しないでください。</strong></p>
+<label for="projectUrl">Supabase Project URL</label><input autocomplete="off" id="projectUrl" placeholder="https://xxxxxxxx.supabase.co" type="url"/>
+<label for="publicKey">Publishable key / anon public key</label><input autocomplete="off" id="publicKey" placeholder="sb_publishable_... または eyJ..." spellcheck="false" type="text"/>
+<div class="row" style="margin-top:12px"><button class="primary" id="connectBtn">🔗 保存して接続</button><button class="soft" id="configToggle">設定を閉じる</button></div>
+<p class="muted">このHTMLを友達にも同じURLで開いてもらえば、接続情報を手入力する必要はありません。部屋への参加には別途招待コードが必要です。</p></section>
+<section class="box hidden" id="homePanel"><h2>🎴 ② 部屋を作る／参加する</h2>
+<label for="displayName">表示名（1〜20文字）</label><input autocomplete="nickname" id="displayName" maxlength="20" placeholder="ゲーム内の名前"/>
+<div class="row"><div><label for="capacity">人数上限</label><select id="capacity"><option value="2">2人</option><option value="3">3人</option><option value="4">4人</option><option value="5">5人</option><option selected="" value="6">6人</option></select></div><div style="align-self:end"><button class="primary" id="createBtn" style="width:100%">🏯 新しい部屋を作る</button></div></div>
+<label for="inviteInput">友達の招待コード（8文字）</label><input autocapitalize="characters" id="inviteInput" maxlength="8" placeholder="A1B2C3D4" spellcheck="false"/><div class="row" style="margin-top:10px"><button id="joinBtn">🔑 招待コードで参加</button><button class="soft hidden" id="resumeBtn">📂 前の部屋に戻る</button></div>
+<div class="notice" style="margin-top:15px">この段階では全員準備完了後、部屋の作成者が「ゲーム開始」を押せます。<br/>匿名ログインのため、Safariの履歴やWebサイトデータを削除すると参加者IDが変わり、同じ枠に戻れなくなることがあります。</div>
+</section>
+<section class="box hidden" id="roomPanel"><h2 id="roomTitle">🏯 招待部屋</h2>
+<div>招待コード：<span class="code" id="roomCode"></span></div><div class="row" style="margin-top:10px"><button class="soft" id="copyBtn">📋 招待コードをコピー</button><button class="danger" id="leaveBtn">部屋を退出</button></div>
+<p class="muted" id="roomSummary"></p><h3>👥 参加プレイヤー</h3><div id="playersList"></div>
+<h3>🗾 16か国から領地を選択</h3><p class="muted">国と大名をそれぞれ1つ選びます。ほかの人と重複するものは選べません。</p><div class="countries" id="countryGrid"></div>
+<div class="row"><div><label for="countrySelect">開始する国</label><select id="countrySelect"></select></div><div><label for="daimyoSelect">大名</label><select id="daimyoSelect"></select></div></div>
+<div class="row" style="margin-top:11px"><button class="primary" id="chooseBtn">✅ 大名・国を確定</button><button class="soft" id="readyBtn">☑️ 準備完了にする</button><button class="soft" id="manualRefreshBtn">🔄 更新</button></div>
+<div class="notice" style="margin-top:14px"><strong id="roomReady">選択状況を確認中…</strong><br/>全員が準備完了したら部屋の作成者が開始できます。2〜6人で開始可能です。</div>
+<button class="primary hidden" id="startGameBtn" style="width:100%;margin-top:12px;font-size:18px">⚔️ 全員準備完了！ゲーム開始</button>
+</section>
+<section class="hidden" id="gamePanel">
+<div class="game-title"><div><span class="subtitle">SENGOKU SIXTEEN · ONLINE</span><h2>🏯 自国と天下の形勢</h2></div><button class="soft" id="gameRefreshTop" type="button">↻ 更新</button></div>
+<div class="notice game-notice" id="gameSummary">ゲームデータを取得中…</div>
+<div class="game-head"><div><small>現在のターン</small><b id="gameTurn">1 / 60</b></div><div><small>命令確定</small><b id="gameLocked">0 / 2</b></div><div><small>あなたの領地</small><b id="gameLands">1 国</b></div></div>
+<section aria-live="polite" class="box endgame hidden" id="endgamePanel">
+<div class="endgame-eyebrow">🎖️ 天下の決着</div>
+<div class="endgame-headline" id="endgameHeadline">最終成績を集計中…</div>
+<p class="muted" id="endgameSub"></p>
+<div class="final-ranking" id="endgameStandings"></div>
+<div class="row"><button class="primary" id="newMatchBtn" type="button">🏯 新しい対戦を作る</button><button class="soft" id="endgameReportsBtn" type="button">📜 戦歴を振り返る</button></div>
+<p class="muted tiny">「新しい対戦を作る」は端末の部屋表示だけを切り替えます。今の対戦結果はサーバー上に残ります。</p>
+</section>
+<nav aria-label="ゲーム画面を切り替える" class="game-tabs" id="gameTabs" role="tablist"><button data-activate-tab="overview" role="tab" type="button">🏯<span>自国</span></button><button data-activate-tab="orders" role="tab" type="button">⚔️<span>命令</span></button><button data-activate-tab="reports" role="tab" type="button">⚔️<span>戦況</span></button><button data-activate-tab="diplomacy" role="tab" type="button">🤝<span>外交</span></button><button data-activate-tab="officers" role="tab" type="button">👥<span>武将</span></button><button data-activate-tab="delegate" role="tab" type="button">🏯<span>管理</span></button></nav>
+<section class="game-page" data-game-page="overview"><section class="box solo-home-box"><h3>🏯 自国の領地一覧</h3><div class="solo-home-summary" id="soloHomeStatus">自国情報を取得中…</div><div class="solo-home-cards" id="soloHomeTerritories"></div></section><div class="box atlas-box"><h3>全国情勢（全16国・各3隣接）</h3><p class="muted tiny">ソロ版v5.2と同じ国の配置・隣接線。金枠＝自領、タップで詳細を表示します。実際の地図ではなく模式図です。</p><div aria-label="勢力と隣接関係の模式図" class="atlas-wrap" id="atlasWrap"></div><div aria-live="polite" class="atlas-detail" id="atlasDetail">国をタップして情報を確認してください。</div></div><div class="box"><h3>📊 天下の形勢</h3><div id="factionRanks"></div><div aria-live="polite" class="muted tiny" id="campaignCurrentHint"></div><div class="row" style="margin-top:10px"><button class="primary" id="mapGoOrders" type="button">📜 命令を予約する</button><button class="soft" id="mapGoReports" type="button">📢 前ターンの結果</button></div></div><details class="box territory-details"><summary>📋 全国16か国の情報一覧（タップで開く）</summary><p class="muted tiny">偵察していない敵の情報は非公開です。</p><div id="provinceGrid"></div></details></section>
+<section class="game-page box" data-game-page="orders" id="commandSection">
+<h3>⚔️ 命令を予約</h3>
+<p class="muted">ソロ版と同じく、命令を選択 → 領地を選択 → 内容を指定 → 予約。全員確定後にまとめて処理します。</p><div class="solo-order-form"><div class="solo-order-field"><label for="commandType">命令</label><select id="commandType">
+<option value="domestic">内政（政治力×4〜8の金を獲得）</option><option value="hire">兵士雇用</option>
+<option value="recruit">登用（能力・特性に応じて費用決定）</option><option value="attack">戦争（隣国を攻撃）</option>
+<option value="transfer">兵士移動（隣接する自領へ）</option><option value="scout">🔍 偵察</option>
+<option value="scheme">🧠 策略：調略</option><option value="burn">🔥 策略：焼き討ち</option><option value="sabotage">🪤 策略：妨害</option>
+</select></div><div class="solo-order-field"><label for="commandLand">命令を行う領地</label><select id="commandLand"></select></div><div aria-live="polite" class="solo-order-land-brief" id="soloOrderLandStats">領地を選ぶと、ここに兵数・資金・家臣数が表示されます。</div></div>
+
+<div class="hidden" id="hireAmountArea"><label for="hireGold">募兵費用</label><select id="hireGold"><option value="100">100金</option><option value="200">200金</option><option value="300">300金</option><option value="400">400金</option><option value="500">500金</option><option value="600">600金</option><option value="700">700金</option><option value="800">800金</option><option value="900">900金</option><option selected="" value="1000">1000金</option></select></div>
+<div class="hidden" id="targetArea"><label for="commandTarget">対象の隣国</label><select id="commandTarget"></select></div>
+<div class="hidden" id="schemeArea"><label for="schemeOfficer">調略する敵武将（偵察で判明した家臣のみ）</label><select id="schemeOfficer"></select></div>
+<div class="hidden" id="rateArea"><label for="commandRate">兵数の割合</label><select id="commandRate"><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="50">50%</option><option value="60">60%</option><option value="70">70%</option><option selected="" value="80">80%</option><option value="90">90%</option><option value="100">100%</option></select></div>
+<div class="hidden" id="recruitArea"><label for="candidateSlot">登用候補（実際の能力と費用）</label><select id="candidateSlot"></select></div>
+<div class="notice" id="commandHelp" style="margin-top:10px"></div>
+<button class="primary" id="addCommandBtn" style="width:100%;margin-top:12px">＋ 命令を追加</button>
+<div class="row" style="margin-top:16px"><button class="soft" id="autoDraftBtn" type="button">🤖 おすすめ命令を一括予約</button><button class="danger" id="clearDraftBtn" type="button">命令を取り消す</button></div><p class="muted tiny">おすすめ予約は内政・募兵・登用のみ。戦争は誤操作を防ぐため自動予約しません。</p><h3>📜 今ターンの予約 <small id="draftCount"></small></h3><div id="draftList"></div>
+<button class="primary" id="submitOrdersBtn" style="width:100%;font-size:18px;margin-top:12px">✅ 命令を確定して次のターンへ</button>
+<div class="notice" id="turnWaitNote" style="margin-top:12px"></div>
+</section>
+<section class="box game-page" data-game-page="officers"><h3>👥 配下武将</h3><div class="muted" id="myOfficers"></div></section>
+<section class="box p06-panel game-page" data-game-page="diplomacy">
+<h3>🤝 外交｜隣国を選択</h3>
+<p class="muted">親善・挑発の使者は無料（命令消費なし）。毎ターン友好度が9〜11変化。<strong>81以上で同盟</strong>（戦争・策略不可）、<strong>30以下で戦争可能</strong>。宣戦布告は無料、2ターン後に友好度0。</p>
+<div class="row"><div><label for="dipFrom">自国の領地</label><select id="dipFrom"></select></div>
+<div><label for="dipTo">隣接する敵国</label><select id="dipTo"></select></div></div>
+<div class="notice" id="dipStatus">外交状況を取得しています。</div>
+<div class="row"><div><label for="dipOfficer">使者にする家臣</label><select id="dipOfficer"></select></div>
+<div><label for="dipMode">外交方針</label><select id="dipMode"><option value="good">🟢 親善（友好度上昇）</option><option value="bad">🔴 挑発（友好度低下）</option><option value="off">↩ 使者を帰還させる</option></select></div></div>
+<div class="row" style="margin-top:10px"><button class="primary" id="dipSendBtn">📨 使者を設定／帰還</button>
+<button class="danger" id="dipDeclareBtn">⚔️ 宣戦布告（2ターン）</button></div>
+<div class="muted" id="dipList" style="margin-top:13px"></div>
+</section>
+<section class="box p06-panel game-page" data-game-page="officers">
+<h3>👥 武将の管理・褒美</h3><p class="muted">褒美・武将移動は命令枠を消費しません。<strong>褒美は各武将1ターン1回</strong>、武将移動は同じ勢力の自領へ1人1ターン1回です。命令確定前に実行してください。</p>
+<div class="row"><div><label for="manageFrom">武将のいる領地</label><select id="manageFrom"></select></div>
+<div><label for="manageOfficer">武将</label><select id="manageOfficer"></select></div></div>
+<div class="notice" id="manageInfo">武将を選択してください。</div>
+<div class="row"><div><label for="rewardGold">褒美</label><select id="rewardGold"><option value="100">100金 → 忠誠+15</option><option value="300">300金 → 忠誠+40</option><option value="500">500金 → 忠誠+60</option></select></div>
+<div style="align-self:end"><button class="primary" id="rewardBtn" style="width:100%">🎁 褒美を与える</button></div></div>
+<div class="row"><div><label for="manageTo">武将の移動先</label><select id="manageTo"></select></div>
+<div style="align-self:end"><button class="soft" id="officerMoveBtn" style="width:100%">🏇 武将を移動する</button></div></div>
+</section>
+<section class="box p06-panel game-page" data-game-page="delegate" id="delegationPanel">
+<h3>🏯 地図と領地管理（城主委任）</h3>
+<p class="muted">委任設定は毎ターン継続。内政・募兵・登用から城主が自動判断し、<strong>委任回数は手動命令と同じ枠から引きます</strong>。委任中の領地へ手動予約はできません。占領当日や城主不在では設定できません。</p>
+<div class="row"><div><label for="delegateLand">設定する領地</label><select id="delegateLand"></select></div>
+<div><label for="delegateCount">委任回数</label><select id="delegateCount"><option value="0">0回（解除）</option><option value="1">1回</option><option value="2">2回</option><option value="3">3回</option></select></div></div>
+<label for="delegatePolicy">委任方針</label><select id="delegatePolicy"><option value="balanced">⚖️ 均等</option><option value="domestic">💰 内政重視</option><option value="hire">🪖 募兵重視</option><option value="recruit">👥 登用重視</option></select>
+<button class="primary" id="delegateSave" style="width:100%;margin-top:12px">✅ 委任設定を保存</button>
+<div class="muted" id="delegateList" style="margin-top:12px"></div>
+</section>
+<section class="box game-page" data-game-page="reports"><h3>⚔️ 最新の戦争結果・出来事</h3><div id="turnReport"></div>
+<details class="history-details" id="historyDetails"><summary>📚 過去12ターンの記録を開く</summary><div class="history-list muted" id="campaignHistory">サーバーから記録を取得中です。</div></details></section>
+<button class="soft" id="gameRefreshBtn" style="width:100%">🔄 最新情報を再取得</button>
+<p class="muted tiny">この画面は既存の第7段階のサーバー設定を使用。旧ゲームのファイルや部屋は消えません。</p>
+</section>
+<footer class="muted" style="font-size:12px;margin:20px 0">戦国十六国 ONLINE · 16か国／60ターン · 招待制2〜6人 · ソロ版v5.2基準（差分あり）</footer>
+</main>
+<script type="module">
+const LAND=['蝦夷','陸奥','出羽','武蔵','信濃','越前','尾張','山城','出雲','安芸','伊予','筑前','薩摩','会津','美濃','紀伊'];
+const LORD=['織田信長','武田信玄','上杉謙信','徳川家康','伊達政宗','毛利元就','北条氏康','島津義弘','長宗我部元親','今川義元','大友宗麟','最上義光','三好長慶','豊臣秀吉','龍造寺隆信','斎藤道三'];
+const KEY='s52_online_new_20261118_9c7d_';
+const $=id=>document.getElementById(id);
+const state={campaign:null,campaignRoom:null,campaignTurn:null,campaignPending:false,campaignFailure:false,lastFinishCelebrated:false,activeTab:'overview',mapFocus:null,restoredDraftKey:null,client:null,user:null,roomId:localStorage.getItem(KEY+'room')||null,room:null,poll:null,busy:false,draft:[],draftTurn:null};
+const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const show=(id,on)=>$(id).classList.toggle('hidden',!on);
+function say(s,error=false){$('message').className='notice '+(error?'warn':'good');$('message').textContent=s;}
+function status(s){$('status').textContent=s;}
+function validateName(){const v=$('displayName').value.trim();if(!v||[...v].length>20)throw Error('表示名は1〜20文字で入力してください');localStorage.setItem(KEY+'name',v);return v;}
+async function rpc(fn,args){if(!state.client)throw Error('先にサーバー接続が必要です');const {data,error}=await state.client.rpc(fn,args);if(error)throw Error(error.message||'サーバーとの通信に失敗しました');return data;}
+async function busy(fn){if(state.busy)return;state.busy=true;document.querySelectorAll('button').forEach(x=>x.disabled=true);try{await fn()}catch(e){say(e?.message||String(e),true)}finally{state.busy=false;document.querySelectorAll('button').forEach(x=>{if(x.classList.contains('land')){const occupied=state.room?.players?.find(p=>p.country===Number(x.dataset.land));x.disabled=!!occupied&&occupied.user_id!==state.user?.id;}else{x.disabled=false;}});if(state.room){if(state.room.game)renderGame();else renderRoom();}}}
+function ui(){
+ const playing=!!state.room?.game;
+ show('homePanel',!!state.user&&!state.room);
+ show('roomPanel',!!state.user&&!!state.room&&!playing);
+ show('gamePanel',!!state.user&&!!state.room&&playing);
+ show('resumeBtn',!!state.user&&!state.room&&!!state.roomId);
+}
+async function connect(){
+ const url=$('projectUrl').value.trim().replace(/\/$/,'');const key=$('publicKey').value.trim();
+ if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)||key.length<30)throw Error('Project URL・公開キーを確認してください。service_role/secret key は入力不可です');
+ if(/service_role|sb_secret_/i.test(key))throw Error('secret key や service_role key は使用できません。公開キーだけ入力してください');
+ localStorage.setItem(KEY+'url',url);localStorage.setItem(KEY+'key',key);
+ status('● Supabaseへ接続中…');
+ const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/+esm');
+ const client=createClient(url,key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ // Require this Supabase project's anonymous sign-in setting.
+ let {data:{user},error}=await client.auth.getUser();if(error&&!/session|missing|not authenticated/i.test(error.message||''))throw error;
+ if(!user){const r=await client.auth.signInAnonymously();if(r.error)throw Error('匿名ログインできません。Supabaseの Authentication > Providers > Anonymous を有効化してください。詳細：'+r.error.message);user=r.data.user;}
+ if(!user)throw Error('ログインに失敗しました');
+ state.client=client;state.user=user;status('● 接続成功／匿名プレイヤーとして認証済み');show('configPanel',false);
+ if(state.roomId)await refresh(true);ui();
+ if(state.poll)clearInterval(state.poll);state.poll=setInterval(()=>{if(document.visibilityState==='visible'&&state.roomId&&!state.busy)refresh(true)},4000);
+}
+async function refresh(silent=false){
+ if(!state.roomId||!state.client)return;
+ const id=state.roomId;
+ try{const room=await rpc('s52_game_snapshot',{p_room_id:id});if(id!==state.roomId)return;
+ const changed=JSON.stringify(room)!==JSON.stringify(state.room);state.room=room;
+ if(changed){if(room.game)renderGame();else renderRoom();}ui();
+ if(room.game)await fetchCampaignReport(room).catch(e=>{if(!silent)say('戦況記録はまだ取得できません：'+e.message,true);});
+ }catch(e){if(!silent)say('部屋の取得に失敗：'+e.message,true);else status('● 再接続確認中');}
+}
+async function fetchCampaignReport(room){
+ const g=room?.game;if(!g||!state.roomId||!state.client)return;
+ const id=state.roomId,cacheKey=id+':'+g.turn+':'+g.phase;
+ if(state.campaignPending||state.campaignRoom===cacheKey)return;
+ state.campaignPending=true;
+ try{
+  const r=await rpc('s52_campaign_report',{p_room_id:id});
+  if(id!==state.roomId)return;
+  state.campaign=r;state.campaignRoom=cacheKey;state.campaignFailure=false;
+  renderCampaignReport();
+  if(r.finished&&!state.lastFinishCelebrated){
+   state.lastFinishCelebrated=true;
+   setGameTab('overview');
+   say('🎉 全ターンが終了しました！ 正式な順位を表示しています。');
+  }
+ }catch(e){
+  state.campaignFailure=true;
+  $('campaignCurrentHint').textContent='戦況記録の取得待ち。第9段階のSQLを先に実行してください。';
+  if(!state.campaign||state.campaignRoom!==cacheKey)state.campaign=null;
+  // Don't break gameplay if a SQL update is missing.
+  throw e;
+ }finally{state.campaignPending=false;}
+}
+function renderCampaignReport(){
+ const room=state.room,g=room?.game,r=state.campaign;
+ if(!g)return;
+ const finished=g.phase==='finished';
+ show('endgamePanel',finished);
+ if(!r){
+  if(finished){$('endgameHeadline').textContent='終戦！';$('endgameSub').textContent='公式順位を取得中です。';$('endgameStandings').textContent='';}
+  return;
+ }
+ if(r.turn!==g.turn||Boolean(r.finished)!==finished){$('campaignCurrentHint').textContent='戦況を同期中です…';return;}
+ const standings=Array.isArray(r.standings)?r.standings:[];
+ const myLeader=room.players?.find(p=>p.user_id===state.user.id)?.daimyo;
+ const current=standings.find(p=>p.leader===myLeader);
+ $('campaignCurrentHint').textContent=finished?'🏁 最終順位が確定しました。':
+   current?'📊 あなたの現在順位：'+current.position+'位 / 16勢力　・領地 '+current.lands+'国　（兵数・資金は終戦時に集計）':'';
+ if(finished){
+  const winner=standings[0],myRank=current?.position;
+  const name=winner?(winner.name||LORD[winner.leader]||'不明'):'確認中';
+  $('endgameHeadline').textContent=winner?'🏆 '+name+' が戦国の覇者！':'🏁 対戦終了';
+  $('endgameSub').textContent=(r.end_reason==='unification'?'全16か国を統一！':'60ターンを戦い抜きました。')+
+    (myRank?' あなたは '+myRank+'位。':'')+' 順位は領地数→残兵数→資金で決定。';
+  const resultRow=(p,i)=>'<div class="final-row '+(i===0?'champion ':'')+(p.user_id===state.user.id?'self':'')+'">'+
+    '<span class="final-medal">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':p.position+'位')+'</span>'+
+    '<span class="final-main"><b>'+escape(p.name||LORD[p.leader]||'勢力')+(p.human?' 👤':' 🤖')+'</b><small>'+
+     escape(LORD[p.leader]||'')+' / 残兵 '+fmt(p.troops)+' / 資金 '+fmt(p.gold)+'</small></span>'+
+    '<span class="final-count">'+p.lands+'<small>領地</small></span></div>';
+  const me=standings.find(p=>p.user_id===state.user.id&&p.position>3);
+  const rest=standings.filter(p=>p.position>3&&p.user_id!==state.user.id);
+  $('endgameStandings').innerHTML=standings.slice(0,3).map(resultRow).join('')+
+    (me?'<p class="muted tiny">あなたの成績</p>'+resultRow(me,me.position-1):'')+
+    (rest.length?'<details class="final-more"><summary>全16勢力の最終順位を表示</summary><div class="final-ranking">'+rest.map((p)=>resultRow(p,p.position-1)).join('')+'</div></details>':'');
+ }
+ const history=Array.isArray(r.history)?r.history:[];
+ $('campaignHistory').innerHTML=history.length?history.map((h,i)=>{
+   const evs=Array.isArray(h.events)?h.events:[];
+   return '<details class="history-turn" '+(i===0?'open':'')+'><summary>第'+h.turn+'ターン　｜　閲覧できる出来事 '+evs.length+'件</summary>'+
+     (evs.length?evs.map(ev=>'<div class="event">'+
+      (Number.isInteger(ev.land)?'<b>'+escape(LAND[ev.land]||'')+'</b> ':'')+
+      (Number.isInteger(ev.target)?' → '+escape(LAND[ev.target]||'')+' ':'')+
+      escape(ev.text||'（詳細なし）')+'</div>').join(''):'<div class="muted tiny">公開された記録はありません。</div>')+'</details>';
+  }).join(''):'記録はまだありません。';
+}
+$('endgameReportsBtn').addEventListener('click',()=>setGameTab('reports'));
+$('newMatchBtn').addEventListener('click',()=>{
+ if(state.room?.game?.phase!=='finished'){say('終戦後に新しい対戦へ切り替えられます。',true);return;}
+ if(!confirm('新しい部屋の作成画面に戻りますか？ 今回の終戦結果はサーバー上に残ります。'))return;
+ clearPersistedDraft();state.room=null;state.roomId=null;state.campaign=null;state.campaignRoom=null;
+ state.campaignFailure=false;state.lastFinishCelebrated=false;
+ localStorage.removeItem(KEY+'room');state.activeTab='overview';
+ ui();say('新しい対戦を作成できます。古い部屋と戦歴は削除していません。');
+ window.scrollTo({top:0,behavior:'smooth'});
+});
+function renderRoom(){
+ const room=state.room;if(!room)return;
+ const me=room.players.find(p=>p.user_id===state.user.id);if(!me){say('この部屋に参加していません',true);return;}
+ $('roomTitle').textContent='🏯 オンライン招待部屋';$('roomCode').textContent=room.code;
+ const count=room.players.length;const selected=room.players.filter(p=>p.country!==null&&p.daimyo!==null).length;const readyCount=room.players.filter(p=>p.ready).length;
+ $('roomSummary').textContent=count+'/'+room.capacity+'人参加 ／ 大名と国の選択完了 '+selected+'/'+count+'人 ／ 準備完了 '+readyCount+'/'+count+'人 ／ 約4秒ごとに自動同期';
+ $('playersList').innerHTML=room.players.map(p=>'<div class="player"><span><b>'+escape(p.name)+(p.user_id===state.user.id?'（あなた）':'')+'</b><small>'+ (p.daimyo===null?'大名未選択':escape(LORD[p.daimyo]))+' ／ '+(p.country===null?'国未選択':escape(LAND[p.country]))+'</small></span><span class="tag '+(p.ready?'chosen':'')+'">'+(p.ready?'✅ 準備完了':p.country!==null&&p.daimyo!==null?'◯ 選択済み':'⏳ 選択待ち')+'</span></div>').join('');
+ const occupiedCountries=new Map(room.players.filter(p=>p.country!==null).map(p=>[p.country,p]));
+ const occupiedLords=new Map(room.players.filter(p=>p.daimyo!==null).map(p=>[p.daimyo,p]));
+ const priorCountry=$('countrySelect').value;const priorLord=$('daimyoSelect').value;
+ $('countrySelect').innerHTML='<option value="">国を選択</option>'+LAND.map((name,i)=>{const p=occupiedCountries.get(i);return '<option value="'+i+'" '+(p&&p.user_id!==state.user.id?'disabled':'')+'>'+escape(name)+(p&&p.user_id!==state.user.id?'（選択済）':'')+'</option>'}).join('');
+ $('daimyoSelect').innerHTML='<option value="">大名を選択</option>'+LORD.map((name,i)=>{const p=occupiedLords.get(i);return '<option value="'+i+'" '+(p&&p.user_id!==state.user.id?'disabled':'')+'>'+escape(name)+(p&&p.user_id!==state.user.id?'（選択済）':'')+'</option>'}).join('');
+ function validChoice(select,v){return !!v&&[...select.options].some(o=>o.value===v&&!o.disabled);}
+ $('countrySelect').value=validChoice($('countrySelect'),priorCountry)?priorCountry:me.country!==null?String(me.country):'';
+ $('daimyoSelect').value=validChoice($('daimyoSelect'),priorLord)?priorLord:me.daimyo!==null?String(me.daimyo):'';
+ $('countryGrid').innerHTML=LAND.map((name,i)=>{const p=occupiedCountries.get(i),isMe=p?.user_id===state.user.id;return '<button type="button" class="land '+(p?'occupied ':'')+(isMe?'mine':'')+'" data-land="'+i+'" '+(p&&!isMe?'disabled':'')+'>'+escape(name)+'<small>'+(p?(isMe?'あなた':escape(p.name)):'選択可能')+'</small></button>'}).join('');
+ const canReady=me.country!==null&&me.daimyo!==null;
+ $('readyBtn').disabled=!canReady;
+ $('readyBtn').textContent=me.ready?'↩ 準備完了を取り消す':'☑️ 準備完了にする';
+ const readyToStart=count>=2&&readyCount===count&&selected===count&&room.host_id===state.user.id;
+ show('startGameBtn',readyToStart);
+ $('roomReady').textContent=count>=2&&readyCount===count?'✅ 全員準備完了！ 部屋を作った人が「ゲーム開始」を押せます。':count<2?'🔜 最低2人が必要です。友達を招待してください。':selected!==count?'🔜 参加者全員が国と大名を選択してください。':'🔜 全員が「準備完了」を押してください（2〜6人で開始可能）。';
+}
+
+// 第5段階：戦争・登用・策略・NPCをまとめてテスト
+const fmt=n=>n===null||n===undefined?'？？？':Number(n).toLocaleString('ja-JP');
+const LINKS=[[0,1],[0,2],[0,13],[1,2],[1,13],[2,4],[13,3],[3,4],[3,6],[4,14],[14,5],[14,8],[5,7],[5,8],[6,7],[6,15],[7,15],[15,10],[8,9],[9,11],[9,12],[10,11],[10,12],[11,12]];
+const neighbors=i=>LINKS.filter(x=>x.includes(i)).map(x=>x[0]===i?x[1]:x[0]);
+const ownProvinces=()=>state.room?.game?.provinces?.filter(p=>p.human===state.user?.id)||[];
+const allProvinces=()=>state.room?.game?.provinces||[];
+const labelOf=o=>{
+ const names={domestic:'💰 内政',hire:'🪖 募兵',recruit:'👥 登用',attack:'⚔️ 戦争',transfer:'🚚 兵移動',scout:'🔍 偵察',burn:'🔥 焼き討ち',sabotage:'🪤 妨害',scheme:'🧠 調略'};
+ return (names[o.type]||o.type)+(o.to!==undefined?' → '+LAND[o.to]:'')+(o.amount!==undefined&&o.type!=='scheme'?'（'+fmt(o.amount)+(o.type==='hire'?'金':'%')+'）':'')+(o.type==='recruit'?'（候補'+(Number(o.slot)+1)+'）':o.type==='scheme'?'（'+escape(o.officerName||'対象家臣番号'+(Number(o.amount)+1))+'）':'');
+};
+
+// integrated online UI: navigable screens, V5.2-style territory diagram, autosave and quick order suggestions.
+const MAP_POS=[[638,57],[544,178],[393,168],[607,421],[450,359],[284,544],[533,549],[421,619],[126,552],[129,649],[335,795],[220,737],[102,844],[629,291],[290,417],[466,753]];
+const CLAN_COLORS=['#516878','#805943','#6d6c4e','#546a53','#71627f','#7b585b','#52697f','#807447','#4d7778','#756651','#58705f','#7d6569','#657087','#866544','#476b66','#695d74'];
+function setGameTab(name){
+ if(!['overview','orders','diplomacy','officers','delegate','reports'].includes(name))name='overview';
+ state.activeTab=name;applyGameTab();
+ try{sessionStorage.setItem(KEY+'tab',name);}catch{}
+}
+function applyGameTab(){
+ const tab=state.activeTab||'overview';
+ document.querySelectorAll('[data-game-page]').forEach(el=>el.classList.toggle('hidden',el.dataset.gamePage!==tab));
+ document.querySelectorAll('[data-activate-tab]').forEach(btn=>{let active=btn.dataset.activateTab===tab;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1;});
+}
+function ordersKey(){return KEY+'draft_'+String(state.user?.id||'')+'_'+String(state.roomId||'')+'_'+String(state.room?.game?.turn||'');}
+function persistDraft(){if(!state.room?.game||!state.roomId||!state.user)return;try{localStorage.setItem(ordersKey(),JSON.stringify(state.draft.slice(0,40)));}catch{}}
+function clearPersistedDraft(){try{localStorage.removeItem(ordersKey());}catch{}state.draft=[];state.restoredDraftKey=null;}
+function restoreDraftOnce(){
+ const g=state.room?.game;if(!g||!state.user||g.my_commands!==null)return;
+ const key=ordersKey();if(state.restoredDraftKey===key)return;state.restoredDraftKey=key;
+ try{
+  const arr=JSON.parse(localStorage.getItem(key)||'[]');if(!Array.isArray(arr))return;
+  const mine=ownProvinces(),delegated=g.delegations||[];
+  const cap=Math.max(0,(mine.length?3+2*(mine.length-1):0)-delegated.reduce((n,d)=>n+Number(d.count||0),0));
+  const legal=['domestic','hire','recruit','attack','transfer','scout','burn','sabotage','scheme'];
+  const seen=new Set();state.draft=arr.filter(c=>{
+   if(!c||typeof c!=='object'||!legal.includes(c.type)||!Number.isInteger(c.from))return false;
+   if(!mine.some(p=>p.country===c.from)||delegated.some(d=>d.country===c.from&&d.count>0))return false;
+   const k=c.from+'-'+c.type;if(seen.has(k))return false;seen.add(k);
+   if(['attack','transfer','scout','burn','sabotage','scheme'].includes(c.type)){
+    if(!Number.isInteger(c.to)||!neighbors(c.from).includes(c.to))return false;
+    const a=allProvinces()[c.from],b=allProvinces()[c.to];if(!a||!b)return false;
+    if(c.type==='transfer'?b.leader!==a.leader:b.leader===a.leader)return false;
+   }
+   return true;
+  }).slice(0,cap);
+ }catch{}
+}
+function renderAtlas(){
+ const g=state.room?.game,container=$('atlasWrap');if(!g||!container)return;
+ const all=allProvinces(),focus=Number.isInteger(state.mapFocus)?state.mapFocus:(ownProvinces()[0]?.country??0);
+ if(!all[focus])return;state.mapFocus=focus;
+ const showNeighbors=new Set(neighbors(focus));
+ const drawEdges=LINKS.map(([a,b])=>{const on=a===focus||b===focus;const [x1,y1]=MAP_POS[a],[x2,y2]=MAP_POS[b];return '<line class="atlas-link'+(on?' hl':'')+'" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"/>';}).join('');
+ const drawNodes=all.map((p,i)=>{
+  const [x,y]=MAP_POS[i];const mine=p.human===state.user.id,person=state.room.players.find(z=>z.user_id===p.human);
+  const selected=i===focus;const dim=i!==focus&&!showNeighbors.has(i);
+  const icon=mine?'★':person?'●':'•';
+  return '<g class="atlas-node '+(mine?'mine ':'')+(selected?'selected ':'')+(dim?'dim':'')+'" data-atlas="'+i+'" tabindex="0" role="button" aria-label="'+escape(LAND[i])+'の情報を見る">'+
+   '<rect x="'+(x-65)+'" y="'+(y-42)+'" width="130" height="84" fill="transparent" />'+
+   '<rect class="node-main" x="'+(x-61)+'" y="'+(y-30)+'" width="122" height="60" rx="11" fill="'+CLAN_COLORS[p.leader%CLAN_COLORS.length]+'"/>'+
+   '<text x="'+x+'" y="'+(y+8)+'">'+escape(LAND[i])+'</text><text class="node-icon" x="'+(x+53)+'" y="'+(y-22)+'">'+icon+'</text></g>';
+ }).join('');
+ container.innerHTML='<svg viewBox="0 0 730 900" role="img" aria-label="16か国の勢力、各国の3つの隣接関係を示した模式図">'+drawEdges+drawNodes+'</svg>';
+ const p=all[focus],me=p.human===state.user.id,owner=state.room.players.find(q=>q.user_id===p.human);
+ const visible=me||Boolean(p.scouted),myLeader=ownProvinces().some(q=>q.leader===p.leader);
+ const troops=visible?fmt(p.troops):'未偵察',gold=me?fmt(p.gold):'非公開';
+ const officerCount=visible?(p.officers?.length??0)+'人':'未偵察';
+ const adj=neighbors(focus).map(i=>LAND[i]).join('・');
+ const inOrder=me&&!(g.delegations||[]).some(d=>d.country===focus&&d.count>0)&&g.my_commands===null;
+ const fromEnemy=ownProvinces().find(src=>neighbors(src.country).includes(focus)&&src.leader!==p.leader&&!(g.delegations||[]).some(d=>d.country===src.country&&d.count>0));
+ const canTarget=!!fromEnemy&&g.my_commands===null&&g.phase!=='finished';
+ $('atlasDetail').innerHTML='<div class="detail-title">'+escape(LAND[focus])+' <small class="tag">'+(me?'★ 自国':owner?'👤 '+escape(owner.name):'🤖 NPC')+'</small></div>'+
+ '<small>大名 '+escape(LORD[p.leader])+' ／ 隣接：'+escape(adj)+'</small>'+
+ '<div class="detail-kpis"><div><small>🪖 兵数</small><b>'+troops+'</b></div><div><small>💰 資金</small><b>'+gold+'</b></div><div><small>👥 家臣</small><b>'+officerCount+'</b></div></div>'+
+ (myLeader&&!me?'<p class="muted tiny">この国は同じ勢力の領地です。</p>':'')+
+ '<div class="detail-actions">'+(inOrder?'<button type="button" class="primary" data-atlas-action="order" data-land="'+focus+'">📜 この国から命令</button>':'')+
+ (canTarget?'<button type="button" class="soft" data-atlas-action="scout" data-land="'+fromEnemy.country+'" data-target="'+focus+'">🔍 ここへ偵察</button>':'')+
+ '<button type="button" class="soft" data-atlas-action="neighbor">🧭 隣国を確認</button></div>';
+ const leaders=new Map();
+ for(const land of all){const r=leaders.get(land.leader)||{count:0,human:null};r.count++;r.human=r.human||state.room.players.find(q=>q.user_id===land.human)||null;leaders.set(land.leader,r);}
+ const mineLeader=state.room.players.find(q=>q.user_id===state.user.id)?.daimyo;
+ const rankRows=[...leaders.entries()].sort((a,b)=>b[1].count-a[1].count||a[0]-b[0]).map(([idx,r],j)=>
+  '<div class="rank-row '+(idx===mineLeader?'mine-rank':'')+'"><span>'+String(j+1)+'位 '+escape(LORD[idx])+'<br><small>'+(r.human?'👤 '+escape(r.human.name):'🤖 NPC')+'</small></span><div class="rank-meter"><div class="rank-fill" style="width:'+(r.count/16*100)+'%"></div></div><strong>'+r.count+'国</strong></div>');
+ $('factionRanks').innerHTML=rankRows.slice(0,6).join('')+(rankRows.length>6?'<details class="other-ranks"><summary>残り'+(rankRows.length-6)+'勢力も表示</summary>'+rankRows.slice(6).join('')+'</details>':'')+
+ '<p class="muted tiny">勢力の領地数による途中順位。60ターン終了時は領地数→兵数→資金の順で正式判定。</p>';
+}
+$('gameTabs').addEventListener('click',e=>{const b=e.target.closest('[data-activate-tab]');if(b)setGameTab(b.dataset.activateTab);});
+$('atlasWrap').addEventListener('click',e=>{const b=e.target.closest('[data-atlas]');if(b){state.mapFocus=Number(b.dataset.atlas);renderAtlas();}});
+$('atlasWrap').addEventListener('keydown',e=>{if(!['Enter',' '].includes(e.key))return;const b=e.target.closest('[data-atlas]');if(b){e.preventDefault();state.mapFocus=Number(b.dataset.atlas);renderAtlas();}});
+$('atlasDetail').addEventListener('click',e=>{
+ const b=e.target.closest('[data-atlas-action]');if(!b)return;
+ if(b.dataset.atlasAction==='order'){
+  setGameTab('orders');$('commandLand').value=b.dataset.land;refreshCommandOptions();$('commandSection').scrollIntoView({behavior:'smooth',block:'start'});
+ }else if(b.dataset.atlasAction==='scout'){
+  setGameTab('orders');$('commandLand').value=b.dataset.land;$('commandType').value='scout';refreshCommandOptions();$('commandTarget').value=b.dataset.target;refreshCommandOptions();$('commandSection').scrollIntoView({behavior:'smooth',block:'start'});
+ }else if(b.dataset.atlasAction==='neighbor'){
+  state.mapFocus=neighbors(state.mapFocus)[0];renderAtlas();
+ }
+});
+$('mapGoOrders').addEventListener('click',()=>setGameTab('orders'));
+$('mapGoReports').addEventListener('click',()=>setGameTab('reports'));
+$('gameRefreshTop').addEventListener('click',()=>busy(async()=>{await refresh();say('最新情報を取得しました');}));
+$('clearDraftBtn').addEventListener('click',()=>{
+ if(state.room?.game?.my_commands!==null||state.draft.length===0)return;
+ if(!confirm('予約中の手動命令をすべて取り消しますか？'))return;
+ state.draft=[];persistDraft();renderGame();say('手動命令の予約をすべて取り消しました。');
+});
+$('autoDraftBtn').addEventListener('click',()=>{
+ const g=state.room?.game;if(!g||g.phase==='finished'||g.my_commands!==null)return;
+ const mine=ownProvinces(),delegated=g.delegations||[];
+ const manual=mine.filter(p=>!delegated.some(d=>d.country===p.country&&d.count>0));
+ const left=Math.max(0,3+Math.max(0,mine.length-1)*2-delegated.reduce((n,d)=>n+Number(d.count||0),0)-state.draft.length);
+ if(!left||!manual.length){say('追加可能な手動命令枠がありません',true);return;}
+ const proposals=[];
+ for(const p of manual){
+  const front=neighbors(p.country).some(i=>allProvinces()[i]?.leader!==p.leader);
+  if(front&&p.troops<10500&&p.gold>=400)proposals.push({from:p.country,type:'hire',amount:Math.min(1000,Math.floor(Math.max(0,p.gold-250)/100)*100)});
+  proposals.push({from:p.country,type:'domestic'});
+  const cand=(g.candidates||[]).filter(c=>c.country===p.country&&c.cost<=p.gold-300).sort((a,b)=>b.v.reduce((x,y)=>x+y,0)-a.v.reduce((x,y)=>x+y,0));
+  if((p.officers||[]).length<7&&cand.length)proposals.push({from:p.country,type:'recruit',slot:cand[0].slot});
+  if(!front&&p.gold>1100&&p.troops<12000)proposals.push({from:p.country,type:'hire',amount:Math.min(1000,Math.floor((p.gold-350)/100)*100)});
+ }
+ let added=0;
+ for(const cmd of proposals){
+  if(added>=left)break;
+  if(cmd.type==='hire'&&(cmd.amount<100||cmd.amount>1000))continue;
+  if(state.draft.some(o=>o.from===cmd.from&&o.type===cmd.type))continue;
+  state.draft.push(cmd);added++;
+ }
+ persistDraft();renderGame();say(added?'🤖 '+added+'件のおすすめ命令を予約しました。内容を確認してから確定してください。':'予約できる候補がありませんでした。');setGameTab('orders');
+});
+try{state.activeTab=sessionStorage.getItem(KEY+'tab')||'overview';}catch{}
+
+function refreshCommandOptions(){
+ const g=state.room?.game;if(!g)return;
+ const from=Number($('commandLand').value),type=$('commandType').value;
+ const targets=($('commandLand').value===''?[]:neighbors(from)).filter(i=>{const p=allProvinces()[i],s=allProvinces()[from];
+  if(!p||!s)return false;
+  if(type==='transfer')return p.leader===s.leader;
+  if(type==='scheme')return p.leader!==s.leader&&Boolean(p.scouted)&&Array.isArray(p.officers)&&p.officers.length>0;
+  return p.leader!==s.leader;});
+ const prior=$('commandTarget').value;
+ $('commandTarget').innerHTML=targets.map(i=>'<option value="'+i+'">'+escape(LAND[i])+'（'+escape(LORD[allProvinces()[i].leader])+'軍）</option>').join('');
+ if(targets.some(i=>String(i)===prior))$('commandTarget').value=prior;
+ const candidates=(g.candidates||[]).filter(c=>c.country===from);const last=$('candidateSlot').value;
+ $('candidateSlot').innerHTML=candidates.map(c=>'<option value="'+c.slot+'">'+escape(c.name)+'【'+escape(c.trait||'なし')+'】 '+fmt(c.cost)+'金（'+c.v.map(v=>fmt(v)).join('/')+'）</option>').join('');
+ if(candidates.some(c=>String(c.slot)===last))$('candidateSlot').value=last;
+ const needingTarget=['attack','transfer','scout','burn','sabotage','scheme'].includes(type);
+ const t=allProvinces()[Number($('commandTarget').value)];
+ const prevScheme=$('schemeOfficer').value;
+ refill('schemeOfficer',(type==='scheme'&&t?.scouted?(t.officers||[]):[]).map((o,i)=>[i,o.name+'（忠誠'+fmt(o.loyalty)+'）']),prevScheme,'対象武将なし');
+ show('schemeArea',type==='scheme');
+ show('targetArea',needingTarget);show('rateArea',type==='attack'||type==='transfer');
+ show('hireAmountArea',type==='hire');show('recruitArea',type==='recruit');
+ const rel=(g.diplomacy||[]).find(d=>d.from===from&&d.to===Number($('commandTarget').value));
+ const helps={domestic:'政治力×4〜8倍で収入。',hire:'100〜1000金を消費し兵を雇います。',recruit:'選んだ候補を費用を払って登用。失敗しても費用を失います。家臣は1領地10名まで。',
+  attack:'⚠️ 第1・2ターンは戦争不可。第3ターン以降、隣接する敵領へ侵攻。勝敗・損失はv5.2を基準に計算。',
+  transfer:'同じ大名の隣国に兵を移します。',scout:'偵察成功で敵兵と家臣情報を4ターン公開。',
+  scheme:'偵察した隣国の家臣を狙います。成功すると忠誠低下、さらに条件により引き抜きが発生。',burn:'700金で敵兵の5〜15％を削減。',sabotage:'成功すると敵の次回内政収入が半減。'};
+ $('commandHelp').textContent=(helps[type]||'')+(rel&&['attack','scout','burn','sabotage','scheme'].includes(type)?' 【隣国友好度：'+rel.friend+'】'+(type==='attack'&&rel.friend>30?' 宣戦布告または挑発が必要。':'')+(type!=='attack'&&rel.friend>=81?' 同盟中は策略不可。':''):'')+(needingTarget&&targets.length===0?' ⚠️ この領地から選べる対象がありません。':'');
+}
+
+// ソロ版v5.2の「自国」「命令」画面に近い情報の配置。
+function renderSoloHome(){
+ const game=state.room?.game;if(!game)return;
+ const mine=ownProvinces(),myLeader=state.room?.players?.find(p=>p.user_id===state.user?.id)?.daimyo;
+ const troops=mine.reduce((n,p)=>n+Math.max(0,Number(p.troops)||0),0);
+ const gold=mine.reduce((n,p)=>n+Math.max(0,Number(p.gold)||0),0);
+ const retainers=mine.reduce((n,p)=>n+(Array.isArray(p.officers)?p.officers.length:0),0);
+ $('soloHomeStatus').textContent='第'+game.turn+'ターン / 全'+game.max_turn+'ターン ／ '+(LORD[myLeader]||'')+'軍　｜　領地 '+mine.length+'国　🪖 '+fmt(troops)+'兵　💰 '+fmt(gold)+'金　👥 家臣 '+retainers+'人';
+ $('soloHomeTerritories').innerHTML=mine.length?mine.map(p=>
+  '<button type="button" class="solo-territory" data-solo-own="'+p.country+'"><strong>'+escape(LAND[p.country])+'</strong>　→ 命令へ'+
+  '<small>🪖 '+fmt(p.troops)+'兵 ／ 💰 '+fmt(p.gold)+'金 ／ 👥 '+(p.officers?.length||0)+'人　｜ 隣国 '+neighbors(p.country).map(i=>escape(LAND[i])).join('・')+'</small></button>'
+ ).join(''):'<p class="muted">現在保有する領地はありません。</p>';
+}
+function renderSoloOrderBrief(){
+ const index=$('commandLand').value===''?null:Number($('commandLand').value);
+ const p=index===null?null:allProvinces().find(c=>c.country===index);
+ $('soloOrderLandStats').textContent=p?'🏯 '+LAND[index]+' ／ 🪖 '+fmt(p.troops)+'兵 ／ 💰 '+fmt(p.gold)+'金 ／ 👥 家臣 '+(p.officers?.length||0)+'人　｜　隣接：'+neighbors(index).map(i=>LAND[i]).join('・'):'手動で命令を出せる領地がありません。';
+}
+$('soloHomeTerritories').addEventListener('click',e=>{
+ const b=e.target.closest('[data-solo-own]');if(!b)return;
+ setGameTab('orders');
+ const index=String(b.dataset.soloOwn),sel=$('commandLand');
+ if([...sel.options].some(o=>o.value===index)){sel.value=index;refreshCommandOptions();}
+ $('commandSection').scrollIntoView({block:'start'});
+});
+
+function renderGame(){
+ const room=state.room,g=room?.game;if(!g)return;
+ if(state.campaign&&state.campaignRoom&&!state.campaignRoom.startsWith(state.roomId+':')){state.campaign=null;state.campaignRoom=null;}
+ if(state.draftTurn!==g.turn){state.draftTurn=g.turn;state.draft=[];state.restoredDraftKey=null;}
+ restoreDraftOnce();
+ const mine=ownProvinces(),locked=g.my_commands!==null,finished=g.phase==='finished';
+ $('gameTurn').textContent=g.turn+' / '+g.max_turn;$('gameLocked').textContent=g.submitted+' / '+g.player_count;
+ $('gameLands').textContent=mine.length+' 国';
+ const self=room.players?.find(p=>p.user_id===state.user.id);
+ $('gameSummary').innerHTML='<span class="phase-badge">'+(finished?'🏁 終戦':'🟢 対戦進行中')+'</span> '+
+   'あなた：'+escape(self?.name||'')+' ／ '+escape(LORD[self?.daimyo]||'')+'<br>'+
+   (finished?'60ターンまたは天下統一で終了しました。':mine.length===0?'⚠️ 全領地を失いました。空命令を確定し、観戦を続けられます。':
+    locked?'✅ 命令確定済み。ほかの参加者を待機しています。':'命令を選んで予約し、最後に確定してください。');
+ $('provinceGrid').innerHTML=g.provinces.map(p=>{
+   const person=room.players.find(z=>z.user_id===p.human);const my=p.human===state.user.id;
+   return '<div class="province '+(my?'mine':person?'human':'npc')+'"><strong>'+escape(LAND[p.country])+'</strong>'+
+     '<small class="lord">'+escape(LORD[p.leader])+'</small><small>'+(person?'👤 '+escape(person.name):'🤖 NPC')+(p.scouted?' 🔍':'')+'</small>'+
+     '<small>🪖 '+fmt(p.troops)+'</small><small>💰 '+fmt(p.gold)+'</small>'+
+     (p.officers?.length?'<small>👥 '+p.officers.length+'人</small>':'')+'</div>';
+ }).join('');
+ const old=$('commandLand').value;
+ $('commandLand').innerHTML=mine.filter(p=>!(g.delegations||[]).some(d=>d.country===p.country&&d.count>0)).map(p=>'<option value="'+p.country+'">'+escape(LAND[p.country])+'：'+fmt(p.gold)+'金／'+fmt(p.troops)+'兵</option>').join('');
+ if([...$('commandLand').options].some(o=>o.value===old))$('commandLand').value=old;
+ refreshCommandOptions();
+ renderSoloHome();renderSoloOrderBrief();
+ const totalMax=mine.length?3+(mine.length-1)*2:0;
+ const reserved=(g.delegations||[]).reduce((n,d)=>n+Number(d.count||0),0);
+ const max=Math.max(0,totalMax-reserved);
+ $('draftCount').textContent='手動'+state.draft.length+'件＋委任'+reserved+'件 / 合計'+totalMax+'枠';
+ $('draftList').innerHTML=state.draft.length?state.draft.map((o,i)=>'<details class="solo-draft"><summary><strong>'+escape(LAND[o.from])+'</strong>　'+escape(labelOf(o))+'<span class="solo-draft-meta">予約済み　｜　タップで取り消しを表示</span></summary><div class="solo-draft-actions"><button type="button" class="danger" data-remove-draft="'+i+'">この命令を取り消す</button></div></details>').join(''):'<p class="muted">予約した命令はありません。</p>';
+ $('commandSection').classList.toggle('hidden',finished);
+ const edit=!finished&&!locked;
+ $('addCommandBtn').disabled=!edit||state.draft.length>=max||!mine.length||!$('commandLand').options.length;
+ $('submitOrdersBtn').disabled=!edit;
+ for(const id of ['commandLand','commandType','commandTarget','commandRate','hireGold','candidateSlot','schemeOfficer'])$(id).disabled=!edit;
+ $('draftList').querySelectorAll('button').forEach(b=>b.disabled=!edit);
+ $('turnWaitNote').textContent=finished?'':locked?
+  '📨 '+g.submitted+' / '+g.player_count+'人確定。全員確定後、次のターンへ自動進行。':
+  '📌 手動は残り'+max+'件まで。城主委任'+reserved+'件を含めた総数上限は'+totalMax+'。空き枠があっても確定できます。';
+ $('myOfficers').innerHTML=mine.length?mine.map(p=>'<div class="event"><strong>'+escape(LAND[p.country])+'（'+(p.officers?.length||0)+'/10）</strong><br>'+
+ (p.officers?.length?p.officers.map(o=>escape(o.name)+'【'+escape(o.trait||'なし')+'】 統'+fmt(o.v[0])+' 武'+fmt(o.v[1])+' 知'+fmt(o.v[2])+' 政'+fmt(o.v[3])+' 忠'+fmt(o.loyalty)).join('<br>'):'家臣なし')+'</div>').join(''):'領地がありません';
+ renderP06();
+ renderDelegation();
+ const last=g.latest_result;
+ if(last){
+   const logs=(last.events||[]);
+   $('turnReport').innerHTML='<p><strong>第'+last.turn+'ターン</strong>：'+logs.length+'件表示</p>'+
+    (logs.map(ev=>'<div class="event">'+(ev.land>=0?'<strong>'+escape(LAND[ev.land])+'</strong>':'')+
+    (ev.target!==undefined?' → '+escape(LAND[ev.target]):'')+'：'+escape(ev.text)+'</div>').join('')||'<p class="muted">このターンの公開情報・自軍ログはありません。</p>');
+ }else $('turnReport').textContent='まだターン処理は行われていません。';
+ renderAtlas(); renderCampaignReport(); applyGameTab();
+}
+
+// p06: 友好度・無料外交・褒美・武将移動のスマホ向け画面。
+function refill(id,items,prior,empty='選択不可'){
+ const el=$(id);
+ el.innerHTML=items.length?items.map(([value,label])=>'<option value="'+escape(value)+'">'+escape(label)+'</option>').join(''):'<option value="">'+escape(empty)+'</option>';
+ if(items.some(([v])=>String(v)===String(prior)))el.value=String(prior);
+}
+// p07: 委任UI。設定はSupabaseのDBに保存され、全員確定時にサーバーが自動予約を生成。
+function delegateReserved(){return (state.room?.game?.delegations||[]).reduce((n,d)=>n+Number(d.count||0),0);}
+function renderDelegation(){
+ const g=state.room?.game;if(!g)return;
+ const list=g.delegations||[],locked=g.my_commands!==null||g.phase==='finished';
+ const previous=$('delegateLand').value;
+ refill('delegateLand',list.map(d=>[d.country,LAND[d.country]+'（城主：'+(d.castellan||'不在')+'）']),previous,'自領地なし');
+ const active=list.find(d=>String(d.country)===$('delegateLand').value);
+ if(active){$('delegateCount').value=String(active.count);$('delegatePolicy').value=active.policy||'balanced';}
+ const base=ownProvinces().length?3+Math.max(0,ownProvinces().length-1)*2:0;
+ $('delegateList').innerHTML='<p>総命令枠：'+base+'／委任'+delegateReserved()+'件／手動枠'+Math.max(0,base-delegateReserved())+'件</p>'+
+  list.map(d=>'<div class="p06-rel">🏯 '+escape(LAND[d.country])+'：'+d.count+'回 ／ '+
+   escape(({balanced:'均等',domestic:'内政重視',hire:'募兵重視',recruit:'登用重視'})[d.policy]||'均等')+
+   (d.available?'':'（城主不在・占領直後のため変更不可）')+'</div>').join('');
+ $('delegateLand').disabled=locked;
+ $('delegateCount').disabled=locked||!active;
+ $('delegatePolicy').disabled=locked||!active;
+ $('delegateSave').disabled=locked||!active;
+}
+$('delegateLand').addEventListener('change',renderDelegation);
+$('delegateSave').addEventListener('click',()=>busy(async()=>{
+ const g=state.room?.game,land=$('delegateLand').value;
+ if(!g||land==='')throw Error('領地を選択してください');
+ const c=Number($('delegateCount').value),policy=$('delegatePolicy').value;
+ const prev=(g.delegations||[]).find(d=>d.country===Number(land));
+ const budget=ownProvinces().length?3+Math.max(0,ownProvinces().length-1)*2:0;
+ const after=delegateReserved()-(prev?.count||0)+c;
+ if(after+state.draft.length>budget)throw Error('予約済み手動命令と合わせて上限を超えます。先に手動予約を減らしてください');
+ if(c>0&&state.draft.some(o=>o.from===Number(land)))throw Error('この領地の手動予約を先に取り消してください');
+ const result=await rpc('s52_set_delegation',{p_room_id:state.roomId,p_country:Number(land),p_count:c,p_policy:policy});
+ await refresh();say('🏯 委任設定を保存：'+LAND[Number(land)]+'／'+c+'回');
+}));
+function renderP06(){
+ const g=state.room?.game;if(!g)return;
+ const mine=ownProvinces(),all=allProvinces(),relations=g.diplomacy||[];
+ const locked=g.my_commands!==null||g.phase==='finished';
+ const prevFrom=$('dipFrom').value;
+ refill('dipFrom',mine.filter(p=>neighbors(p.country).some(i=>all[i]&&all[i].leader!==p.leader)).map(p=>[p.country,LAND[p.country]]),prevFrom);
+ const from=$('dipFrom').value===''?NaN:Number($('dipFrom').value);
+ const source=all[from];
+ const fromRelations=relations.filter(d=>d.from===from);
+ const prevTo=$('dipTo').value;
+ refill('dipTo',fromRelations.map(d=>[d.to,LAND[d.to]+'（友好度'+d.friend+'）']),prevTo);
+ const to=$('dipTo').value===''?NaN:Number($('dipTo').value);
+ const relation=fromRelations.find(d=>d.to===to);
+ const priorOfficer=$('dipOfficer').value;
+ refill('dipOfficer',(source?.officers||[]).map((o,i)=>[i,o.name+(o.diplomat?' 📨→'+LAND[o.diplomat.to]:'')]),priorOfficer,'家臣なし');
+ if(relation){
+  const txt=relation.friend>=81?'🟢 同盟中：攻撃・策略不可':relation.friend<=30?'🔴 戦争可能：侵攻できます':'🟡 中立：友好度30以下で開戦可能';
+  $('dipStatus').textContent='【'+LAND[from]+' ↔ '+LAND[to]+'】友好度 '+relation.friend+' / 100　'+txt+
+   (relation.declareTurn!==null?' ／ 📜 宣戦中・第'+relation.availableTurn+'ターンから開戦可':'')+
+   (relation.enemyDeclareTurn!==null?' ／ ⚠️ 敵が宣戦！ 第'+relation.enemyAvailableTurn+'ターンから攻撃される可能性':'');
+ }else $('dipStatus').textContent='隣接する敵勢力の領地を選んでください。';
+ $('dipSendBtn').disabled=locked||!relation||!source?.officers?.length;
+ $('dipDeclareBtn').disabled=locked||!relation||relation.friend<=30||relation.declareTurn!==null;
+ $('dipFrom').disabled=locked;$('dipTo').disabled=locked;$('dipOfficer').disabled=locked;$('dipMode').disabled=locked;
+ $('dipList').innerHTML=relations.length?'<strong>現在の隣接関係</strong>'+relations.map(d=>
+  '<div class="p06-rel '+(d.friend>=81?'p06-relation-good':d.friend<=30?'p06-relation-danger':'p06-relation-neutral')+'">'+
+  escape(LAND[d.from])+' ↔ '+escape(LAND[d.to])+'：'+d.friend+'/100'+
+  (d.enemyDeclareTurn!==null?'（⚠️ 敵が宣戦）':d.declareTurn!==null?'（📜 宣戦中）':d.friend>=81?'（同盟）':d.friend<=30?'（交戦可能）':'')+'</div>').join(''):'隣接する敵勢力がありません。';
+ const priorManageFrom=$('manageFrom').value;
+ refill('manageFrom',mine.map(p=>[p.country,LAND[p.country]+'（'+p.officers.length+'人）']),priorManageFrom);
+ const mFrom=$('manageFrom').value===''?NaN:Number($('manageFrom').value),mSource=all[mFrom];
+ const priorManageOfficer=$('manageOfficer').value;
+ refill('manageOfficer',(mSource?.officers||[]).map((o,i)=>[i,o.name+'（忠誠'+o.loyalty+'）']),priorManageOfficer,'家臣なし');
+ const mIx=$('manageOfficer').value===''?NaN:Number($('manageOfficer').value);
+ const officer=mSource?.officers?.[mIx];
+ const priorManageTo=$('manageTo').value;
+ refill('manageTo',mine.filter(p=>p.country!==mFrom&&p.leader===mSource?.leader&&p.officers.length<10).map(p=>[p.country,LAND[p.country]+'（'+p.officers.length+'/10人）']),priorManageTo);
+ $('manageInfo').textContent=officer?officer.name+'｜統'+officer.v[0]+' 武'+officer.v[1]+' 知'+officer.v[2]+' 政'+officer.v[3]+
+  '｜忠誠'+officer.loyalty+(officer.rewardTurn===g.turn?' 🎁今ターン褒美済み':'')+
+  (officer.movedTurn===g.turn?' 🏇今ターン移動済み':''):'移動・褒美の対象武将を選んでください。';
+ $('rewardBtn').disabled=locked||!officer||officer.rewardTurn===g.turn||Number($('rewardGold').value)>(mSource?.gold||0);
+ $('officerMoveBtn').disabled=locked||!officer||officer.movedTurn===g.turn||$('manageTo').value==='';
+ for(const id of ['manageFrom','manageOfficer','manageTo','rewardGold'])$(id).disabled=locked;
+}
+$('dipFrom').addEventListener('change',()=>{$('dipTo').value='';renderP06()});
+$('dipTo').addEventListener('change',renderP06);
+$('manageFrom').addEventListener('change',()=>{$('manageOfficer').value='';renderP06()});
+$('manageOfficer').addEventListener('change',renderP06);
+$('rewardGold').addEventListener('change',renderP06);
+$('dipSendBtn').addEventListener('click',()=>busy(async()=>{
+ if($('dipOfficer').value===''||$('dipTo').value==='')throw Error('隣国と家臣を選択してください');
+ const from=Number($('dipFrom').value),to=Number($('dipTo').value),i=Number($('dipOfficer').value),mode=$('dipMode').value;
+ await rpc('s52_set_envoy',{p_room_id:state.roomId,p_from:from,p_to:to,p_officer:i,p_mode:mode});
+ await refresh();say(mode==='off'?'使者を帰還させました':'使者の方針を設定しました。ターン更新で友好度が変化します。');
+}));
+$('dipDeclareBtn').addEventListener('click',()=>busy(async()=>{
+ const from=Number($('dipFrom').value),to=Number($('dipTo').value);
+ if(!confirm('【'+LAND[from]+'】から【'+LAND[to]+'】に宣戦布告しますか？ 無料で命令枠は消費せず、2ターン後に開戦できます。'))return;
+ const r=await rpc('s52_declare_war',{p_room_id:state.roomId,p_from:from,p_to:to});
+ await refresh();say('📜 宣戦布告を送りました。第'+r.attack_from_turn+'ターンから開戦できます。');
+}));
+$('rewardBtn').addEventListener('click',()=>busy(async()=>{
+ const from=Number($('manageFrom').value),i=Number($('manageOfficer').value),gold=Number($('rewardGold').value);
+ const o=allProvinces()[from]?.officers?.[i];if(!o)throw Error('武将を選択してください');
+ if(!confirm(o.name+'に'+gold+'金の褒美を与えますか？'))return;
+ const r=await rpc('s52_reward_officer',{p_room_id:state.roomId,p_from:from,p_officer:i,p_gold:gold});
+ await refresh();say('🎁 '+r.name+'の忠誠が'+r.loyalty+'になりました。');
+}));
+$('officerMoveBtn').addEventListener('click',()=>busy(async()=>{
+ const from=Number($('manageFrom').value),to=Number($('manageTo').value),i=Number($('manageOfficer').value);
+ const o=allProvinces()[from]?.officers?.[i];if(!o||$('manageTo').value==='')throw Error('武将と移動先を選択してください');
+ if(!confirm(o.name+'を'+LAND[to]+'へ移動しますか？（今ターンの再移動不可）'))return;
+ const r=await rpc('s52_move_officer',{p_room_id:state.roomId,p_from:from,p_to:to,p_officer:i});
+ await refresh();say('🏇 '+r.name+'を'+LAND[r.to]+'へ移動しました。');
+}));
+
+$('commandType').addEventListener('change',refreshCommandOptions);
+$('commandLand').addEventListener('change',refreshCommandOptions);
+$('commandLand').addEventListener('change',renderSoloOrderBrief);
+$('commandTarget').addEventListener('change',refreshCommandOptions);
+$('startGameBtn').addEventListener('click',()=>busy(async()=>{
+ if(!confirm('全員準備完了です。16国・第1ターンでゲームを開始しますか？'))return;
+ await rpc('s52_start_game',{p_room_id:state.roomId});state.draft=[];state.draftTurn=null;
+ state.activeTab='overview';await refresh();say('🎉 対戦が始まりました！ 最初のターンの命令を入力しよう。');
+}));
+$('addCommandBtn').addEventListener('click',()=>{
+ const g=state.room?.game;if(!g||g.my_commands!==null||g.phase==='finished')return;
+ const from=Number($('commandLand').value),type=$('commandType').value;
+ if(!ownProvinces().some(p=>p.country===from)){say('自分の領地を選んでください',true);return;}
+ const reserved=(g.delegations||[]).reduce((n,d)=>n+Number(d.count||0),0);
+ const max=3+Math.max(0,ownProvinces().length-1)*2-reserved;
+ if((g.delegations||[]).some(d=>d.country===from&&d.count>0)){say('委任中の領地には手動命令を予約できません',true);return;}
+ if(state.draft.length>=max){say('命令上限 '+max+'件です',true);return;}
+ if(state.draft.some(x=>x.from===from&&x.type===type)){say('同じ領地の同じ命令は重複できません',true);return;}
+ const cmd={from,type};
+ if(type==='hire')cmd.amount=Number($('hireGold').value);
+ if(type==='recruit'){
+   if($('candidateSlot').value===''){say('登用候補がいません',true);return;}
+   cmd.slot=Number($('candidateSlot').value);
+ }
+ if(['attack','transfer','scout','burn','sabotage','scheme'].includes(type)){
+   if($('commandTarget').value===''){say('対象の隣国がありません',true);return;}
+   cmd.to=Number($('commandTarget').value);
+   if(type==='attack'&&g.turn<3){say('戦争は第3ターンからです',true);return;}
+   const rel=g.diplomacy?.find(d=>d.from===from&&d.to===cmd.to);
+   if(type==='attack'&&rel&&rel.friend>30){say('友好度'+rel.friend+'：外交で宣戦布告するか、挑発して30以下にしてください',true);return;}
+   if(['scout','burn','sabotage','scheme'].includes(type)&&rel&&rel.friend>=81){say('同盟中は策略を使えません',true);return;}
+   if(type==='attack'||type==='transfer')cmd.amount=Number($('commandRate').value);
+   if(type==='scheme'){
+    if($('schemeOfficer').value===''){say('対象武将を選択してください。先に偵察が必要です',true);return;}
+    cmd.amount=Number($('schemeOfficer').value);
+    cmd.officerName=$('schemeOfficer').selectedOptions[0]?.textContent||'敵武将';
+   }
+ }
+ state.draft.push(cmd);persistDraft();renderGame();say('命令を予約しました。確定前なら取り消せます。');
+});
+$('draftList').addEventListener('click',e=>{
+ const b=e.target.closest('[data-remove-draft]');if(!b)return;
+ if(state.room?.game?.my_commands!==null)return;
+ state.draft.splice(Number(b.dataset.removeDraft),1);persistDraft();renderGame();
+});
+$('submitOrdersBtn').addEventListener('click',()=>busy(async()=>{
+ const n=state.draft.length;
+ if(!confirm('今ターンの命令 '+n+'件を確定します。確定後は取り消せません。よろしいですか？'))return;
+ const before=state.room?.game?.turn;
+ const result=await rpc('s52_submit_orders',{p_room_id:state.roomId,p_commands:state.draft});clearPersistedDraft();
+ await refresh();
+ say(result.resolved?'✅ 全員の命令が揃い、第'+before+'ターンをサーバーで処理しました！':'✅ 命令を確定しました。全員の確定を待っています。');
+}));
+$('gameRefreshBtn').addEventListener('click',()=>busy(async()=>{await refresh();say('サーバーから最新情報を取得しました');}));
+
+$('countryGrid').addEventListener('click',e=>{const btn=e.target.closest('[data-land]');if(!btn||btn.disabled)return;$('countrySelect').value=btn.dataset.land;});
+$('connectBtn').addEventListener('click',()=>busy(connect));
+$('configToggle').addEventListener('click',()=>{if(!state.user){say('接続が完了するまでは設定が必要です',true);return;}show('configPanel',false)});
+$('createBtn').addEventListener('click',()=>busy(async()=>{const name=validateName();const room=await rpc('s52_create_room',{p_name:name,p_capacity:Number($('capacity').value)});state.roomId=room.room_id;localStorage.setItem(KEY+'room',state.roomId);state.room=null;await refresh();say('部屋を作成しました。招待コード '+room.invite_code+' を友達に伝えてください。');}));
+$('joinBtn').addEventListener('click',()=>busy(async()=>{const name=validateName();const code=$('inviteInput').value.trim().toUpperCase();if(!/^[A-F0-9]{8}$/.test(code))throw Error('招待コードは8文字の英数字です');const id=await rpc('s52_join_room',{p_code:code,p_name:name});state.roomId=id;localStorage.setItem(KEY+'room',id);state.room=null;await refresh();say('部屋に参加しました');}));
+$('resumeBtn').addEventListener('click',()=>busy(async()=>{await refresh();if(state.room)say('部屋に戻りました')}));
+$('chooseBtn').addEventListener('click',()=>busy(async()=>{const c=$('countrySelect').value,d=$('daimyoSelect').value;if(c===''||d==='')throw Error('国と大名を両方選んでください');await rpc('s52_choose_start',{p_room_id:state.roomId,p_country:Number(c),p_daimyo:Number(d)});await refresh();say('選択を保存しました。ほかの参加者にも同期されます。');}));
+$('readyBtn').addEventListener('click',()=>busy(async()=>{const me=state.room?.players?.find(p=>p.user_id===state.user?.id);if(!me)throw Error('部屋の参加者として認識されていません');await rpc('s52_set_ready',{p_room_id:state.roomId,p_ready:!me.ready});await refresh();say(me.ready?'準備完了を取り消しました':'準備完了にしました');}));
+$('manualRefreshBtn').addEventListener('click',()=>busy(async()=>{await refresh();say('部屋を更新しました')}));
+$('copyBtn').addEventListener('click',async()=>{const code=state.room?.code;if(!code)return;try{await navigator.clipboard.writeText(code);say('招待コードをコピーしました：'+code)}catch{say('招待コード：'+code+'（長押しでコピーしてください）')}});
+$('leaveBtn').addEventListener('click',()=>busy(async()=>{if(!confirm('この部屋を退出しますか？'))return;await rpc('s52_leave_room',{p_room_id:state.roomId});clearPersistedDraft();state.room=null;state.roomId=null;localStorage.removeItem(KEY+'room');ui();say('部屋を退出しました。');}));
+$('projectUrl').value='https://jwvuuwxynqfbgoxxiilv.supabase.co';
+$('publicKey').value='sb_publishable_Xa3VWvHo2H63QnEOkupYJw_HkaEYQtY';
+$('displayName').value=localStorage.getItem(KEY+'name')||'';
+if($('projectUrl').value&&$('publicKey').value)busy(connect);
+</script>
+</body></html>
