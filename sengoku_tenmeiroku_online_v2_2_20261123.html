@@ -1,0 +1,1035 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#121927"><title>戦国天命録 ONLINE v2.2 | 武将ドラフト・天下統一トーナメント</title>
+<style>
+:root{--bg:#0d1522;--panel:#182537;--panel2:#1f3046;--line:#364a61;--text:#f4f6fc;--muted:#adc0d4;--gold:#ebc076;--teal:#72d6bd;--red:#ff9a99}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#233a56 0,transparent 45%),var(--bg);font:15px/1.5 -apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN','Yu Gothic',Meiryo,sans-serif;color:var(--text)}main{max-width:1190px;margin:auto;padding:17px 15px 64px}header{border-bottom:1px solid var(--line);padding:8px 0 22px}h1{margin:4px 0 4px;font-size:clamp(26px,4vw,40px);color:var(--gold);letter-spacing:.05em}h2{font-size:21px;color:var(--gold);margin:0 0 13px}h3{font-size:16px;margin:0 0 8px}.eyebrow{color:var(--teal);letter-spacing:.2em;font-weight:bold;font-size:12px}.muted{color:var(--muted)}.small{font-size:12px}.lead{max-width:840px;color:#d2e0ed}.box{border:1px solid var(--line);border-radius:14px;padding:18px;background:linear-gradient(140deg,var(--panel),#132133);box-shadow:0 8px 26px #0003}.layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(275px,1fr);gap:17px;align-items:start;margin-top:18px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.teaminputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}label{font-size:13px;color:var(--muted)}input,select{width:100%;border:1px solid #476079;border-radius:8px;padding:12px;background:#0c1724;color:var(--text);font-size:16px}button{border:1px solid #5b7290;border-radius:10px;background:#2a3d55;color:var(--text);font-size:15px;font-weight:700;padding:10px 15px;cursor:pointer;touch-action:manipulation}button:hover{filter:brightness(1.15)}button:disabled{opacity:.36;cursor:default}.primary{background:linear-gradient(#e6bd79,#ce9856);color:#18202b;border-color:#edd29b}.secondary{background:#164e55;border-color:#2a8f8b}.danger{background:#553039;border-color:#96636d}.pill{background:#283e50;border-radius:99px;padding:5px 9px;font-size:12px;color:#d6e4f0;display:inline-block}.tag{display:inline-block;font-size:11px;color:#0f1e2b;background:#7fd6bb;padding:2px 7px;border-radius:7px;font-weight:800}.no{background:#53677f;color:#fff}.gold{color:var(--gold)}.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;text-align:center;margin-top:8px}.stat div{border:1px solid #344c64;background:#102030;border-radius:6px;padding:3px 1px;color:#c5d7e9;font-size:12px}.stat strong{display:block;color:white;font-size:16px}.offerGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:13px 0}.officer{background:#22334a;border:1px solid #46617b;border-radius:12px;text-align:left;padding:14px;min-height:136px;display:block;width:100%}.officer .name{font-size:18px;color:#fff;font-weight:800}.officer .desc{font-size:12px;color:#9bdacb;margin-top:3px}.officer:hover{border-color:var(--gold);background:#2d4157}.progress{background:#2b394b;border-radius:99px;height:9px;overflow:hidden;margin:12px 0}.progress>div{height:100%;background:linear-gradient(90deg,#b98035,#f7d99f);transition:width .3s}.team{border-bottom:1px solid var(--line);padding:10px 0}.team:last-child{border:none}.teamHead{display:flex;justify-content:space-between;gap:10px}.team.active .teamHead{color:var(--gold)}.team small{display:block;color:#acc0d1;line-height:1.6}.order{padding:11px 13px;background:#21354c;border-radius:11px;margin:12px 0;color:#d7e8f7}.order b{color:#f6cc89}.match{border:1px solid var(--line);background:#22334a;border-radius:12px;padding:13px;margin:11px 0}.match.done{border-color:#40685e}.vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:9px}.vs span{text-align:center}.vs b{display:block;font-size:17px}.vs em{font-style:normal;color:#99b2c9}.winner{color:var(--gold)}.stage{color:var(--teal);font-weight:800;margin:18px 0 7px}.result{border-left:3px solid var(--gold);padding:9px 11px;margin:10px 0;background:#172739;font-size:13px}.score{font-size:13px;color:#b7cedf}.details{padding:9px 12px;white-space:pre-wrap;background:#111f30;border-radius:9px;font-size:12px;line-height:1.85;color:#d2e0eb;margin-top:12px}.champ{padding:30px 18px;border:1px solid var(--gold);background:radial-gradient(ellipse at top,#473822 0,#1d2938 70%);text-align:center;border-radius:18px;margin-top:18px}.champ strong{font-size:31px;color:#f5d28c}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:7px;border-bottom:1px solid #334961;text-align:left}th{color:var(--gold)}summary{cursor:pointer;color:var(--gold);font-weight:bold;padding:5px}details{margin-top:10px}.footer{border-top:1px solid var(--line);margin-top:32px;padding-top:18px;color:#8fa9c0;font-size:12px}.hidden{display:none!important}@media(max-width:780px){.layout{grid-template-columns:1fr}.box{padding:14px}.offerGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.officer{padding:10px;min-height:128px}.officer .name{font-size:16px}.stat strong{font-size:14px}.teaminputs{grid-template-columns:1fr}.grid{grid-template-columns:1fr}main{padding:11px 11px 50px}.vs b{font-size:14px}}
+
+.choiceOverlay{background:linear-gradient(125deg,#253d54,#18283b);padding:22px;border:1px solid #547085;border-radius:13px;margin-top:14px;text-align:center}
+.choiceOverlay strong{color:var(--gold);font-size:21px}.secret{background:#11212f;border:1px dashed #647e92;border-radius:10px;padding:13px;color:#d7eaf5;margin:12px 0}
+.officer.selected{border:3px solid var(--gold);background:#344451}.fullwidth{width:100%;margin:12px 0}.statusGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.status{border:1px solid #435c77;border-radius:8px;padding:8px;font-size:13px;background:#17283b}.status.done{border-color:#4f8e79;color:#a5ebc9}.status.wait{color:#ecbf82}.badge{display:inline-block;border-radius:99px;background:#2b435a;padding:3px 9px;font-size:12px}.heroInfo{font-size:14px;line-height:1.8}.heroInfo strong{color:#f4d29c}.reveal{border:1px solid #668273;background:#1a3540;border-radius:10px;padding:11px;margin-top:10px}.reveal.bad{border-color:#8e6671;background:#392735}.hint{color:#f5dca9}.inputsMode{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.inputsMode label{min-width:180px}#app{min-height:250px}
+@media(max-width:390px){.stat strong{font-size:13px}.officer{padding:8px}.officer .name{font-size:15px}.stat div{font-size:11px}.choiceOverlay{padding:12px}}
+
+.deathNotice{color:#ff9995;font-size:13px;font-weight:700;margin:8px 0;padding:9px;border-left:3px solid #e77f80;background:#3a2632;border-radius:5px}
+.rescueNotice{color:#a4efdb;font-size:13px;margin:8px 0;padding:8px;border-left:3px solid #6ad5bc;background:#1b3840;border-radius:5px}
+.fallen{color:#b797a3;text-decoration:line-through;text-decoration-thickness:2px;opacity:.75}
+@media(max-width:620px){.inputsMode{gap:10px}.inputsMode label{min-width:130px;flex:1}}
+
+
+.cutinOverlay{position:fixed;inset:0;background:radial-gradient(circle at 50% 30%,rgba(244,201,129,.16),transparent 32%),rgba(4,8,14,.9);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:9999;padding:18px}.cutinOverlay.show{display:flex;animation:cutinFade .18s ease-out}.cutinFrame{width:min(760px,100%);border:1px solid rgba(235,192,118,.45);border-radius:18px;overflow:hidden;background:linear-gradient(135deg,#111c29 0%,#18283b 55%,#24364d 100%);box-shadow:0 0 0 1px rgba(255,255,255,.05) inset,0 18px 80px rgba(0,0,0,.55);transform:scale(.96);animation:cutinPop .22s ease-out forwards}.cutinTop{padding:10px 16px;background:linear-gradient(90deg,#7a5122,#d0a564 55%,#6f4820);color:#120f0a;font-weight:900;letter-spacing:.22em;font-size:12px;text-transform:uppercase}.cutinBody{padding:26px 22px 24px;text-align:center;position:relative}.cutinBody:before,.cutinBody:after{content:"";position:absolute;inset:auto 0;height:2px;background:linear-gradient(90deg,transparent,rgba(235,192,118,.85),transparent)}.cutinBody:before{top:15px}.cutinBody:after{bottom:15px}.cutinKicker{font-size:13px;letter-spacing:.28em;color:#7ee2c7;font-weight:800;margin-bottom:8px}.cutinTitle{font-size:clamp(30px,6.5vw,56px);font-weight:1000;line-height:1.08;letter-spacing:.06em;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.35),0 0 22px rgba(235,192,118,.18)}.cutinTitle.emph{color:#ffd18a}.cutinSub{margin-top:10px;color:#d9e6f2;font-size:15px;line-height:1.75}.cutinOfficer{display:inline-block;margin-top:15px;padding:10px 16px;border:1px solid rgba(235,192,118,.35);border-radius:999px;background:rgba(235,192,118,.08);color:#ffe1ac;font-weight:900;font-size:18px;letter-spacing:.1em}.cutinNames{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}.cutinNames span{padding:6px 12px;border-radius:999px;background:#203346;border:1px solid #4a6279;color:#dcebfa;font-size:13px}.cutinWinner{margin-top:16px;font-size:24px;font-weight:1000;color:#ffe1a8}.cutinDivider{margin:16px auto 0;width:min(80%,420px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent)}.cutinOverlay.dup .cutinTop{background:linear-gradient(90deg,#5a2530,#b25f6d 55%,#612533)}.cutinOverlay.draw .cutinTop{background:linear-gradient(90deg,#5a401e,#d4a65d 55%,#5e421d)}.cutinOverlay.win .cutinTop{background:linear-gradient(90deg,#17604f,#6fd5ba 55%,#0f5848)}.cutinOverlay.start .cutinTop,.cutinOverlay.end .cutinTop{background:linear-gradient(90deg,#32455a,#90abc3 50%,#32455a)}@keyframes cutinFade{from{opacity:0}to{opacity:1}}@keyframes cutinPop{from{transform:scale(.92) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}@media(max-width:620px){.cutinBody{padding:22px 14px 20px}.cutinSub{font-size:14px}.cutinWinner{font-size:20px}}
+
+/* v6: readability pass */
+body{font-size:17px;line-height:1.65}
+label{font-size:15.5px;line-height:1.6}input,select{font-size:18px;min-height:48px}
+button{font-size:17px;line-height:1.5;min-height:45px}
+h1{font-size:clamp(31px,4.5vw,44px)}h2{font-size:24px;line-height:1.3}h3{font-size:19px}
+.small{font-size:14.5px;line-height:1.7}.eyebrow{font-size:14px}
+.tag{font-size:13px;padding:3px 8px}.badge{font-size:14px}
+.officer .name{font-size:21px;line-height:1.35}.officer .desc{font-size:14px;line-height:1.5}
+.stat div{font-size:13.5px;padding:5px 2px}.stat strong{font-size:18px}
+.team small{font-size:14px}.teamHead b{font-size:16.5px}
+.order{font-size:16.5px;line-height:1.75}.heroInfo{font-size:16px}
+.match .vs b{font-size:19px}.score{font-size:15px}.result{font-size:15px;line-height:1.8}
+.details{font-size:14px;line-height:1.9}.reveal{font-size:16px}
+.pill{font-size:14px}.footer{font-size:14px;line-height:1.8}
+.deathNotice,.rescueNotice{font-size:15px;line-height:1.6}
+.cutinKicker{font-size:15px}.cutinSub{font-size:17px}.cutinNames span{font-size:15px}
+.choiceOverlay strong{font-size:23px}.status{font-size:15px}
+/* battle opening and result cinematic */
+.cutinOverlay.battle{background:rgba(1,6,13,.95);backdrop-filter:blur(7px)}
+.battle .cutinFrame{width:min(820px,100%);border:2px solid #cfac6c;border-radius:12px;background:radial-gradient(ellipse at 50% 2%,#483820 0%,transparent 52%),repeating-linear-gradient(127deg,transparent 0 32px,rgba(255,255,255,.018) 33px 34px),linear-gradient(145deg,#0b141f,#1b2838 55%,#0b1724);box-shadow:0 0 0 4px #131923,0 0 0 5px #94703d,0 15px 90px #000b;animation:cutinPop .2s ease-out both}
+.battle .cutinTop{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 17px;background:linear-gradient(90deg,#4b3119,#a87a3a 48%,#563922);font-size:13px;letter-spacing:.18em}
+.battle .cutinBody{padding:22px 23px 20px;min-height:290px}
+.battle .cutinBody:before,.battle .cutinBody:after{display:none}
+.battle .battleKicker{color:#e5c88f;letter-spacing:.3em;font-size:14px;font-weight:900}
+.battle .battleTitle{color:#fff5dd;font-size:clamp(28px,6vw,57px);font-weight:1000;line-height:1.18;margin:14px 0;text-shadow:0 2px 2px #000,0 0 40px #cc8d3c5e;animation:battleAppear .33s both}
+.battle .battleTitle.outcome{color:#ffce78;font-size:clamp(42px,10vw,80px);text-shadow:0 3px 0 #513318,0 0 36px #f0a74499}
+.battle .battleTitle.bad{color:#ff989b;text-shadow:0 0 32px #a42b4c75}
+.battle .battleSub{color:#e0e6ed;font-size:17px;line-height:1.7;margin:12px auto 6px;max-width:660px}
+.battle .battleVS{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin:20px auto 12px}
+.battle .battleSide{padding:12px 7px;border:1px solid #475768;background:linear-gradient(140deg,#1d3447,#1a2532);border-radius:11px;min-width:0}
+.battle .battleSide.enemy{background:linear-gradient(140deg,#3d2933,#261d2b);border-color:#7b5063}
+.battle .battleSideLabel{font-size:13px;font-weight:900;letter-spacing:.15em;color:#a9d4e8}
+.battle .battleSide.enemy .battleSideLabel{color:#ffc1c3}
+.battle .battleSideName{font-size:clamp(17px,4vw,25px);font-weight:900;overflow-wrap:anywhere;margin-top:3px}
+.battle .battleSideSmall{font-size:14px;color:#bfcbd7;margin-top:3px}
+.battle .battleVsMark{font-size:clamp(25px,6vw,49px);font-style:italic;color:#f8cb80;text-shadow:0 0 17px #ffb04d}
+.battle .battlePowerRow{display:flex;justify-content:space-between;color:#d7e2ee;font-size:14px;gap:9px;margin:12px 0 6px}
+.battle .battleMeter{display:flex;gap:4px;height:13px;margin:0 0 15px;overflow:hidden;border-radius:20px;background:#243345}
+.battle .battleMeter span{display:block;transition:width .4s;background:linear-gradient(90deg,#328baf,#8adaea)}
+.battle .battleMeter span:last-child{background:linear-gradient(90deg,#fdaca3,#b6495c)}
+.battle .battleEmblem{display:inline-block;padding:7px 14px;border:1px solid #ad874e;border-radius:999px;background:#56412666;color:#ffe2ab;font-size:15px;font-weight:800}
+.battle .battleImpact{color:#f0d497;margin:12px auto 0;font-size:clamp(17px,4vw,27px);font-weight:900;line-height:1.5}
+.battle .battleDeath{color:#ff9c9f;font-size:19px;font-weight:800}
+.battle .battleRescue{color:#90e8cc;font-size:19px;font-weight:800}
+.battle .battleFoot{border-top:1px solid #66583c;display:flex;align-items:center;gap:8px;padding:12px 14px;background:#0b1520}
+.battle .battleFoot button{margin:0;font-size:16px;min-height:45px;flex:1}
+.battle .battleFoot button:first-child{background:linear-gradient(#f2cc8c,#c5954c);color:#18232c;border-color:#f6d7a4}
+.battle .battleFoot button:last-child{background:#263a4d;color:#ebf2f9}
+.battle .battleProgress{display:flex;gap:5px;margin:18px auto 0;max-width:310px}
+.battle .battleProgress span{height:5px;flex:1;border-radius:99px;background:#44546b}
+.battle .battleProgress span.current{background:#efc17b;box-shadow:0 0 7px #d8a963}
+.battle .battleProgress span.done{background:#6ca9a0}
+.battle .battleVictory{color:#ffe2a1;font-size:clamp(22px,5vw,36px);font-weight:1000;margin-top:8px;overflow-wrap:anywhere}
+.battle .battleOutcomeBanner{display:inline-block;margin:7px auto;padding:6px 13px;border:1px solid #dcb26e;background:#453923ba;color:#ffd58e;border-radius:8px;font-weight:800}
+@keyframes battleAppear{from{opacity:0;transform:scale(1.15);filter:blur(4px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+@media(max-width:780px){.match .vs b{font-size:17.5px}.offerGrid{gap:10px}.officer{min-height:162px;padding:12px}}
+@media(max-width:620px){
+ body{font-size:17px}.box{padding:15px}main{padding:12px 12px 70px}
+ .small{font-size:14.5px}.officer .name{font-size:18px}.officer .desc{font-size:14px}
+ .officer .stat{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.officer .stat div{font-size:13px;padding:5px 3px}.officer .stat strong{font-size:16px}
+ .officer{min-height:190px}.offerGrid{gap:9px}.stat strong{font-size:16px}
+ .battle .cutinBody{padding:18px 12px 18px;min-height:285px}
+ .battle .cutinTop{font-size:11px;padding:9px 10px;letter-spacing:.08em}
+ .battle .battleSide{padding:10px 5px}.battle .battleSideLabel{font-size:12px}
+ .battle .battleSideSmall{font-size:13px}.battle .battleSub{font-size:15.5px}
+ .battle .battlePowerRow{font-size:12.5px}.battle .battleFoot{padding:10px 9px}
+ .battle .battleFoot button{font-size:15px;padding:10px 8px}
+}
+@media(max-width:390px){.officer .name{font-size:17px}.officer .stat div{font-size:12.5px}}
+@media(prefers-reduced-motion:reduce){.battle .cutinFrame,.battle .battleTitle{animation:none!important}}
+
+
+/* v8: draft opening scenes show awarded commander + current squad total */
+.draftCinematic .cutinFrame{width:min(790px,100%);border:2px solid #b9955b;box-shadow:0 18px 90px #000b,0 0 0 3px #c9a76633;background:radial-gradient(ellipse at center 5%,#3b3027 0%,transparent 58%),linear-gradient(145deg,#0b1724,#213043 65%,#111c29)}
+.draftCinematic .cutinTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.draftCinematic .cutinBody{padding:23px 20px 20px;max-height:calc(100dvh - 174px);overflow-y:auto}
+.draftCinematic .cutinKicker{font-size:15px}
+.draftCinematic .cutinTitle{font-size:clamp(30px,7vw,55px)}
+.draftCinematic .cutinOfficer{font-size:clamp(23px,5vw,35px);border-radius:12px;padding:8px 20px}
+.draftCinematic .draftTrait{margin:9px auto 4px;color:#a3e8d3;font-size:16px;font-weight:700}
+.draftCinematic .draftStats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:15px auto 8px;max-width:580px}
+.draftCinematic .draftStats>div{background:#0e2030;border:1px solid #475a69;border-radius:9px;padding:6px 3px;color:#b7cbde;font-size:14px}
+.draftCinematic .draftStats strong{display:block;color:#fff;font-size:20px}
+.draftCinematic .draftTotals{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px auto 10px;max-width:620px}
+.draftCinematic .draftTotalItem{padding:13px 7px;border:1px solid #557184;border-radius:12px;background:#16283a}
+.draftCinematic .draftTotalItem.squad{border:2px solid #e8bd75;background:linear-gradient(135deg,#4b3925,#2a2a30);box-shadow:inset 0 0 16px #eec07815}
+.draftCinematic .draftTotalItem span{display:block;font-size:14px;color:#c5d5e5}
+.draftCinematic .draftTotalItem strong{display:block;margin-top:3px;color:#fff;font-size:clamp(25px,6vw,39px);line-height:1.2}
+.draftCinematic .draftTotalItem.squad strong{color:#ffe09d}
+.draftCinematic .draftCount{font-size:14px;color:#b8d7ea;margin-top:7px}.draftCinematic .draftRoster{margin:9px auto 0;max-width:620px;font-size:13px;line-height:1.6;color:#c7d6e4;overflow-wrap:anywhere}.draftCinematic .draftRoster b{color:#ffe3ac}
+.draftCinematic .draftFoot{display:flex;gap:9px;padding:11px 14px;border-top:1px solid #705936;background:#0b1520}
+.draftCinematic .draftFoot button{min-height:50px;flex:1;font-size:16px}
+.draftCinematic .draftFoot #draftNext{background:linear-gradient(#f2cc8c,#c5954c);color:#172330;border-color:#f2c987}
+.draftCinematic .draftFoot #draftSkip{background:#27394b;color:#d9eaf5}
+@media(max-width:620px){.draftCinematic .cutinBody{padding:14px 10px 15px;max-height:calc(100dvh - 150px)}.draftCinematic .cutinTop{font-size:11px;letter-spacing:.06em;padding:9px 10px}.draftCinematic .cutinOfficer{margin-top:9px}.draftCinematic .draftStats{gap:3px;margin-top:9px}.draftCinematic .draftStats>div{font-size:12px}.draftCinematic .draftStats strong{font-size:18px}.draftCinematic .draftTotals{gap:6px;margin-top:10px}.draftCinematic .draftTotalItem{padding:10px 4px}.draftCinematic .draftTotalItem span{font-size:12px}.draftCinematic .draftTotalItem strong{font-size:25px}.draftCinematic .draftFoot{padding:9px 10px}.draftCinematic .draftFoot button{font-size:14px;padding:9px 6px}}
+
+/* v10: one collective round-end reveal; contested picks retain lottery cut-ins */
+.cutinOverlay.roundSummary{padding:clamp(6px,2.5vw,16px)}
+.roundSummary .cutinFrame{width:min(940px,100%);max-height:96dvh;max-height:96svh;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 0%,#40331f 0,transparent 48%),linear-gradient(145deg,#111e2d,#182a3d 64%,#0a1421)}
+.roundSummary .cutinTop{flex-shrink:0;letter-spacing:.09em}
+.roundSummary .cutinBody{min-height:0;flex:1;overflow-y:auto;max-height:none;padding:16px 19px 12px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.roundSummary .cutinBody:before,.roundSummary .cutinBody:after{display:none}
+.roundHeadline{text-align:center}.roundHeadline .cutinTitle{font-size:clamp(27px,6vw,43px);color:#ffe0a1;line-height:1.25}
+.roundHeadline .cutinKicker{font-size:13px;color:#91ddcc;letter-spacing:.16em}
+.roundHeadNote{font-size:15px;color:#dae5f0;margin:6px 0 13px}
+.roundColumnHeads{display:grid;grid-template-columns:1.1fr 1.5fr 1.15fr;gap:10px;color:#d1af75;letter-spacing:.06em;font-weight:800;padding:0 13px 8px;text-align:left;font-size:13px}
+.roundColumnHeads span:last-child{text-align:right}
+.roundSummaryList{display:flex;flex-direction:column;gap:6px}
+.roundSummaryRow{display:grid;grid-template-columns:1.1fr 1.5fr 1.15fr;gap:10px;align-items:center;padding:9px 12px;border:1px solid #607086;border-left:3px solid #ba955b;background:linear-gradient(100deg,#22374b,#172839);border-radius:9px;text-align:left;animation:rowRise .3s both}
+.roundSummaryRow:nth-child(2){animation-delay:.04s}.roundSummaryRow:nth-child(3){animation-delay:.08s}.roundSummaryRow:nth-child(4){animation-delay:.12s}.roundSummaryRow:nth-child(5){animation-delay:.16s}.roundSummaryRow:nth-child(6){animation-delay:.20s}.roundSummaryRow:nth-child(7){animation-delay:.24s}.roundSummaryRow:nth-child(8){animation-delay:.28s}
+@keyframes rowRise{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+.roundTeam{display:flex;align-items:center;gap:8px;min-width:0}.roundIndex{width:25px;height:25px;flex:none;border-radius:50%;background:#604724;color:#f9d79f;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px}
+.roundTeamName{font-size:clamp(14px,2.4vw,19px);font-weight:850;overflow-wrap:anywhere;line-height:1.3}
+.roundPick{display:flex;align-items:baseline;flex-wrap:wrap;gap:3px 7px;min-width:0}.roundPick .roundSmallLabel{font-size:11px;color:#9dcfce;flex-basis:100%}.roundPick strong{font-size:clamp(17px,3vw,22px);line-height:1.25;color:#fff2d9}
+.roundTrait{display:inline-block;padding:1px 6px;border-radius:5px;background:#3c625c;color:#d6ffe9;font-size:12px;font-weight:750;white-space:nowrap}
+.roundWarriorPower{font-size:12px;color:#b9d0e6;white-space:nowrap}
+.roundTotal{text-align:right;min-width:0}.roundTotal span{display:block;font-size:11px;color:#bdcfe1}.roundTotal strong{display:block;color:#ffdb98;font-size:clamp(22px,4vw,29px);line-height:1.25;font-variant-numeric:tabular-nums;white-space:nowrap}
+.roundRuleNote{font-size:12px;line-height:1.45;color:#b8c9d9;text-align:left;margin:11px 2px 3px}
+.roundSummary .draftFoot{flex-shrink:0;gap:8px}.roundSummary .draftFoot button{min-height:47px;font-size:16px}
+.roundSummary #roundReviewClose{background:#253b50;color:#e0eefb;border:1px solid #63839b}
+.roundSummary #roundReviewNext{background:linear-gradient(#f4d39a,#c39757);color:#182331;border:1px solid #efce91}
+@media(max-width:620px){
+ .roundSummary .cutinBody{padding:12px 8px 10px}.roundSummary .cutinTop{font-size:11px;letter-spacing:.01em;padding:9px}
+ .roundHeadline .cutinKicker{font-size:12px}.roundHeadNote{font-size:12px;margin-bottom:10px}
+ .roundColumnHeads{grid-template-columns:1fr 1.18fr .8fr;gap:4px;font-size:11px;padding:0 6px 5px}
+ .roundSummaryRow{grid-template-columns:1fr 1.18fr .8fr;gap:4px;padding:8px 6px;border-left-width:2px}
+ .roundPick .roundSmallLabel,.roundTotal span{display:none}
+ .roundTeam{gap:3px}.roundIndex{width:18px;height:18px;font-size:10px}
+ .roundTeamName{font-size:13px}.roundPick strong{font-size:15px}.roundWarriorPower{font-size:10px}
+ .roundPick .roundSmallLabel{font-size:9px}.roundTrait{font-size:10px;padding:1px 4px}
+ .roundTotal span{font-size:9px}.roundTotal strong{font-size:20px}
+ .roundRuleNote{font-size:11px}.roundSummary .draftFoot{padding:8px;gap:6px}.roundSummary .draftFoot button{font-size:14px;padding:8px 5px}
+}
+@media(max-width:375px){.roundTeamName{font-size:12px}.roundPick strong{font-size:14px}.roundTotal strong{font-size:18px}}
+@media(prefers-reduced-motion:reduce){.roundSummaryRow{animation:none!important}}
+
+/* v10: manual lottery cut-in for duplicate picks; collective summary stays */
+.cutinOverlay.drawLottery{padding:clamp(8px,3vw,20px);background:radial-gradient(ellipse at 50% 35%,#5b2d243b,transparent 58%),#020811f2}
+.drawLottery .cutinFrame{width:min(780px,100%);border:2px solid #d6a665;box-shadow:0 0 0 3px #453122,0 22px 95px #000d;background:radial-gradient(circle at 55% 0%,#423021 0,transparent 58%),linear-gradient(145deg,#111c2b,#202b39 50%,#101a29);border-radius:14px;overflow:hidden}
+.drawLottery .cutinTop{background:linear-gradient(95deg,#653622,#deb46e 50%,#654020);display:flex;justify-content:space-between;align-items:center;gap:8px;letter-spacing:.08em;font-size:13px;padding:10px 14px}
+.drawLottery .cutinBody{padding:25px 16px 20px}
+.drawLottery .cutinBody:before,.drawLottery .cutinBody:after{display:none}
+.drawLottery .lotteryStamp{color:#d0efdf;font-size:15px;font-weight:900;letter-spacing:.16em}
+.drawLottery .lotteryHeading{font-weight:1000;font-size:clamp(35px,8vw,68px);line-height:1.12;margin:7px 0 9px;color:#ffe0a3;text-shadow:0 4px 0 #352318,0 0 28px #cf935e77}
+.drawLottery .lotteryHeading.conflict{color:#ffb2aa;text-shadow:0 3px 0 #5b2b27,0 0 22px #b24f4588}
+.drawLottery .lotteryHeroName{font-size:clamp(25px,5.3vw,39px);font-weight:950;color:#fff5e3;margin:14px auto 11px;border-block:1px solid #806542;padding:8px 4px}
+.drawLottery .lotteryHint{font-size:clamp(15px,3.8vw,19px);color:#dae8f5;line-height:1.6}
+.drawLottery .lotteryContenders{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:17px auto 6px}
+.drawLottery .lotteryContenders span{border:1px solid #906c55;background:#382e2d;border-radius:8px;padding:8px 13px;color:#fff0d4;font-size:clamp(15px,3.4vw,19px);font-weight:800}
+.drawLottery .lotteryWinner{font-size:clamp(24px,6vw,43px);font-weight:1000;color:#ffe8ad;margin:15px 0 7px;overflow-wrap:anywhere}
+.drawLottery .lotteryWins{display:inline-block;margin:8px 0 2px;border:1px solid #f3c784;border-radius:999px;padding:7px 16px;color:#fce0aa;background:#58412188;font-weight:850}
+.drawLottery .lotteryProgress{text-align:center;color:#acc5d4;font-size:13px;margin:13px 0 0}
+.drawLottery .draftFoot{display:flex;gap:9px;padding:12px;border-top:1px solid #675238;background:#0a1420}
+.drawLottery .draftFoot button{flex:1;min-width:0;min-height:50px;font-size:16px}
+.drawLottery #lotteryNext{background:linear-gradient(#f3d19a,#c99957);color:#172331;border:1px solid #efd7a0}
+.drawLottery #lotterySkip{background:#253b4e;border:1px solid #637f95;color:#e5f1fa}
+@media(max-width:620px){.drawLottery .cutinBody{padding:17px 10px 13px}.drawLottery .cutinTop{font-size:11px;padding:9px 10px}.drawLottery .draftFoot{gap:7px;padding:8px}.drawLottery .draftFoot button{font-size:15px;min-height:49px;padding:9px 6px}.drawLottery .lotteryContenders{gap:6px;margin-top:13px}.drawLottery .lotteryContenders span{padding:7px 9px}}
+@media(prefers-reduced-motion:reduce){.drawLottery .cutinFrame,.drawLottery .lotteryHeading{animation:none!important}}
+
+/* v11: reference combat strength instead of raw four-stat totals */
+.roundFightDetail{display:block;color:#c0d9e7;font-size:12px;line-height:1.4;font-variant-numeric:tabular-nums;white-space:nowrap;margin-top:2px}
+@media(max-width:620px){.roundFightDetail{font-size:10.5px;margin-top:1px}.roundTotal strong{font-size:clamp(19px,4.9vw,24px)}}
+@media(max-width:360px){.roundFightDetail{font-size:9.5px}}
+
+/* Invite-only online room UI */
+.onlineRibbon{padding:12px 15px;margin:12px 0;border:1px solid #568272;border-radius:12px;background:linear-gradient(100deg,#18393a,#1c3145);font-size:15px;color:#b9f4de}
+.onlineStatus{margin:10px 0;color:#ffe2a5;line-height:1.7;font-size:14px}
+.onlineSettings{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.onlineCode{font:900 clamp(30px,7vw,52px)/1.3 ui-monospace,monospace;color:#ffe1a1;letter-spacing:.18em;text-align:center;padding:14px;border:1px dashed #ae8b52;border-radius:12px;margin:14px 0;background:#111e2b}
+.onlineLobbyGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.onlineSeat{padding:13px;border-radius:10px;background:#192c3e;border:1px solid #455b6c;min-width:0;overflow-wrap:anywhere}
+.onlineSeat strong{font-size:17px;color:#eccea0}.onlineSeat small{display:block;color:#b8d0df}
+.onlinePending{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
+.onlineRoundActions{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.onlineRoundActions button{flex:1;min-width:145px}
+.onlineBadge{font-size:14px;padding:3px 10px;background:#244637;border:1px solid #568776;border-radius:99px;color:#bcebd2}
+.onlineHelp{font-size:14px;color:#ccdceb;line-height:1.9}
+@media(max-width:600px){.onlineSettings{grid-template-columns:1fr}.onlineLobbyGrid{grid-template-columns:1fr 1fr}.onlinePending{grid-template-columns:1fr 1fr}}
+
+/* Online v2 UI: records, banners, and replay */
+.tenmeiExtras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;align-items:start;margin:18px 0}
+.tenmeiExtras>.box{margin:0}
+.tenmeiExtras>.tenmeiRecords,.tenmeiExtras>.tenmeiRematch{grid-column:span 1}
+.tenmeiExtras>.tenmeiMvp{grid-column:1/-1}
+.tenmeiFlag{color:var(--flag,#C19B4C);font-weight:1000;font-size:1.35em;text-shadow:0 1px 0 #111,0 0 14px color-mix(in srgb,var(--flag,#C19B4C) 20%,transparent)}
+.tenmeiRecords{margin-top:16px}.tenmeiScroll{overflow:auto}.tenmeiScroll table{width:100%;min-width:430px}
+.tenmeiRecords th,.tenmeiRecords td{white-space:nowrap;padding:8px 10px}.tenmeiRecords td:first-child{font-weight:800}
+.tenmeiPopList{display:grid;gap:7px}.tenmeiPop{background:#20394c;border:1px solid #40566c;border-radius:9px;padding:10px 12px;display:flex;justify-content:space-between;gap:15px}
+.tenmeiPop span{color:#f2d095;font-weight:900}.tenmeiRival{background:linear-gradient(110deg,#543033,#271f32);border:1px solid #af6871;color:#ffe8d1;border-radius:12px;padding:15px;font-size:17px;margin:12px 0}
+.tenmeiMvp{text-align:center;background:radial-gradient(ellipse at top,#55431f,#182537 74%);border-color:#d8b775;padding:24px}
+.tenmeiMvpKicker{color:#e6c792;font-size:19px;letter-spacing:.22em;font-weight:900}
+.tenmeiMvpHero{font-size:clamp(29px,7vw,47px);font-weight:1000;color:#ffe0a1;margin:4px 0;text-shadow:0 2px 20px #eac07342}
+.tenmeiMvpArmy{color:#a9e3d2;font-size:18px;font-weight:800}
+.tenmeiMvpData{margin:14px auto;color:#e3eaf1;font-size:15px;line-height:1.9}
+.tenmeiRematch label{display:block;margin:10px 0}
+.roundTeamName small{display:block;font-size:11px}
+@media(max-width:780px){.tenmeiExtras{grid-template-columns:1fr}.tenmeiExtras>.box{grid-column:1}}
+</style></head><body><main><header><div class="eyebrow">SENGOKU TENMEIROKU · SECRET DRAFT</div><h1>🏯 戦国天命録<br><span style="font-size:.44em;letter-spacing:.11em;color:var(--gold)">― 名将を集め、天下最強を決めよ ―</span></h1><div class="lead">6人・8人、CPU人数自由設定。武将5〜10人で、候補10名からスマホごとに秘密指名。重複はサーバーで抽選。名将105人で天下を競え。</div></header><div id="app"></div><footer class="footer">戦国天命録 ONLINE v2.2｜iPhone Safari・PC対応の<strong>各スマホ・PCから参加できる招待制オンライン試作版</strong>。全員が自分の端末から秘密指名し、サーバー側で抽選。主催者操作の共有戦闘カットイン、軍団旗印、MVP、通算成績、同じ部屋での再戦に対応します。指名が重複したときには手動の抽選カットイン、巡の終わりには全員の一覧カットイン、戦闘にもカットイン演出があります。接続設定（SupabaseのURL・公開キー）とデータベースSQLのセットアップが必要です。大会の進行はサーバー側に保存されます。</footer></main><div id="cutinOverlay" class="cutinOverlay" aria-live="polite" aria-modal="true" role="dialog"></div><script>
+
+'use strict';
+const RAW=[["長野業正",105,92,96,78,"有名武将"],["朝倉宗滴",107,100,94,82,"有名武将"],["柴田勝家",100,101,75,72,"有名武将"],["明智光秀",103,78,98,95,"有名武将"],["立花宗茂",105,103,84,80,"有名武将"],["山県昌景",104,99,80,70,"有名武将"],["馬場信春",104,94,91,76,"有名武将"],["高橋紹運",105,98,84,72,"有名武将"],["吉川元春",104,96,88,79,"有名武将"],["小早川隆景",103,72,99,96,"有名武将"],["佐竹義重",104,101,79,75,"有名武将"],["尼子経久",103,75,101,94,"有名武将"],["浅井長政",102,96,77,83,"有名武将"],["松永久秀",96,78,103,94,"有名武将"],["鍋島直茂",104,87,97,91,"有名武将"],["真田信之",102,85,86,98,"有名武将"],["黒田長政",103,94,85,89,"有名武将"],["加藤清正",104,101,75,79,"有名武将"],["福島正則",102,99,66,72,"有名武将"],["山内一豊",100,75,78,97,"有名武将"],["真田幸村",96,105,88,65,"有名武将"],["本多忠勝",98,105,72,65,"有名武将"],["前田慶次",78,105,67,51,"有名武将"],["井伊直政",97,104,82,88,"有名武将"],["前田利家",98,103,81,90,"有名武将"],["森長可",88,105,57,48,"有名武将"],["可児才蔵",79,104,63,45,"有名武将"],["島左近",96,103,91,67,"有名武将"],["後藤又兵衛",94,104,76,60,"有名武将"],["長宗我部信親",93,102,72,69,"有名武将"],["島津豊久",91,105,70,58,"有名武将"],["柿崎景家",98,104,71,64,"有名武将"],["甘粕景持",96,102,78,68,"有名武将"],["北条綱成",99,104,83,76,"有名武将"],["服部半蔵",75,103,96,54,"有名武将"],["佐久間盛政",95,104,65,62,"有名武将"],["池田恒興",91,102,78,75,"有名武将"],["榊原康政",98,103,86,88,"有名武将"],["酒井忠次",97,102,89,92,"有名武将"],["滝川一益",98,101,94,84,"有名武将"],["竹中半兵衛",85,52,105,94,"有名武将"],["黒田官兵衛",95,65,105,97,"有名武将"],["山本勘助",91,66,104,75,"有名武将"],["宇喜多直家",92,70,105,95,"有名武将"],["直江兼続",91,86,100,99,"有名武将"],["片倉小十郎",94,82,104,91,"有名武将"],["太原雪斎",84,69,105,99,"有名武将"],["毛利隆元",84,72,102,97,"有名武将"],["安国寺恵瓊",65,35,104,96,"有名武将"],["甲斐宗運",97,82,104,78,"有名武将"],["陶晴賢",96,88,103,70,"有名武将"],["大谷吉継",91,79,104,95,"有名武将"],["石田三成",81,55,103,100,"有名武将"],["真田昌幸",99,77,105,99,"有名武将"],["蒲生氏郷",98,93,102,91,"有名武将"],["細川藤孝",78,65,103,100,"有名武将"],["細川忠興",90,92,101,84,"有名武将"],["藤堂高虎",95,85,103,96,"有名武将"],["島津家久",98,93,104,78,"有名武将"],["本多正信",70,45,105,99,"有名武将"],["千利休",35,20,98,105,"有名武将"],["前田玄以",52,34,94,104,"有名武将"],["長束正家",48,38,91,103,"有名武将"],["増田長盛",57,43,94,102,"有名武将"],["浅野長政",83,71,96,104,"有名武将"],["丹羽長秀",96,88,92,103,"有名武将"],["堀秀政",98,90,91,102,"有名武将"],["村井貞勝",54,42,96,104,"有名武将"],["豊臣秀長",85,65,96,105,"有名武将"],["小西行長",84,72,95,103,"有名武将"],["大久保長安",45,28,97,105,"有名武将"],["大久保忠隣",75,62,91,102,"有名武将"],["本多正純",59,40,98,104,"有名武将"],["板倉勝重",48,29,96,105,"有名武将"],["以心崇伝",30,18,99,105,"有名武将"],["小早川秀秋",74,65,66,101,"有名武将"],["北条幻庵",65,43,97,104,"有名武将"],["今川氏真",53,45,78,102,"有名武将"],["六角義賢",87,78,81,101,"有名武将"],["足利義昭",49,30,95,103,"有名武将"],["武田勝頼",95,96,77,77,"有名武将"],["武田信繁",96,90,87,77,"有名武将"],["高坂昌信",90,92,91,77,"有名武将"],["内藤昌豊",95,85,90,78,"有名武将"],["北条氏政",88,77,86,91,"有名武将"],["北条氏照",95,84,76,78,"有名武将"],["上杉景勝",99,84,87,80,"有名武将"],["本庄繁長",96,96,74,70,"有名武将"],["伊達成実",96,100,76,71,"有名武将"],["蘆名盛氏",90,80,89,87,"有名武将"],["佐竹義宣",92,82,86,92,"有名武将"],["津軽為信",86,80,99,87,"有名武将"],["織田信忠",95,88,81,82,"有名武将"],["佐々成政",96,93,76,77,"有名武将"],["池田輝政",90,85,84,93,"有名武将"],["鳥居元忠",94,91,76,72,"有名武将"],["立花道雪",99,96,89,70,"有名武将"],["立花誾千代",88,95,86,70,"有名武将"],["島津歳久",89,85,91,76,"有名武将"],["村上武吉",92,91,82,75,"有名武将"],["山中鹿介",94,100,73,68,"有名武将"],["清水宗治",92,80,91,78,"有名武将"],["足利義輝",83,98,82,68,"有名武将"],["高山右近",87,80,94,88,"有名武将"],["筒井順慶",89,77,97,87,"有名武将"]];
+const KEY='sengoku_tenmeiroku_v4_20261122';
+const BATTLE_TROOPS=10000;
+let s=null, selected=null;
+const $=x=>document.getElementById(x);
+const esc=x=>String(x??'').replace(/[&<>"']/g,t=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[t]));
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const choose=a=>a[rand(0,a.length-1)];
+const shuffle=a=>{const b=a.slice();for(let i=b.length-1;i>0;i--){let j=rand(0,i);[b[i],b[j]]=[b[j],b[i]]}return b};
+const fmt=n=>Number(n).toLocaleString('ja-JP');
+const traitWeights=[['なし',66],['猛将',5],['守将',5],['能吏',5],['募兵',5],['軍師',3.5],['築城',3.5],['人望',4],['奇襲',2.3],['鬼謀',.1],['鬼将',.1],['名将',.5]];
+function rollTrait(){let r=Math.random()*100;for(const [name,weight] of traitWeights){r-=weight;if(r<0)return name}return 'なし'}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+function load(){try{const o=JSON.parse(localStorage.getItem(KEY));if(o&&['draft','tournament'].includes(o.stage)&&[6,8].includes(o.teams?.length)&&o.pool&&o.offers&&o.pickLimit>=5&&o.pickLimit<=10&&o.all?.length===105){s=o;return true}}catch(e){}return false}
+function roster(){return RAW.map((r,id)=>({id,name:r[0],v:r.slice(1,5),trait:rollTrait(),source:'有名武将'}))}
+function newGame(participants,pickLimit){
+ const all=roster(),ids=shuffle(all.map(x=>x.id));
+ s={stage:'draft',all,pool:ids.slice(10),offers:ids.slice(0,10),pickLimit,round:0,phase:'handoff',privateSeat:null,pending:{},awarded:[],waveResult:[],teams:participants.map((p,id)=>({id,name:p.name,isCPU:!!p.isCPU,picks:[],dead:[],army:BATTLE_TROOPS})),matches:[],seed:[]};
+ submitCPUPicks();save();render();
+}
+function submitCPUPicks(){if(!s||s.stage!=='draft')return;for(const t of s.teams){if(t.isCPU&&needs(t.id)&&!hasPending(t.id)){const ranked=s.offers.map(officer).sort((a,b)=>autoPickScore(b,t)-autoPickScore(a,t));if(ranked.length)s.pending[t.id]=ranked[0].id}}
+ s.phase=nextSeat()<0?'ready':'handoff';s.privateSeat=null;selected=null;
+}
+function setup(){
+ $('app').innerHTML=`<section class="box" style="margin-top:20px"><h2>🏯 戦国天命録・大会設定</h2>
+ <div class="order">武将105人（大名16人は登場しません）。<strong>6人制・8人制</strong>を選び、CPU人数と1チームの武将数<strong>5〜10巡</strong>を開始前に決めます。候補は常に10人。全員秘密指名→一斉公開→被ったら抽選。落選者は残りから再指名し、全員獲得後に候補補充。</div>
+ <div class="inputsMode">
+ <label>大会の参加枠 <select id="playerCount"><option value="6" selected>6人制</option><option value="8">8人制</option></select></label>
+ <label>CPU人数 <select id="cpuCount"></select></label>
+ <label>武将数／ドラフト巡数 <select id="pickLimit">${Array.from({length:6},(_,i)=>`<option value="${i+5}" ${i+5===7?'selected':''}>${i+5}人／${i+5}巡</option>`).join('')}</select></label>
+ </div><div id="countHint" class="hint" style="margin-top:10px"></div>
+ <div class="teaminputs" id="playerInputs"></div>
+ <div class="order heroInfo">⚔️ <b>戦国十六国v8.5由来の戦闘計算</b>に天命録のトーナメント独自ルールを追加。<br>💰 政治力×2で試合後の兵力回復／🪖 募兵1人につき＋500兵／💼 能吏は政治回復＋50%／❤️ 人望は討死判定時に50%で救出／🧠 軍師は伏兵の知略勝負＋10。<br>💀 討死した武将はトーナメント中復活・補充なし。兵力の上限は10,000兵。</div>
+ <button id="begin" class="primary fullwidth">🎲 戦国天命録を開始する</button>
+ <p class="small muted">1端末交代制。CPUも同じ10名から秘密指名し、指名重複なら同じ条件で抽選。全CPUにすることもできます。</p></section>`;
+ const inputs=$('playerInputs'),sel=$('playerCount'),cpuSel=$('cpuCount');
+ function refresh(){const n=Number(sel.value),cpu=Number(cpuSel.value),humans=n-cpu,values=Array.from(inputs.querySelectorAll('input')).map(e=>e.value);
+  $('countHint').textContent=`👤 人間 ${humans}人 ＋ 🤖 CPU ${cpu}人 ＝ 合計 ${n}チーム ／ 武将 ${$('pickLimit').value}人ずつ`;
+  inputs.innerHTML=Array.from({length:n},(_,i)=>i<humans?`<label>👤 人間プレイヤー${i+1}<input id="name${i}" maxlength="24" value="${esc(values[i]??'プレイヤー'+(i+1))}"></label>`:`<div class="status done"><b>🤖 CPU ${i-humans+1}</b><br><span class="small muted">ドラフト・試合とも自動処理</span></div>`).join('')}
+ function updateCPUOptions(){const n=Number(sel.value),old=cpuSel.value===''?0:Number(cpuSel.value);cpuSel.innerHTML=Array.from({length:n+1},(_,i)=>`<option value="${i}">${i}人${i===0?'（全員人間）':i===n?'（全員CPU）':''}</option>`).join('');cpuSel.value=String(Math.min(old,n));refresh()}
+ sel.onchange=updateCPUOptions;cpuSel.onchange=refresh;$('pickLimit').onchange=refresh;updateCPUOptions();
+ $('begin').onclick=()=>{const n=Number(sel.value),human=n-Number(cpuSel.value),limit=Number($('pickLimit').value);newGame(Array.from({length:n},(_,i)=>({isCPU:i>=human,name:i>=human?'CPU '+(i-human+1):($('name'+i)?.value.trim()||'プレイヤー'+(i+1)).slice(0,24)})),limit)};
+}
+function officer(id){return s.all[id]}
+function officerTotal(id){return officer(id).v.reduce((sum,value)=>sum+value,0)}
+// Draft reference strength: existing combat formulas with standardized conditions.
+// 10,000兵・晴天・戦争イベントなし・乱数中央値。攻撃と防御の平均を表示する。
+// 政治の補給効果は試合後に作用するため、この数値には含めない。
+
+// ONLINE v1 agreed political support: the top-politics living officer is the quartermaster.
+// Attack/defence support max +5.25%; losses after the fight max -12%.
+function quartermasterPolitics(c){return c.length?Math.max(...c.map(o=>o.v[3])):0}
+function politicsCombatBonus(c){return Math.min(5.25,Math.max(0,(quartermasterPolitics(c)-70)*.15)) / 100}
+function politicsLossReduction(c){return Math.min(12,Math.max(0,(quartermasterPolitics(c)-70)*.35)) / 100}
+
+function teamBattleStrength(t){
+ const c=living(t);
+ if(!c.length)return{value:0,attack:0,defense:0};
+ const n=national(c),troops=BATTLE_TROOPS;
+ const attack=basicAttackPower(troops,n)
+   *(countTrait(c,'猛将')?1+(7.5+bonus(c,'猛将',2,1))/100:1)
+   *powerTrait(c,'鬼将',5,0,0)
+   *(countTrait(c,'奇襲')?1+((20+bonus(c,'奇襲',3,2))/100)*.125:1)
+   *powerTrait(c,'名将',3,2,1)
+   *(1+politicsCombatBonus(c));
+ const defense=basicDefensePower(troops,n)
+   *(countTrait(c,'守将')?1+(7.5+bonus(c,'守将',2,1))/100:1)
+   *powerTrait(c,'築城',7.5,2,1)
+   *powerTrait(c,'名将',3,2,1)
+   *(1+politicsCombatBonus(c));
+ return {value:Math.round((attack+defense)/2),attack:Math.round(attack),defense:Math.round(defense)};
+}
+function living(t){const dead=new Set((t.dead||[]).map(d=>d.id));return t.picks.filter(id=>!dead.has(id)).map(officer)}
+function fallen(t){return (t.dead||[]).map(d=>({id:d.id,name:officer(d.id).name,reason:d.reason,match:d.match}))}
+
+function officerHTML(id,isPrivate=false){const o=officer(id),v=o.v,trait=o.trait;return `<button class="officer ${selected===id&&isPrivate?'selected':''}" ${isPrivate?`data-pick="${id}"`:'disabled'}><div class="name">${esc(o.name)}</div><div class="desc"><span class="tag ${trait==='なし'?'no':''}">${esc(trait)}</span>　${o.source==='大名'?'大名':'有名武将'} ・ 合計${fmt(v.reduce((a,b)=>a+b,0))}</div><div class="stat">${['統率','武力','知略','政治'].map((name,i)=>`<div>${name}<strong>${v[i]}</strong></div>`).join('')}</div></button>`}
+function hasPending(i){return Object.prototype.hasOwnProperty.call(s.pending,i)}
+function needs(i){return !s.awarded.includes(i)}
+function nextSeat(){return s.teams.findIndex(t=>!t.isCPU&&needs(t.id)&&!hasPending(t.id))}
+function teamsHTML(){return s.teams.map((t,i)=>{const roundStatus=s.awarded.includes(i)?'✅ 今巡確定':hasPending(i)?(t.isCPU?'🤖 CPU自動提出済（非公開）':'🔒 提出済（非公開）'):'⌛ 未提出';return `<div class="team ${s.privateSeat===i?'active':''}"><div class="teamHead"><b>${i+1}. ${t.isCPU?'🤖':'👤'} ${esc(t.name)}</b><b>${t.picks.length}/${s.pickLimit}</b></div><div class="small ${s.awarded.includes(i)?'gold':'muted'}">${roundStatus}</div><div class="small gold">軍団戦力値：${fmt(teamBattleStrength(t).value)} <span class="muted">（攻 ${fmt(teamBattleStrength(t).attack)}／守 ${fmt(teamBattleStrength(t).defense)}）</span></div><small>${t.picks.length?t.picks.map(id=>esc(officer(id).name)).join(' ・ '):'まだ指名なし'}</small></div>`}).join('')}
+function beginPrivate(){const i=nextSeat();if(i<0)return;s.privateSeat=i;s.phase='choice';selected=null;save();render()}
+function choosePrivate(id){if(s.phase!=='choice'||!s.offers.includes(id))return;selected=id;document.querySelectorAll('[data-pick]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.pick)===id));$('confirmPick').disabled=false;$('pickHint').textContent='✅ '+officer(id).name+' を選択中。確定するまで変更できます。'}
+function confirmPrivate(){if(s.phase!=='choice'||selected===null)return;const i=s.privateSeat; if(!confirm(`${s.teams[i].name}の秘密指名を確定しますか？\n確定したら他のプレイヤーに端末を渡してください。`))return;
+ s.pending[i]=selected;s.privateSeat=null;selected=null;submitCPUPicks();save();render();window.scrollTo(0,0)
+}
+function computeRevealRecords(){const by={};for(const [seat,id] of Object.entries(s.pending)){(by[id]??=[]).push(Number(seat))}
+ const records=[];for(const [idstr,contenders] of Object.entries(by)){const id=Number(idstr),winner=choose(contenders),losers=contenders.filter(i=>i!==winner);s.teams[winner].picks.push(id);s.awarded.push(winner);s.offers=s.offers.filter(x=>x!==id);records.push({id,winner,losers,contenders:[...contenders],warriorTotal:officerTotal(id),teamTotal:teamBattleStrength(s.teams[winner]).value,teamCount:s.teams[winner].picks.length,roster:s.teams[winner].picks.map(pid=>officer(pid).name)})}
+ s.waveResult=records;s.pending={};s.phase=s.awarded.length===s.teams.length?'roundDone':'retryResults';return records}
+function cutinLayer(){return $('cutinOverlay')}
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function showCutinScreen(mode,kicker,title,sub,officerName='',names=[],winner=''){const el=cutinLayer();el.className='cutinOverlay show '+mode;el.innerHTML=`<div class="cutinFrame"><div class="cutinTop">SENGOKU TENMEIROKU</div><div class="cutinBody"><div class="cutinKicker">${kicker}</div><div class="cutinTitle ${mode==='win'?'emph':''}">${title}</div>${officerName?`<div class="cutinOfficer">${esc(officerName)}</div>`:''}${sub?`<div class="cutinSub">${sub}</div>`:''}${names.length?`<div class="cutinNames">${names.map(n=>`<span>${esc(n)}</span>`).join('')}</div>`:''}${winner?`<div class="cutinDivider"></div><div class="cutinWinner">${winner}</div>`:''}</div></div>`}
+function hideCutinScreen(){const el=cutinLayer();el.className='cutinOverlay';el.innerHTML=''}
+// v10: Duplicate-pick lotteries have manual cut-ins; no cut-ins for solo picks.
+// After ALL teams have acquired one warrior in a round, show one collective summary.
+function roundSummaryRows(){
+ return s.teams.map((t,i)=>{
+  const id=t.picks[s.round],o=officer(id);
+  return `<div class="roundSummaryRow">
+   <div class="roundTeam"><span class="roundIndex">${i+1}</span><span class="roundTeamName">${t.isCPU?'🤖':'👤'} ${esc(t.name)}</span></div>
+   <div class="roundPick"><span class="roundSmallLabel">今巡獲得</span><strong>${esc(o.name)}</strong><span class="roundTrait">${esc(o.trait)}</span></div>
+   <div class="roundTotal"><span>軍団戦力値</span><strong>${fmt(teamBattleStrength(t).value)}</strong><small class="roundFightDetail">攻 ${fmt(teamBattleStrength(t).attack)} / 守 ${fmt(teamBattleStrength(t).defense)}</small></div>
+  </div>`
+ }).join('');
+}
+function showRoundSummary(){
+ if(!s||s.stage!=='draft'||s.phase!=='roundDone')return;
+ const el=cutinLayer();el.className='cutinOverlay show draftCinematic roundSummary';
+ el.innerHTML=`<div class="cutinFrame" role="document">
+  <div class="cutinTop"><span>🏯 戦国天命録　名将獲得結果</span><span>第${s.round+1} / ${s.pickLimit}巡</span></div>
+  <div class="cutinBody"><div class="roundHeadline"><div class="cutinKicker">全${s.teams.length}チーム・獲得確定</div><div class="cutinTitle emph">第${s.round+1}巡　開票結果</div><div class="roundHeadNote">各チームが今回獲得した武将と、現在の軍団戦力値</div></div>
+  <div class="roundColumnHeads"><span>チーム</span><span>獲得武将</span><span>軍団戦力値</span></div>
+  <div class="roundSummaryList">${roundSummaryRows()}</div>
+  <p class="roundRuleNote">※ 戦力値＝兵数10,000・晴天・イベントなし・乱数中央値で計算した攻撃力と防御力の平均。特性補正込み（猛将・守将は中央値、奇襲は期待値）。実戦の強さは天候・乱数・討死・補給などで変わります。</p>
+  </div>
+  <div class="draftFoot"><button id="roundReviewClose" type="button">結果を閉じる</button><button id="roundReviewNext" type="button">${s.round===s.pickLimit-1?'🏟️ トーナメントへ':'▶ 次の巡へ進む'}</button></div>
+ </div>`;
+ $('roundReviewClose').onclick=hideCutinScreen;
+ $('roundReviewNext').onclick=()=>{hideCutinScreen();nextRound()};
+}
+let lotteryCinematic=null;
+// v2.2: every resolved wave receives a manual cut-in. Duplicate picks keep
+// the three-stage lottery; uncontested waves show a brief opening result.
+let onlineDrawQueue=[];
+let onlineDrawQueuedKeys=new Set();
+function lotterySlides(records){
+ const collided=(records||[]).filter(r=>(r.contenders||[]).length>1), slides=[];
+ for(const r of collided){
+  const contenderNames=r.contenders.map(i=>s.teams[i]?.name||'参加者'+(i+1));
+  slides.push({type:'conflict',rec:r,contenderNames});
+  slides.push({type:'draw',rec:r,contenderNames});
+  slides.push({type:'winner',rec:r,contenderNames});
+ }
+ if(!slides.length&&records?.length)slides.push({type:'noConflict',records});
+ return slides;
+}
+function lotteryHTML(slide,index,total){
+ const phase=slide.type;
+ const flow=lotteryCinematic||{};
+ const round=Number.isInteger(flow.round)?flow.round:s.round;
+ const wave=Number.isInteger(flow.wave)?flow.wave:s.wave;
+ const lastStep=index===total-1;
+ const nextLabel=lastStep?'▶ '+(flow.phase==='roundDone'?'全員の結果一覧へ':'再指名へ'):
+    phase==='draw'?'🎲 抽選結果を見る':'▶ 次へ';
+ if(phase==='noConflict'){
+  const rows=slide.records.map(r=>`<div class="lotteryWins">${esc(s.teams[r.winner]?.name||'チーム')} → <b>${esc(officer(r.id).name)}</b></div>`).join('');
+  return `<div class="cutinFrame" role="document"><div class="cutinTop"><span>🏯 戦国天命録　武将争奪戦</span><span>第${round+1}巡</span></div><div class="cutinBody"><div class="lotteryStamp">📣 一斉開票</div><div class="lotteryHeading">指名確定！</div><div class="lotteryHint">今回は指名重複なし・抽選はありません</div>${rows}<div class="lotteryProgress">開票 ${index+1} / ${total}　・　「次へ」で進行</div></div><div class="draftFoot"><button id="lotteryNext" type="button">${nextLabel}</button><button id="lotterySkip" type="button">⏭ 演出を省略</button></div></div>`;
+ }
+ const r=slide.rec,off=officer(r.id),names=slide.contenderNames;
+ const title=phase==='conflict'?'指名、激突！':phase==='draw'?'天命の抽選':'当選者決定！';
+ const kicker=phase==='conflict'?'⚔ 競合発生':phase==='draw'?'🎲 抽選開始':'🏆 勝者確定';
+ const description=phase==='conflict'?`${names.length}チームが同じ名将を指名！`:phase==='draw'?`全${names.length}チーム、等しい確率で抽選！`:'この武将を獲得するのは…';
+ const contenderTags=phase==='winner'?'':`<div class="lotteryContenders">${names.map(n=>`<span>${esc(n)}</span>`).join('')}</div>`;
+ const winner=phase==='winner'?`<div class="lotteryWinner">🏯 ${esc(s.teams[r.winner]?.name||'勝者')}</div><div class="lotteryWins">${esc(off.name)} を獲得！</div>`:'';
+ return `<div class="cutinFrame" role="document"><div class="cutinTop"><span>🏯 戦国天命録　武将争奪戦</span><span>第${round+1}巡　抽選 ${Math.floor(index/3)+1}組目</span></div><div class="cutinBody"><div class="lotteryStamp">${kicker}</div><div class="lotteryHeading ${phase==='conflict'?'conflict':''}">${title}</div><div class="lotteryHeroName">${esc(off.name)}</div><div class="lotteryHint">${description}</div>${contenderTags}${winner}<div class="lotteryProgress">抽選演出 ${index+1} / ${total}　・　「次へ」で進行</div></div><div class="draftFoot"><button id="lotteryNext" type="button">${nextLabel}</button><button id="lotterySkip" type="button">⏭ 抽選演出を省略</button></div></div>`;
+}
+function finishLottery(){
+ const was=lotteryCinematic;
+ lotteryCinematic=null;
+ hideCutinScreen();
+ // Replay all unseen server-confirmed waves before returning to draft UI.
+ if(onlineDrawQueue.length){setTimeout(playQueuedLottery,0);return}
+ if(s.stage==='draft'&&s.phase==='roundDone'&&(!was||was.round===s.round))showRoundSummary();
+}
+function nextLotterySlide(){
+ const c=lotteryCinematic;if(!c)return;
+ c.index++;
+ if(c.index>=c.slides.length){finishLottery();return;}
+ const el=cutinLayer();el.className='cutinOverlay show draftCinematic drawLottery';
+ el.innerHTML=lotteryHTML(c.slides[c.index],c.index,c.slides.length);
+ $('lotteryNext').onclick=nextLotterySlide;
+ $('lotterySkip').onclick=finishLottery;
+}
+function playQueuedLottery(){
+ if(lotteryCinematic||!onlineSession||cutinLayer().classList.contains('show'))return;
+ const event=onlineDrawQueue.shift();if(!event)return;
+ const key=event.round+':'+event.wave;
+ onlineDrawQueuedKeys.delete(key);
+ if(onlineLastSeen.has(key)){playQueuedLottery();return}
+ const slides=lotterySlides(event.records);
+ rememberWave(key);
+ if(!slides.length){playQueuedLottery();return;}
+ lotteryCinematic={slides,index:-1,round:event.round,wave:event.wave,phase:event.phase};
+ nextLotterySlide();
+}
+function reveal(){
+ if(s.phase!=='ready'||lotteryCinematic)return;
+ const records=computeRevealRecords();save();render();
+ const slides=lotterySlides(records);
+ if(slides.length){lotteryCinematic={slides,index:-1};nextLotterySlide();}
+ else if(s.phase==='roundDone')showRoundSummary();
+}
+function fastReveal(){if(s.phase!=='ready')return;computeRevealRecords();save();render();}
+function nextWave(){if(s.phase!=='retryResults')return;submitCPUPicks();save();render()}
+function nextRound(){if(s.phase!=='roundDone')return;s.round++;if(s.round>=s.pickLimit){startTournament()}else{s.awarded=[];s.pending={};s.privateSeat=null;s.waveResult=[];while(s.offers.length<10&&s.pool.length){s.offers.push(s.pool.shift())}submitCPUPicks()}save();render();window.scrollTo(0,0)}
+function autoPickScore(o,t){
+ const v=o.v,weights=[.29,.30,.19,.22];let x=v.reduce((a,n,k)=>a+n*weights[k],0);
+ const c=t.picks.map(officer);
+ if(o.trait==='募兵')x+=11;
+ if(o.trait==='能吏'&&!countTrait(c,'能吏'))x+=11;
+ if(o.trait==='人望'&&!countTrait(c,'人望'))x+=13;
+ if(o.trait==='軍師'&&!countTrait(c,'軍師'))x+=8;
+ if(o.trait==='名将')x+=10;
+ if(['猛将','守将','築城','奇襲'].includes(o.trait))x+=7;
+ if(c.reduce((sum,b)=>sum+b.v[3],0)<500)x+=v[3]*.04;
+ return x+rand(-6,6);
+}
+function automaticAll(){if(!confirm('未確定分を自動で指名して、トーナメントに進みますか？（CPU以外の未指名も自動操作されます）'))return;let safety=0;while(s.stage==='draft'&&safety++<250){if(s.phase==='roundDone'){nextRound();continue}if(s.phase==='retryResults'){s.phase='handoff';continue}if(s.phase==='choice'){s.phase='handoff';s.privateSeat=null;selected=null}if(s.phase==='ready'){fastReveal();continue}for(const t of s.teams){if(needs(t.id)&&!hasPending(t.id)){const arr=s.offers.map(officer).sort((a,b)=>autoPickScore(b,t)-autoPickScore(a,t));s.pending[t.id]=arr[0].id}}s.phase='ready'}save();render()}
+function draft(){const n=s.teams.length,done=s.awarded.length,submitted=Object.keys(s.pending).length,need=n-done;
+ let top=`<div class="layout"><section class="box"><h2>🎴 第${s.round+1}巡 · せーのでドラフト</h2><div class="order">今巡の指名確定：<strong>${done} / ${n}人</strong>　｜　秘密提出：<strong>${submitted} / ${need}人</strong><br><span class="small muted">残っている候補から1名ずつ。CPUは自動で秘密指名、重複すれば全員同じ確率で抽選します。全員確定後に候補を補充。</span></div><div class="progress"><div style="width:${100*(s.round*n+done)/(n*s.pickLimit)}%"></div></div>`;
+ if(s.phase==='choice'){
+ const t=s.teams[s.privateSeat];top+=`<div class="secret">🔒 <b>${esc(t.name)}</b> 専用の選択画面。<br>ほかの人に画面を見せずに指名してください。</div><div class="offerGrid">${s.offers.map(id=>officerHTML(id,true)).join('')}</div><p id="pickHint" class="hint">武将を1人タップして選んでください。</p><button id="confirmPick" class="primary fullwidth" disabled>🔐 この武将で秘密指名を確定</button><button id="backToVeil" class="fullwidth">ひとまず画面を隠す</button>`;
+ }else if(s.phase==='handoff'){
+ const next=nextSeat(),t=s.teams[next];top+=`<div class="choiceOverlay"><div class="badge">🔒 秘密指名</div><p><strong>次は ${esc(t.name)} の番</strong></p><p class="muted">同じ候補から選んだ指名は、開票するまでほかの人に見えません。</p><button class="primary fullwidth" id="openChoice">${esc(t.name)}：選択画面を開く</button><p class="small muted">画面を開いて武将を選び、「秘密指名を確定」を押してください。</p></div><details><summary>今巡の候補一覧を見る（選択内容は非公開）</summary><div class="offerGrid">${s.offers.map(id=>officerHTML(id)).join('')}</div></details>`;
+ }else if(s.phase==='ready'){
+ top+=`<div class="choiceOverlay"><strong>🎉 人間とCPU、全員の秘密指名がそろった！</strong><p>ここで一斉に開票します。被った武将は抽選で当選者を決めます。指名が重複した場合は抽選カットインで結果を発表！全員の獲得が確定した巡の終了時に、全チームの獲得武将と現在の軍団戦力値を一覧カットインで表示します。</p><button class="primary fullwidth" id="reveal">🎲 せーの！ 抽選・開票する</button></div>`;
+ }else {
+ const rows=s.waveResult.map(r=>`<div class="reveal ${r.losers.length?'bad':''}"><b>${esc(officer(r.id).name)}</b>（総合 ${fmt(r.warriorTotal??officerTotal(r.id))}） → 🏆 <b>${esc(s.teams[r.winner].name)}</b> が獲得 <span class="gold">【軍団戦力 ${fmt(teamBattleStrength(s.teams[r.winner]).value)}】</span>${r.losers.length?`<br>🎲 ${r.losers.length+1}人で抽選：${r.losers.map(i=>esc(s.teams[i].name)).join('、')} は落選`:'<br><span class="small muted">単独指名・確定</span>'}</div>`).join('');
+ top+=`<h3>📣 ${s.phase==='roundDone'?'今巡の獲得結果':'開票途中経過'}</h3>${rows}${s.phase==='roundDone'?'<button id="showRoundSummaryAgain" class="primary fullwidth">🏯 第'+(s.round+1)+'巡・全員の結果一覧を見る</button>':''}<div class="choiceOverlay"><strong>${s.phase==='roundDone'?`✅ ${n}人全員の指名が確定！`:`🎲 ${n-done}人が再指名`}</strong><p>${s.phase==='roundDone'?`これから候補を10人まで補充して、次の巡へ進みます。`:`落選者は残りの${s.offers.length}名の候補から、もう一度秘密指名します。ここではまだ候補を補充しません。`}</p><button class="primary fullwidth" id="advance">${s.phase==='roundDone'?(s.round===s.pickLimit-1?'🏟️ トーナメントへ':'✨ 候補を補充して次の巡へ'):'🔒 落選者の再指名に進む'}</button></div>`;
+ }
+ top+=`<div class="row" style="margin-top:15px"><button id="autoAll" class="secondary">残り指名を自動で進める</button><button id="reset" class="danger">新しい大会</button></div></section><aside class="box"><h2>👥 各チームの武将</h2>${teamsHTML()}<p class="small muted">CPUの選択も、人間の秘密提出も、開票まで武将名は表示しません。</p></aside></div>`;
+ $('app').innerHTML=top;
+ if(s.phase==='choice'){document.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>choosePrivate(Number(b.dataset.pick)));$('confirmPick').onclick=confirmPrivate;$('backToVeil').onclick=()=>{s.phase='handoff';s.privateSeat=null;selected=null;save();render()}}
+ if(s.phase==='handoff')$('openChoice').onclick=beginPrivate;
+ if(s.phase==='ready')$('reveal').onclick=reveal;
+ if(['roundDone','retryResults'].includes(s.phase))$('advance').onclick=s.phase==='roundDone'?nextRound:nextWave;
+ if(s.phase==='roundDone')$('showRoundSummaryAgain').onclick=showRoundSummary;
+ $('autoAll').onclick=automaticAll;$('reset').onclick=reset;
+}
+function reset(){if(confirm('この大会を終了して最初から作り直しますか？')){s=null;try{localStorage.removeItem(KEY)}catch(e){};setup()}}
+function startTournament(){s.stage='tournament';s.seed=shuffle(s.teams.map(t=>t.id));const x=s.seed,slots=x.length===6?[x[0],null,x[2],x[3],x[1],null,x[4],x[5]]:x;
+ s.matches=[0,1,2,3].map(i=>({id:'準々決勝'+(i+1),round:1,a:slots[i*2],b:slots[i*2+1],result:null}));s.matches.push({id:'準決勝1',round:2,a:null,b:null,result:null},{id:'準決勝2',round:2,a:null,b:null,result:null},{id:'決勝',round:3,a:null,b:null,result:null});
+ if(x.length===6){for(let i=0;i<4;i++){const m=s.matches[i];if(m.a===null||m.b===null){const winner=m.a===null?m.b:m.a;m.result={winner,bye:true,legs:[],armies:[]};advanceWinner(i,winner)}}}save()
+}
+function countTrait(c,name){return c.filter(o=>o.trait===name).length}
+function extra(c,name){return Math.min(2,Math.max(0,countTrait(c,name)-1))}
+function bonus(c,name,second,third){const n=extra(c,name);return(n>=1?second:0)+(n>=2?third:0)}
+function powerTrait(c,name,base,second,third){return countTrait(c,name)?1+(base+bonus(c,name,second,third))/100:1}
+function leader(c){return c.slice().sort((a,b)=>(b.v[0]*4+b.v[2]*3+b.v[1]*2)-(a.v[0]*4+a.v[2]*3+a.v[1]*2)||b.v.reduce((x,y)=>x+y,0)-a.v.reduce((x,y)=>x+y,0))[0]}
+function national(c){const lord=leader(c),extras=[0,0,0,0];for(const o of c){if(o===lord)continue;for(let i=0;i<4;i++)extras[i]+=o.v[i]}return lord.v.map((x,i)=>{let v=x+Math.ceil(extras[i]/7.5);return i===1&&countTrait(c,'鬼将')?v*powerTrait(c,'鬼将',5,1,1):i===2&&countTrait(c,'鬼謀')?v*powerTrait(c,'鬼謀',10,1,1):v})}
+function basicAttackPower(sent,stats){return sent/70+stats[1]*.35+stats[0]*.25+stats[2]*.20}
+function basicDefensePower(troops,stats){return troops/70+stats[0]*.40+stats[2]*.30+stats[1]*.10}
+function combatTier(ratio){if(ratio>=1.20)return {name:'大勝',a:[5,18],d:null,major:true};if(ratio>=1.10)return{name:'辛勝',a:[15,30],d:null,major:false};if(ratio>=1.05)return{name:'優勢',a:[20,35],d:[25,40],major:false};if(ratio>=.95)return{name:'接戦',a:[10,30],d:[15,30],major:false};if(ratio>=.90)return{name:'惜敗',a:[15,35],d:[10,25],major:false};if(ratio>=.75)return{name:'敗北',a:[20,40],d:[5,18],major:false};return{name:'惨敗',a:[30,55],d:[3,13],major:true}}
+function combatLossV46(own,enemy,minRate,rolledRate,defeatBonus=0){own=Math.max(0,Math.floor(own));enemy=Math.max(0,Math.floor(enemy));if(!own)return 0;const matched=Math.min(own,enemy);let loss=((own+matched)/2)*minRate/100+(.20*own+.80*matched)*(rolledRate-minRate)/100;if(own>enemy)loss*=.55+.45*enemy/own;else if(own<enemy&&defeatBonus>0)loss*=1+(1-own/Math.max(1,enemy))*defeatBonus;return Math.min(own,Math.ceil(loss))}
+const v46DefeatBoost={大勝:0,辛勝:0,優勢:0,接戦:.05,惜敗:.20,敗北:.35,惨敗:.50};
+function duelRepresentative(c,i){const highest=Math.max(...c.map(o=>o.v[i]));return choose(c.filter(o=>o.v[i]===highest))}
+function rollWarEvent(a,d){
+ const roll=rand(1,200),type=roll<=25?'一騎討ち':roll<=50?'伏兵':roll<=75?'兵站支援':roll<=100?'士気高揚':null;
+ if(!type||!a.length||!d.length)return null;
+ const index=type==='一騎討ち'?1:type==='伏兵'?2:type==='兵站支援'?3:0,
+ ao=duelRepresentative(a,index),doo=duelRepresentative(d,index),
+ adviseA=index===2&&countTrait(a,'軍師')?10:0,
+ adviseD=index===2&&countTrait(d,'軍師')?10:0,
+ as=ao.v[index]+rand(-10,10)+adviseA,ds=doo.v[index]+rand(-10,10)+adviseD,
+ aWon=as===ds?rand(0,1)===0:as>ds,
+ rate=type==='一騎討ち'?rand(5,10):type==='伏兵'?rand(6,14):type==='兵站支援'?rand(20,40):rand(10,15);
+ return{type,attacker:ao,defender:doo,attackerScore:as,defenderScore:ds,adviseA,adviseD,aWon,winner:aWon?ao:doo,loser:aWon?doo:ao,rate};
+}
+function leg(atkTeam,defTeam){const a=living(atkTeam),d=living(defTeam),an=national(a),dn=national(d),weather=choose([0,-.05,-.10,-.15]),event=rollWarEvent(a,d);let sent=atkTeam.army,dt=defTeam.army,ambushAttackLoss=0,ambushDefenseLoss=0;
+if(event?.type==='伏兵'){if(event.aWon){ambushDefenseLoss=Math.floor(dt*event.rate/100);dt-=ambushDefenseLoss}else{ambushAttackLoss=Math.floor(sent*event.rate/100);sent-=ambushAttackLoss}}
+const pBonus=event?.type==='士気高揚'?5:event?.type==='一騎討ち'?event.rate:0,attackEvent=event?.aWon?1+pBonus/100:1,defenseEvent=event&&!event.aWon?1+pBonus/100:1;
+const surprise=countTrait(a,'奇襲')&&Math.random()<(20+bonus(a,'奇襲',3,2))/100?rand(10,15):0;
+const atk=basicAttackPower(sent,an)*(1+weather)*(countTrait(a,'猛将')?1+(rand(5,10)+bonus(a,'猛将',2,1))/100:1)*powerTrait(a,'鬼将',5,0,0)*(surprise?1+surprise/100:1)*powerTrait(a,'名将',3,2,1)*attackEvent*(1+politicsCombatBonus(a))*rand(90,110)/100;
+const def=basicDefensePower(dt,dn)*(countTrait(d,'守将')?1+(rand(5,10)+bonus(d,'守将',2,1))/100:1)*powerTrait(d,'築城',7.5,2,1)*powerTrait(d,'名将',3,2,1)*defenseEvent*(1+politicsCombatBonus(d))*rand(90,110)/100;
+const ratio=atk/Math.max(1,def),win=ratio>=1.10,tier=combatTier(ratio),rateA=rand(tier.a[0],tier.a[1]),rateD=tier.d?rand(tier.d[0],tier.d[1]):null;
+let casualtiesA=combatLossV46(sent,dt,tier.a[0],rateA,win?0:v46DefeatBoost[tier.name]),casualtiesD=rateD===null?0:combatLossV46(dt,sent,tier.d[0],rateD,0);
+if(event?.type==='兵站支援'){if(event.aWon)casualtiesA=Math.max(0,Math.ceil(casualtiesA*(100-event.rate)/100));else if(!win)casualtiesD=Math.max(0,Math.ceil(casualtiesD*(100-event.rate)/100))}
+if(event?.type==='士気高揚'){if(event.aWon)casualtiesD=Math.min(dt,Math.ceil(casualtiesD*(100+event.rate)/100));else casualtiesA=Math.min(sent,Math.ceil(casualtiesA*(100+event.rate)/100))}
+// Quartermaster reduces final casualties for each side, without changing battle tiers.
+casualtiesA=Math.min(sent,Math.ceil(casualtiesA*(1-politicsLossReduction(a))));
+casualtiesD=Math.min(dt,Math.ceil(casualtiesD*(1-politicsLossReduction(d))));
+const survivors=Math.max(0,sent-casualtiesA),defenderAfter=win?0:Math.max(0,dt-casualtiesD);
+return {atk:atkTeam.id,def:defTeam.id,weather:['晴','曇','雨','豪雨'][[0,-.05,-.10,-.15].indexOf(weather)],ratio,win,tier:tier.name,surprise,event:event?{type:event.type,attackName:event.attacker.name,defenseName:event.defender.name,winner:event.winner.name,aWon:event.aWon,rate:event.rate,loserName:event.loser.name,adviseA:event.adviseA,adviseD:event.adviseD}:null,attackerStart:atkTeam.army,defenderStart:defTeam.army,attackerAfter:survivors,defenderAfter,defenderFieldAfter:Math.max(0,dt-casualtiesD),attackerLoss:atkTeam.army-survivors,defenderLoss:defTeam.army-Math.max(0,dt-casualtiesD),statAtk:an,statDef:dn,atkPower:atk,defPower:def,commanderAttack:leader(a).name,commanderDefense:leader(d).name}}
+// Every leg has a death check; both legs are calculated first so the home/away scoring
+// remains symmetric. Any deaths are applied BEFORE the next tournament match.
+function resolveBattleDeaths(l,matchLabel){
+ const attacker=s.teams[l.atk],defender=s.teams[l.def];
+ l.deaths=[];l.rescues=[];
+ function deathRate(t,p){return Math.random()<p*(countTrait(living(t),'名将')?.7:1)}
+ function kill(t,cause,preferredName=null){
+  const c=living(t),victim=preferredName?c.find(o=>o.name===preferredName):choose(c);
+  if(!victim)return false;
+  if(countTrait(c,'人望')&&Math.random()<.5){l.rescues.push({team:t.id,name:victim.name,cause});return false}
+  t.dead.push({id:victim.id,reason:cause,match:matchLabel});
+  l.deaths.push({team:t.id,name:victim.name,cause});
+  return true;
+ }
+ if(l.event?.type==='一騎討ち'){
+  const losingTeam=l.event.aWon?defender:attacker;
+  if(deathRate(losingTeam,.05))kill(losingTeam,'一騎討ち',l.event.loserName);
+ }
+ const defeated=l.win?defender:attacker,major=l.win?l.ratio>=1.20:l.ratio<.75;
+ if(living(defeated).length&&deathRate(defeated,major?.05:.01))kill(defeated,major?'大敗':'通常戦闘');
+ const oniTargets=[];
+ if(countTrait(living(attacker),'鬼将')&&living(defender).length)oniTargets.push(defender);
+ if(countTrait(living(defender),'鬼将')&&living(attacker).length)oniTargets.push(attacker);
+ if(oniTargets.length){const target=choose(oniTargets);if(deathRate(target,.26))kill(target,'鬼将');}
+}
+function advanceWinner(pos,winner){if(pos<4){s.matches[4+Math.floor(pos/2)][pos%2?'b':'a']=winner}else if(pos<6){s.matches[6][pos%2?'b':'a']=winner}}
+function logistics(t){
+ const c=living(t),p=c.length?national(c)[3]:0,recruit=countTrait(c,'募兵');
+ const adept=countTrait(c,'能吏')>0,base=Math.floor(p*2);
+ const politicsRegen=Math.floor(base*(adept?1.5:1));
+ return{politics:Math.floor(p),politicsBase:base,adept,politicsRegen,recruit,recruitRegen:recruit*500};
+}
+function matchFight(m){
+ const ta=s.teams[m.a],tb=s.teams[m.b];
+ if(!living(ta).length||!living(tb).length){
+  const winner=!living(ta).length&&!living(tb).length?choose([m.a,m.b]):living(ta).length?m.a:m.b;
+  m.result={winner,forfeit:true,loser:winner===m.a?m.b:m.a,legs:[],armies:[]};
+  advanceWinner(s.matches.indexOf(m),winner);save();return;
+ }
+ const l1=leg(ta,tb),l2=leg(tb,ta);
+ let winner;if(l1.win&&!l2.win)winner=m.a;else if(l2.win&&!l1.win)winner=m.b;else winner=l1.ratio===l2.ratio?choose([m.a,m.b]):l1.ratio>l2.ratio?m.a:m.b;
+ // Home/away legs start with the same pre-match roster and troop counts. Average losses
+ // persist to the next match; fallen warriors do not fight in subsequent matches.
+ const lossA=Math.ceil((l1.attackerLoss+l2.defenderLoss)/2),lossB=Math.ceil((l1.defenderLoss+l2.attackerLoss)/2);
+ resolveBattleDeaths(l1,m.id+' 第1戦');
+ resolveBattleDeaths(l2,m.id+' 第2戦');
+ const armies=[];
+ for(const [t,loss] of [[ta,lossA],[tb,lossB]]){
+  const before=t.army,lg=logistics(t),remaining=Math.max(1,before-loss);
+  const regen=Math.min(BATTLE_TROOPS-remaining,lg.politicsRegen+lg.recruitRegen);
+  t.army=remaining+regen;
+  armies.push({id:t.id,before,loss,politics:lg.politics,politicsBase:lg.politicsBase,adept:lg.adept,politicsRegen:lg.politicsRegen,recruit:lg.recruit,recruitRegen:lg.recruitRegen,actualRegen:regen,after:t.army,alive:living(t).length,dead:t.dead.length});
+ }
+ m.result={winner,legs:[l1,l2],armies};advanceWinner(s.matches.indexOf(m),winner);save();
+}
+function pendingMatch(){return s.matches.find(x=>!x.result&&x.a!==null&&x.b!==null)}
+// v6: play result-based, non-destructive battle cinematics. Resolution remains unchanged.
+let battleCinematic=null;
+function battleCinematicHtml(scene,step,total){
+ const progress=Array.from({length:total},(_,i)=>`<span class="${i<step?'done':i===step?'current':''}"></span>`).join('');
+ return `<div class="cutinFrame" role="document"><div class="cutinTop"><span>⚔ 戦国天命録　戦陣絵巻</span><span>${step+1} / ${total}</span></div><div class="cutinBody"><div class="battleKicker">${esc(scene.kicker)}</div><div class="battleTitle ${scene.titleClass||''}">${esc(scene.title)}</div>${scene.html||''}<div class="battleProgress">${progress}</div></div><div class="battleFoot"><button id="battleNext" type="button">▶ ${step===total-1?'結果を見る':'次へ'}</button><button id="battleSkip" type="button">⏭ 演出をスキップ</button></div></div>`;
+}
+function battleVS(nameA,nameB,labelA='攻撃軍',labelB='防衛軍',extraA='',extraB=''){
+ return `<div class="battleVS"><div class="battleSide"><div class="battleSideLabel">${esc(labelA)}</div><div class="battleSideName">${esc(nameA)}</div>${extraA?`<div class="battleSideSmall">${esc(extraA)}</div>`:''}</div><div class="battleVsMark">VS</div><div class="battleSide enemy"><div class="battleSideLabel">${esc(labelB)}</div><div class="battleSideName">${esc(nameB)}</div>${extraB?`<div class="battleSideSmall">${esc(extraB)}</div>`:''}</div></div>`;
+}
+function battleTroopSummary(l){return `<div class="battlePowerRow"><span>攻撃：${fmt(l.attackerStart)}兵 → ${fmt(l.attackerAfter)}兵</span><span>防衛：${fmt(l.defenderStart)}兵 → ${l.win?'撤退':fmt(l.defenderAfter)+'兵'}</span></div>`}
+function buildBattleScenes(m){
+ const r=m.result, ta=s.teams[m.a],tb=s.teams[m.b],sc=[];
+ sc.push({kicker:m.id+' · 開戦',title:'いざ、出陣！',duration:1300,html:battleVS(ta.name,tb.name,'東軍','西軍',`${fmt(r.armies?.find(x=>x.id===ta.id)?.before??ta.army)}兵`,`${fmt(r.armies?.find(x=>x.id===tb.id)?.before??tb.army)}兵`)+`<div class="battleEmblem">二戦を制し、天下へ駆け上がれ</div>`});
+ if(r.forfeit){sc.push({kicker:'決着',title:'不戦勝',duration:2000,titleClass:'outcome',html:`<div class="battleSub">武将全滅のため試合は決着。</div><div class="battleVictory">🏆 ${esc(s.teams[r.winner].name)}</div>`});return sc}
+ for(let i=0;i<r.legs.length;i++){
+  const l=r.legs[i],an=s.teams[l.atk].name,dn=s.teams[l.def].name,sideLabel=`第${i+1}戦`;
+  sc.push({kicker:sideLabel+' · 出陣',title:'両軍激突',duration:1400,html:battleVS(an,dn,'攻撃軍','防衛軍','総大将 '+l.commanderAttack,'総大将 '+l.commanderDefense)+`<div class="battleSub">天候：${esc(l.weather)}　${l.surprise?'⚡ 奇襲＋'+l.surprise+'%':'正面決戦'}</div>`});
+  if(l.event){const e=l.event;sc.push({kicker:sideLabel+' · 戦場に異変',title:e.type,duration:1400,html:`<div class="battleSub">${esc(e.attackName)}　対　${esc(e.defenseName)}</div><div class="battleImpact">${esc(e.winner)}の策が決まる！</div><div class="battleEmblem">${esc(e.type)} 効果 ${e.rate}%</div>`})}
+  const pct=Math.max(4,Math.min(96,100*l.atkPower/(l.atkPower+l.defPower)));
+  sc.push({kicker:sideLabel+' · 勝敗判定',title:l.tier,titleClass:'outcome'+(l.tier==='惨敗'||l.tier==='敗北'?' bad':''),duration:2300,html:`<div class="battleOutcomeBanner">${l.win?'🏯 攻撃軍、占領成功':'🛡 防衛軍、守り切る'}</div><div class="battleSub">戦力 ${l.atkPower.toFixed(1)} 対 ${l.defPower.toFixed(1)} · 攻防比 ${(l.ratio*100).toFixed(1)}%</div><div class="battleMeter"><span style="width:${pct}%"></span><span style="width:${100-pct}%"></span></div>${battleTroopSummary(l)}<div class="battleImpact">${esc(l.win?an:dn)} が勝利！</div>`});
+  const dead=l.deaths||[],resc=l.rescues||[];
+  if(dead.length||resc.length){sc.push({kicker:sideLabel+' · 戦の代償',title:dead.length?'討死':'奇跡の生還',titleClass:dead.length?'bad':'',duration:1900,html:`${dead.map(d=>`<div class="battleDeath">💀 ${esc(s.teams[d.team].name)}・${esc(d.name)}（${esc(d.cause)}）</div>`).join('')}${resc.map(d=>`<div class="battleRescue">❤️ ${esc(s.teams[d.team].name)}・${esc(d.name)} が救出された！</div>`).join('')}<div class="battleSub">討死した武将は次戦から出陣できません</div>`})}
+ }
+ if(r.armies?.length){sc.push({kicker:'兵站報告 · 試合後',title:'戦陣補給',duration:1700,html:`${r.armies.map(a=>`<div class="battleSub">${esc(s.teams[a.id].name)}<br>${fmt(a.before)}兵 → <strong style="color:#7ee2c7">${fmt(a.after)}兵</strong>　（補給＋${fmt(a.actualRegen)}）</div>`).join('')}<div class="battleEmblem">政治力・能吏・募兵の効果を反映</div>`})}
+ sc.push({kicker:m.id+' · 勝ち抜け',title:m.round===3?'天下統一！':'勝者、決す！',titleClass:'outcome',duration:2450,html:`<div class="battleVictory">🏆 ${esc(s.teams[r.winner].name)}</div><div class="battleSub">${m.round===3?'戦国天命録を制覇！':'次の戦いへ進軍する'}</div>`});
+ return sc;
+}
+function battleNextScene(){
+ const b=battleCinematic;if(!b)return;
+ if(b.timer){clearTimeout(b.timer);b.timer=null}
+ b.i++;
+ if(b.i>=b.scenes.length){battleFinishCinematic();return}
+ const scene=b.scenes[b.i],el=cutinLayer();el.className='cutinOverlay show battle';el.innerHTML=battleCinematicHtml(scene,b.i,b.scenes.length);
+ $('battleNext').onclick=battleNextScene;$('battleSkip').onclick=battleFinishCinematic;
+}
+function battleFinishCinematic(){
+ const b=battleCinematic;if(b?.timer)clearTimeout(b.timer);battleCinematic=null;hideCutinScreen();
+}
+function playBattleCinematic(m){battleFinishCinematic();battleCinematic={scenes:buildBattleScenes(m),i:-1,timer:null};battleNextScene()}
+function nextMatch(){const m=pendingMatch();if(m){matchFight(m);render();playBattleCinematic(m)}}
+function allMatches(){let k=0;while(pendingMatch()&&k++<8)matchFight(pendingMatch());save();render()}
+function battleText(l){
+ const a=s.teams[l.atk].name,d=s.teams[l.def].name;
+ const e=l.event?`🎲 ${l.event.type}：${l.event.attackName} VS ${l.event.defenseName} → ${l.event.winner}が制す（効果${l.event.rate}%）${l.event.type==='伏兵'?`／軍師加点 攻+${l.event.adviseA} 守+${l.event.adviseD}`:''}`:'🎲 戦争イベントなし';
+ const deaths=l.deaths?.length?l.deaths.map(x=>`💀 ${s.teams[x.team].name}の${x.name}が討死（${x.cause}）`).join('\n'):'💀 討死なし';
+ const rescues=l.rescues?.length?'\n'+l.rescues.map(x=>`❤️ 人望の救出：${s.teams[x.team].name}の${x.name}が生還`).join('\n'):'';
+ return `${a} 【攻撃】 vs 【防衛】 ${d}\n大将 ${l.commanderAttack} vs ${l.commanderDefense}\n統率/武力/知略/政治　攻 ${l.statAtk.map(Math.round).join('/')}　守 ${l.statDef.map(Math.round).join('/')}\n天候：${l.weather}　${l.surprise?'奇襲＋'+l.surprise+'%':''}\n${e}\n戦力 ${l.atkPower.toFixed(1)} vs ${l.defPower.toFixed(1)}　攻防比 ${(l.ratio*100).toFixed(1)}%\n${l.tier} / ${l.win?'攻撃軍が占領成功':'守備軍が防衛成功'}\n攻撃側 ${fmt(l.attackerStart)}兵 → ${fmt(l.attackerAfter)}兵（損失${fmt(l.attackerLoss)}）\n防御側 ${fmt(l.defenderStart)}兵 → ${l.win?'陥落判定（兵士は戦場から撤退）':fmt(l.defenderAfter)+'兵'}（実戦損失${fmt(l.defenderLoss)}）\n${deaths}${rescues}`;
+}
+function armyLine(r){return `${esc(s.teams[r.id].name)}：${fmt(r.before)}兵 − 損失${fmt(r.loss)} ＋ 政治補給${fmt(r.politicsRegen)}${r.adept?'（能吏＋50%）':''} ＋ 募兵${fmt(r.recruitRegen)} → <b>${fmt(r.after)}兵</b> ／ 生存 ${r.alive}人${r.dead?'・💀累計'+r.dead+'人':''}${r.actualRegen<r.politicsRegen+r.recruitRegen?'（兵力上限適用）':''}`}
+function matchHTML(m){
+ const a=m.a===null?'―':(s.teams[m.a].isCPU?'🤖 ':'👤 ')+esc(s.teams[m.a].name),b=m.b===null?'―':(s.teams[m.b].isCPU?'🤖 ':'👤 ')+esc(s.teams[m.b].name),w=m.result?.winner;
+ return `<article class="match ${m.result?'done':''}"><div class="small muted">${m.id}${m.result?.bye?' · シード免除':''}</div><div class="vs"><span class="${w===m.a?'winner':''}"><b>${a}</b>${w===m.a?'🏆 WIN':''}</span><em>VS</em><span class="${w===m.b?'winner':''}"><b>${b}</b>${w===m.b?'🏆 WIN':''}</span></div>${m.result?m.result.bye?`<div class="result">${esc(s.teams[w].name)}は1回戦免除（兵力消耗・回復なし）</div>`:m.result.forfeit?`<div class="result">💀 武将全滅による不戦勝：<b>${esc(s.teams[w].name)}</b></div>`:`<div class="result">勝ち抜け：<b>${esc(s.teams[w].name)}</b><br><span class="score">攻防比 ${(m.result.legs[0].ratio*100).toFixed(1)}% / ${(m.result.legs[1].ratio*100).toFixed(1)}%</span><p class="small" style="line-height:1.8">${m.result.armies.map(armyLine).join('<br>')}</p>${m.result.legs.some(l=>l.deaths?.length)?`<div class="deathNotice">💀 討死：${m.result.legs.flatMap(l=>l.deaths||[]).map(x=>esc(s.teams[x.team].name+'・'+x.name)).join('、')}</div>`:''}${m.result.legs.some(l=>l.rescues?.length)?`<div class="rescueNotice">❤️ 人望による救出：${m.result.legs.flatMap(l=>l.rescues||[]).map(x=>esc(s.teams[x.team].name+'・'+x.name)).join('、')}</div>`:''}</div><details><summary>⚔️ 2戦の戦闘詳細・討死判定</summary><div class="details">${esc(m.result.legs.map(battleText).join('\n\n───────────────\n\n'))}</div></details>`:'<p class="small muted">対戦待ち</p>'}</article>`;
+}
+function teamStrength(t){const a=living(t),n=a.length?national(a):[0,0,0,0];return {leader:a.length?leader(a).name:'武将全滅',n,log:logistics(t),alive:a.length,dead:fallen(t)}}
+function tournament(){const pending=pendingMatch(),champ=s.matches[6].result?.winner;
+ $('app').innerHTML=`<div class="layout"><section class="box"><h2>🏟️ 戦国天命録・決勝トーナメント</h2><p class="small muted">👤 人間 ${s.teams.filter(t=>!t.isCPU).length}人 ／ 🤖 CPU ${s.teams.filter(t=>t.isCPU).length}人 ／ 1チーム${s.pickLimit}武将</p>
+ <div class="order">各試合は攻守入替2戦・戦国十六国v8.5由来の戦闘式。攻防比と占領成績から勝ち抜けを判定します。<br>⚔️ 2戦の平均損失を次戦に引継ぎ。試合後は政治力×2、能吏＋50%、募兵1人＋500兵（上限10,000）。<br>💀 討死：通常1%、大敗5%。一騎討ち敗者5%・鬼将26%も個別判定。名将は討死率を30%軽減し、人望は発生した討死を50%で救出。<strong>討死武将の復帰・補充はなし</strong>。</div>
+ <div class="row"><button class="primary" id="next" ${!pending?'disabled':''}>⚔️ ${pending?esc(pending.id)+'を戦う':'全試合終了'}</button><button id="all" ${!pending?'disabled':''}>全試合を進める（演出省略）</button><button id="reset" class="danger">新しい大会</button></div><p class="small muted">🎬 「戦う」で戦闘カットインが再生されます。各カットインは「次へ」を押すまで停止し、「演出をスキップ」で結果まで進めます。</p>
+ ${champ!==undefined?`<div class="champ"><div>🎊 天下最強軍団 🎊</div><strong>${esc(s.teams[champ].name)}</strong><p>🏆 戦国天命録 制覇！</p></div>`:''}
+ ${[1,2,3].map(r=>`<div class="stage">${r===1?'準々決勝':r===2?'準決勝':'決勝'}</div>${s.matches.filter(m=>m.round===r).map(matchHTML).join('')}`).join('')}</section>
+ <aside class="box"><h2>👥 軍団・残存武将</h2>${s.teams.map((t,i)=>{const v=teamStrength(t),dead=new Set((t.dead||[]).map(x=>x.id));return `<details ${i===0?'open':''}><summary>${i+1}. ${t.isCPU?'🤖':'👤'} ${esc(t.name)}（${fmt(t.army)}兵 / 生存${v.alive}人）</summary><p class="small">大将：<b class="gold">${esc(v.leader)}</b><br>統/武/知/政：${v.n.map(x=>Math.round(x)).join(' / ')}<br><span class="hint">政治補給＋${fmt(v.log.politicsRegen)}兵${v.log.adept?'（能吏＋50%）':''} / 募兵${v.log.recruit}人＋${fmt(v.log.recruitRegen)}兵</span></p><div class="small muted">${t.picks.map(id=>{const o=officer(id);return `<span class="${dead.has(id)?'fallen':''}">${dead.has(id)?'💀 ':''}${esc(o.name)}${o.trait==='なし'?'':` <span class="tag">${esc(o.trait)}</span>`}</span>`}).join('　・　')}</div>${v.dead.length?`<p class="small" style="color:var(--red)">💀 討死：${v.dead.map(x=>esc(x.name+'（'+x.reason+'）')).join('、')}</p>`:''}</details>`}).join('')}</aside></div>`;
+ $('next').onclick=nextMatch;$('all').onclick=allMatches;$('reset').onclick=reset;
+}
+function render(){if(!s)setup();else if(s.stage==='draft')draft();else tournament()}
+/* Online boot follows, replacing only the presentation/transport layer. */
+// -------- 戦国天命録 ONLINE v1: invite-only multiplayer transport --------
+// For hosted deployment, replace the two empty values once before uploading to GitHub Pages.
+const TENMEI_PROJECT_URL = '';
+const TENMEI_PUBLIC_KEY = '';
+const TENMEI_SESSION_KEY = 'sengoku_tenmeiroku_online_v1_session';
+const TENMEI_CONFIG_KEY = 'sengoku_tenmeiroku_online_v1_config';
+let onlineSession=null,onlineRevision=-1,onlineSeat=-1,onlineJoined=[],onlineSubmitted=[],onlinePoll=null;
+let onlineBusy=false,onlineMessage='',onlineLastSeen=new Set(),onlineKnownMatchCount=null,onlineLastPhase='';
+const originalTournamentScreen=tournament, originalRoundSummary=showRoundSummary;
+const onlineRead=(key)=>{try{return JSON.parse(localStorage.getItem(key)||'null')}catch(e){return null}};
+const onlineWrite=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value))}catch(e){}};
+const onlineStorageRemove=key=>{try{localStorage.removeItem(key)}catch(e){}};
+const isHost=()=>onlineSeat===0;
+const onlineConfig=()=>({url:(onlineSession?.url||(new URLSearchParams(location.search)).get('project')||onlineRead(TENMEI_CONFIG_KEY)?.url||TENMEI_PROJECT_URL||'').replace(/\/$/,''),key:onlineSession?.key||(new URLSearchParams(location.search)).get('publicKey')||onlineRead(TENMEI_CONFIG_KEY)?.key||TENMEI_PUBLIC_KEY||''});
+function onlineSecret(){const bits=new Uint8Array(32);crypto.getRandomValues(bits);return Array.from(bits,x=>x.toString(16).padStart(2,'0')).join('')}
+function onlineUrl(room){const c=onlineConfig();const u=new URL(location.href.split('#')[0].split('?')[0]);u.searchParams.set('room',room);if(c.url)u.searchParams.set('project',c.url);if(c.key)u.searchParams.set('publicKey',c.key);return u.href}
+function onlineError(e){onlineMessage='⚠️ '+(e?.message||e);const box=$('onlineStatus');if(box)box.textContent=onlineMessage;else alert(onlineMessage)}
+async function onlineRPC(fname,params,config=onlineConfig()){
+ if(!config.url||!config.key)throw new Error('SupabaseのURLと公開キーを設定してください');
+ if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(config.url))throw new Error('SupabaseのProject URLを確認してください（https://〜.supabase.co）');
+ const hd={'apikey':config.key,'Content-Type':'application/json'};
+ if(config.key.startsWith('eyJ'))hd.Authorization='Bearer '+config.key;
+ const response=await fetch(config.url+'/rest/v1/rpc/'+fname,{method:'POST',headers:hd,body:JSON.stringify(params)});
+ let body=null;try{body=await response.json()}catch(e){}
+ if(!response.ok)throw new Error(body?.message||'サーバーエラー '+response.status);
+ return body;
+}
+function seenKey(){return 'tenmei_seen_'+onlineSession?.code+'_'+onlineSeat}
+function rememberWave(id){onlineLastSeen.add(id);onlineWrite(seenKey(),Array.from(onlineLastSeen).slice(-120))}
+function leaveOnline(){if(!confirm('この端末の参加情報を消去しますか？ 復帰コードを失うと同じチームには戻れません。'))return;
+ onlineSession=null;s=null;onlineSeat=-1;onlineRevision=-1;onlineJoined=[];onlineSubmitted=[];
+ onlineStorageRemove(TENMEI_SESSION_KEY);hideCutinScreen();render()}
+function onlineFormValue(id,defaultVal=''){return ($(id)?.value||defaultVal).trim()}
+function onlineSetup(){
+ const saved=onlineConfig(), qRoom=(new URLSearchParams(location.search)).get('room')||'';
+ $('app').innerHTML=`<section class="box" style="margin-top:20px"><h2>🏯 戦国天命録 ONLINE</h2>
+ <div class="onlineRibbon">各自のスマホで入室・秘密指名。全員確定でサーバーが開票。抽選・巡終了一覧・戦闘のカットインも共有します。</div>
+ <details ${!saved.url||!saved.key?'open':''}><summary>🛠️ 接続設定（初回のみ）</summary><div class="onlineSettings">
+ <label>Supabase Project URL<input id="projectUrl" inputmode="url" autocomplete="off" placeholder="https://xxxxx.supabase.co" value="${esc(saved.url)}"></label>
+ <label>Supabase Publishable / anon 公開キー<input id="publicKey" autocomplete="off" placeholder="sb_publishable_... または eyJ..." value="${esc(saved.key)}"></label>
+ </div><p class="onlineHelp">⚠️ service_role / secret キーは絶対に使用しないでください。主催者がHTML内に公開URLと公開キーを設定して配布すると、参加者の設定は不要です。</p></details>
+ <label>あなたのプレイヤー名<input id="ownName" maxlength="24" value="${esc(onlineRead('tenmei_player_name')||'プレイヤー1')}"></label>
+ <div class="grid" style="margin-top:16px"><div><h3>🏯 大会をつくる</h3>
+ <label>大会人数<select id="onlineTotal"><option value="6">6人制</option><option value="8">8人制</option></select></label>
+ <label>CPU人数<select id="onlineCPU"></select></label>
+ <label>1チームの武将数／巡数<select id="onlineLimit">${[5,6,7,8,9,10].map(n=>`<option ${n===7?'selected':''} value="${n}">${n}人／${n}巡</option>`).join('')}</select></label>
+ <button class="primary fullwidth" id="createOnline">🏯 部屋を作成</button></div>
+ <div><h3>🔑 招待コードで参加</h3><label>8文字の部屋コード<input id="joinCode" maxlength="8" autocapitalize="characters" autocomplete="off" value="${esc(qRoom.toUpperCase())}" placeholder="AB12CD34"></label>
+ <label>復帰コード（保存している場合のみ）<input id="restoreToken" spellcheck="false" autocomplete="off" placeholder="通常は空欄でOK"></label>
+ <button class="secondary fullwidth" id="joinOnline">⚔️ この部屋に参加</button>
+ <p class="onlineHelp">部屋コードを受け取った友達は、同じ公開ゲームページから参加できます。</p></div></div>
+ <p id="onlineStatus" class="onlineStatus">${esc(onlineMessage)}</p>
+ <p class="onlineHelp">✅ 大名なし・有名武将105人／候補10人／5〜10巡／討死後補充なし。政治力の戦闘支援と損失軽減を追加。戦闘計算の確定操作は主催者の端末で行います。</p></section>`;
+ const nt=$('onlineTotal'),cp=$('onlineCPU');
+ function setCPU(){const n=+nt.value, prev=+cp.value||0;cp.innerHTML=Array.from({length:n},(_,i)=>`<option value="${i}">${i}人${i===0?'（全員人間）':''}</option>`).join('');cp.value=String(Math.min(n-1,prev))}
+ nt.onchange=setCPU;setCPU();
+ function inputs(){const url=onlineFormValue('projectUrl'),key=onlineFormValue('publicKey'),name=onlineFormValue('ownName');
+  if(!name)throw new Error('名前を入力してください');
+  if(!url||!key)throw new Error('接続設定を入力してください');
+  if(/service_role|sb_secret_/i.test(key))throw new Error('秘密キーは禁止です。公開キーを指定してください');
+  onlineWrite(TENMEI_CONFIG_KEY,{url,key});onlineWrite('tenmei_player_name',name);
+  return{config:{url,key},name,token:onlineSecret()};}
+ $('createOnline').onclick=async()=>{if(onlineBusy)return;try{const {config,name,token}=inputs();onlineBusy=true;
+  const n=+nt.value,cpu=+cp.value,human=n-cpu,limit=+$('onlineLimit').value,all=roster(),ids=shuffle(all.map(x=>x.id));
+  const gs={stage:'lobby',all,pool:ids.slice(10),offers:ids.slice(0,10),humanCount:human,
+    pickLimit:limit,round:0,wave:0,phase:'lobby',privateSeat:null,pending:{},awarded:[],waveResult:[],
+    teams:Array.from({length:n},(_,i)=>({id:i,name:i<human?'募集中 '+(i+1):'CPU '+(i-human+1),isCPU:i>=human,picks:[],dead:[],army:BATTLE_TROOPS})),matches:[],seed:[]};
+  const data=await onlineRPC('tenmei_create',{p_state:gs,p_name:name,p_token:token},config);
+  onlineSession={...config,name,token,code:data.code};onlineWrite(TENMEI_SESSION_KEY,onlineSession);
+  onlineLastSeen=new Set();onlineLastPhase='';onlineRevision=-1;await applyOnlineSnapshot(data); onlineStartPolling();
+ }catch(e){onlineError(e)}finally{onlineBusy=false}};
+ $('joinOnline').onclick=async()=>{if(onlineBusy)return;try{const {config,name,token:newToken}=inputs();const code=onlineFormValue('joinCode').toUpperCase();const savedToken=onlineFormValue('restoreToken');const token=savedToken||newToken;if(savedToken&&!/^[0-9a-f]{64}$/i.test(savedToken))throw new Error('復帰コードは64桁の英数字です');
+  if(!/^[A-F0-9]{8}$/.test(code))throw new Error('8文字の招待コードを入力してください');onlineBusy=true;
+  const data=await onlineRPC('tenmei_join',{p_code:code,p_name:name,p_token:token},config);
+  onlineSession={...config,name,token,code:data.code};onlineWrite(TENMEI_SESSION_KEY,onlineSession);
+  onlineLastSeen=new Set();onlineLastPhase='';onlineRevision=-1;await applyOnlineSnapshot(data);onlineStartPolling();
+ }catch(e){onlineError(e)}finally{onlineBusy=false}};
+}
+function onlineTopbar(){return `<div class="onlineRibbon"><span class="onlineBadge">🔴 ONLINE</span>　部屋 <b>${esc(onlineSession.code)}</b>　／　${isHost()?'👑 主催者':'👤 参加者'}：${esc(s.teams[onlineSeat]?.name||'')}<span class="small muted">　● 2.5秒ごとに自動更新</span><br><button id="showRecovery" type="button" style="margin-top:8px;padding:5px 10px;font-size:13px">🔐 自分の復帰コード</button></div>`}
+function onlineLobby(){let filled=onlineJoined.length, h=s.humanCount;
+ $('app').innerHTML=onlineTopbar()+`<section class="box"><h2>🏯 開戦前の陣営</h2>
+ <p class="onlineHelp">全${s.teams.length}チーム／人間${h}人＋CPU${s.teams.length-h}人／武将${s.pickLimit}人ずつ。人間プレイヤーがそろうと主催者が大会を開始できます。</p>
+ <div class="onlineCode">${esc(onlineSession.code)}</div>
+ <div class="row"><button id="copyInvite" class="primary">📨 招待URLを共有</button><button id="copyCode">🔑 コードを表示</button></div>
+ <div class="onlineLobbyGrid">${s.teams.map((t,i)=>{const j=onlineJoined.find(x=>x.seat===i);return `<div class="onlineSeat"><strong>${i+1}. ${t.isCPU?'🤖':'👤'} ${esc(j?.name||t.name)}</strong><small>${t.isCPU?'CPU参加確定':j?'✅ 入室済み':'⌛ 参加待ち'}</small></div>`}).join('')}</div>
+ <div class="onlineStatus" id="onlineStatus">👤 入室 ${filled}/${h}人　${filled===h?'✅ 全員集合！':'友達の参加を待っています'}</div>
+ ${isHost()?`<button id="onlineStart" class="primary fullwidth" ${filled<h?'disabled':''}>⚔️ 全員集合！ 大会を開始する</button>`:`<p class="choiceOverlay">主催者が大会を開始するまでお待ちください。</p>`}
+ <button id="leaveRoom" class="danger">この端末の参加情報を消去</button></section>`;
+ $('copyInvite').onclick=()=>window.prompt('招待URL（友達に送ってください）',onlineUrl(onlineSession.code));
+ $('copyCode').onclick=()=>window.prompt('招待コード',onlineSession.code);
+ if(isHost())$('onlineStart').onclick=()=>onlineAction('tenmei_start',{});
+ $('leaveRoom').onclick=leaveOnline;
+}
+function onlineRoster(){return s.teams.map((t,i)=>{const my=onlineSeat===i;
+  const status=s.awarded.includes(i)?'✅ 今巡獲得済み':t.isCPU?'🤖 自動指名':onlineSubmitted.includes(i)?'🔒 秘密指名済み':'⌛ 秘密指名待ち';
+  return `<div class="team ${my?'active':''}"><div class="teamHead"><b>${i+1}. ${t.isCPU?'🤖':'👤'} ${esc(t.name)}</b><b>${t.picks.length}/${s.pickLimit}</b></div>
+  <div class="small gold">${status}</div><div class="small">軍団戦力値：<b>${fmt(teamBattleStrength(t).value)}</b></div>
+  <small>${t.picks.length?t.picks.map(id=>esc(officer(id).name)).join(' ・ '):'まだ指名なし'}</small></div>`}).join('')}
+function onlineDraft(){const allDone=s.phase==='roundDone',reveal=s.phase==='retryResults'||allDone;
+ const chosen=s.awarded.includes(onlineSeat),submitted=onlineSubmitted.includes(onlineSeat),host=isHost();
+ let center=`<div class="order">今巡確定 <b>${s.awarded.length}/${s.teams.length}</b>　／　秘密指名 ${onlineSubmitted.length}人<br><span class="small muted">全員の選択は秘密。各自のスマホから提出し、そろうとサーバーで一斉開票！ 結果は毎回カットインで発表します。</span></div>`;
+ if(s.phase==='waiting'){
+  if(chosen)center+=`<div class="choiceOverlay"><strong>🏆 今巡の武将獲得は確定！</strong><p>残りのプレイヤーの指名を待っています。</p></div>`;
+  else if(submitted)center+=`<div class="choiceOverlay"><strong>🔒 秘密指名を提出済み</strong><p>ほかのプレイヤーの提出を待っています。名前は開票まで非公開です。</p></div>`;
+  else{center+=`<div class="secret">🔒 <b>${esc(s.teams[onlineSeat].name)}</b> の秘密指名。ほかのプレイヤーには選んだ武将が表示されません。</div>
+   <div class="offerGrid">${s.offers.map(id=>officerHTML(id,true)).join('')}</div>
+   <p id="pickHint" class="hint">武将を選んで「秘密指名を確定」を押してください。</p>
+   <button id="onlineConfirmPick" class="primary fullwidth" disabled>🔐 この武将で秘密指名を確定</button>`}
+ }else if(reveal){
+   center+=`<div class="choiceOverlay"><strong>${allDone?'🎊 全員の獲得が確定！':'🎲 指名の競合が発生！'}</strong><p>${allDone?'全チームの戦力値を一覧で確認しよう！':'落選者は再指名になります。'}</p>
+   <div class="onlineRoundActions"><button id="onlineReplay" class="secondary">${allDone?'🏯 第'+(s.round+1)+'巡・全チーム一覧':'🎲 抽選カットインを見る'}</button>
+   ${host?`<button id="onlineAdvance" class="primary">${allDone?s.round===s.pickLimit-1?'🏟️ 決勝トーナメントへ':'▶ 次の巡へ':'🔒 再指名へ'}</button>`:'<span class="onlineBadge">主催者の進行待ち</span>'}</div></div>`;
+   center+=`<h3>📣 現在の獲得結果</h3>`+s.waveResult.map(r=>`<div class="reveal ${r.losers?.length?'bad':''}"><b>${esc(officer(r.id).name)}</b> → <b>${esc(s.teams[r.winner].name)}</b> が獲得${r.losers?.length?`<br>🎲 ${r.contenders.length}人による抽選`:''}</div>`).join('');
+ }else center+=`<div class="choiceOverlay">主催者の進行を待っています。</div>`;
+ $('app').innerHTML=onlineTopbar()+`<div class="layout"><section class="box"><h2>🎴 第${s.round+1}巡 · せーのでドラフト</h2>${center}
+ <p class="onlineStatus" id="onlineStatus">${esc(onlineMessage)}</p></section>
+ <aside class="box"><h2>👥 全チームの戦力</h2>${onlineRoster()}</aside></div>`;
+ if(s.phase==='waiting'&&!chosen&&!submitted){
+  document.querySelectorAll('[data-pick]').forEach(el=>el.onclick=()=>{selected=+el.dataset.pick;
+   document.querySelectorAll('[data-pick]').forEach(b=>b.classList.toggle('selected',+b.dataset.pick===selected));
+   $('onlineConfirmPick').disabled=false;$('pickHint').textContent='✅ '+officer(selected).name+' を選択中';});
+  $('onlineConfirmPick').onclick=()=>{
+   if(selected===null)return;const id=selected;
+   if(confirm(officer(id).name+'で秘密指名を確定しますか？'))onlineAction('tenmei_submit',{p_warrior:id});
+  };
+ }
+ if(reveal){$('onlineReplay').onclick=()=>{if(allDone)showRoundSummary();else onlineShowLottery()};
+  if(host)$('onlineAdvance').onclick=()=>onlineAction('tenmei_advance',{p_action:allDone?'round':'retry'});}
+}
+function onlineShowLottery(){
+ if(lotteryCinematic||!s?.waveResult?.length)return;
+ const slides=lotterySlides(s.waveResult);
+ if(slides.length){lotteryCinematic={slides,index:-1,round:s.round,wave:s.wave,phase:s.phase};nextLotterySlide();}
+ else if(s.phase==='roundDone')showRoundSummary();
+}
+showRoundSummary=function(){originalRoundSummary();if(!isHost()&&$('roundReviewNext')){
+ $('roundReviewNext').textContent='閉じる（主催者の進行待ち）';$('roundReviewNext').onclick=hideCutinScreen;}
+};
+nextRound=function(){if(isHost())onlineAction('tenmei_advance',{p_action:'round'});else hideCutinScreen()};
+nextWave=function(){if(isHost())onlineAction('tenmei_advance',{p_action:'retry'});else hideCutinScreen()};
+save=function(){};
+reset=leaveOnline;
+nextMatch=async function(){if(!isHost()||onlineBusy)return;const m=pendingMatch();if(!m)return;
+ if(!confirm(m.id+' を開始しますか？'))return;
+ const before=JSON.parse(JSON.stringify(s));const rev=onlineRevision, matchId=m.id;
+ onlineBusy=true;try{
+  matchFight(m);const sentTeams=s.teams,sentMatches=s.matches;
+  const data=await onlineRPC('tenmei_battle',{p_code:onlineSession.code,p_token:onlineSession.token,p_revision:rev,p_teams:sentTeams,p_matches:sentMatches});
+  await applyOnlineSnapshot(data,{skipReveal:true,skipMatch:true});
+  const fight=s.matches.find(x=>x.id===matchId);
+  if(fight)playBattleCinematic(fight);
+ }catch(e){s=before;onlineError(e);render()}finally{onlineBusy=false;}
+};
+allMatches=function(){onlineMessage='オンライン版は1試合ずつ主催者が進行します。';render()};
+function onlineTournament(){originalTournamentScreen();const step=$('next'),all=$('all'),resetBtn=$('reset');
+ if(step){
+  // The snapshot is rendered while onlineBusy=true during an RPC/poll.
+  // Never persist that transient flag as a disabled HTML control.
+  const host=isHost(),ready=!!pendingMatch(),inCutin=!!s.cinematic;
+  step.disabled=!host||!ready||inCutin;
+  if(!host)step.textContent='👑 主催者が戦闘開始するまで待機中';
+  else if(inCutin)step.textContent='🎬 戦闘カットイン進行中';
+  else if(!ready)step.textContent='✅ 全試合終了';
+ }
+ if(all)all.remove();if(resetBtn)resetBtn.remove();
+ $('app').insertAdjacentHTML('afterbegin',onlineTopbar());
+ const badge=document.createElement('div');badge.className='onlineRibbon';
+ badge.textContent=isHost()?'👑 主催者が試合を実行すると全員に結果が同期されます。':'🛡 このボタンは主催者専用です。主催者が試合を実行すると、あなたの画面でも戦闘カットインが始まります。';
+ $('app').prepend(badge);
+}
+render=function(){if(!onlineSession){onlineSetup();return}if(!s){$('app').innerHTML='<section class="box"><h2>接続中…</h2></section>';return}
+ if(s.stage==='lobby')onlineLobby();else if(s.stage==='draft')onlineDraft();else onlineTournament();const recovery=$('showRecovery');if(recovery)recovery.onclick=()=>window.prompt('秘密の復帰コード（自分だけに保存・他人には送らない）',onlineSession.token);};
+async function applyOnlineSnapshot(data,{skipReveal=false,skipMatch=false}={}){
+ if(!data?.state||!Number.isInteger(data.seat))throw new Error('サーバーから無効な状態が届きました');
+ if(data.revision<onlineRevision)return;
+ const prev=s,oldMatches=prev?.matches||[];
+ onlineRevision=Number(data.revision);onlineSeat=data.seat;onlineJoined=data.joined||[];onlineSubmitted=data.submitted||[];
+ const seen=onlineRead(seenKey()); if(seen&&onlineLastSeen.size===0)onlineLastSeen=new Set(seen);
+ s=data.state;s.pending={};selected=null;
+ render();
+ if(s.stage==='draft'&&!skipReveal&&(s.phase==='retryResults'||s.phase==='roundDone')&&s.waveResult?.length){
+  const key=s.round+':'+s.wave;
+  if(!onlineLastSeen.has(key)){
+   rememberWave(key);
+   setTimeout(()=>{if(s.stage==='draft'&&(s.phase==='retryResults'||s.phase==='roundDone'))onlineShowLottery()},70);
+  }
+ }
+ if(s.stage==='tournament'&&!skipMatch&&prev?.stage==='tournament'){
+  const latest=s.matches.find(m=>m.result&&!m.result.bye&&oldMatches.find(x=>x.id===m.id&&!x.result));
+  if(latest)setTimeout(()=>{if(s.stage==='tournament')playBattleCinematic(latest)},60);
+ }
+}
+async function onlineRefresh(){if(!onlineSession||onlineBusy||cutinLayer().classList.contains('show'))return;
+ try{onlineBusy=true;const data=await onlineRPC('tenmei_snapshot',{p_code:onlineSession.code,p_token:onlineSession.token});
+  if(Number(data.revision)!==onlineRevision){onlineMessage='';await applyOnlineSnapshot(data)}
+ }catch(e){onlineMessage='通信エラー：'+e.message;const box=$('onlineStatus');if(box)box.textContent=onlineMessage;}
+ finally{onlineBusy=false;}
+}
+function onlineStartPolling(){if(onlinePoll)clearInterval(onlinePoll);onlinePoll=setInterval(onlineRefresh,2500);}
+async function onlineAction(fn,extra){if(onlineBusy)return;
+ try{onlineBusy=true;onlineMessage='サーバーと通信中…';const status=$('onlineStatus');if(status)status.textContent=onlineMessage;
+  const data=await onlineRPC(fn,{p_code:onlineSession.code,p_token:onlineSession.token,...extra});
+  onlineMessage='';await applyOnlineSnapshot(data);
+ }catch(e){onlineError(e);await onlineRefreshAfterError()}
+ finally{onlineBusy=false;}
+}
+async function onlineRefreshAfterError(){try{const data=await onlineRPC('tenmei_snapshot',{p_code:onlineSession.code,p_token:onlineSession.token});await applyOnlineSnapshot(data,{skipReveal:true})}catch(e){}}
+function bootOnline(){const old=onlineRead(TENMEI_SESSION_KEY);
+ const paramRoom=(new URLSearchParams(location.search)).get('room');
+ if(old&&old.code&&old.token&&(!paramRoom||old.code===paramRoom.toUpperCase())){
+  onlineSession=old;render();onlineRefresh().then(()=>onlineStartPolling());
+ }else{onlineSession=null;s=null;render();}
+ window.addEventListener('focus',onlineRefresh);
+}
+
+// -------- 戦国天命録 ONLINE v2.2: room features, shared cinematics, rematch --------
+// Installed after v1 transport definitions and before bootOnline().
+let tenmeiPopularity=[];
+let tenmeiShownScene='';
+const TENMEI_FLAGS=['#B65C5D','#4376AB','#C19B4C','#397A67','#865DB3','#A8B6C6','#DC8746','#517A8A'];
+const tenmeiFlag=(t)=>TENMEI_FLAGS.includes(String(t?.flagColor||'').toUpperCase())?t.flagColor:'#C19B4C';
+const tenmeiArmy=(t)=>t?.armyName?.trim()||t?.name||'無名の軍';
+const tenmeiName=(t)=>`${tenmeiArmy(t)}${t?.armyName&&t.armyName!==t.name?'（'+t.name+'）':''}`;
+const tenmeiShield=(t)=>`<span class="tenmeiFlag" style="--flag:${tenmeiFlag(t)}" aria-hidden="true">◆</span>`;
+const tenmeiTeamLabel=(id)=>s.teams[id]?tenmeiName(s.teams[id]):'不明の軍';
+const tenmeiHistoricEntries=()=>[...(s?.history||[]),...(s?.stage==='tournament'&&s.matches?.[6]?.result?[{teams:s.teams,matches:s.matches,popularity:tenmeiPopularity,limit:s.pickLimit}]:[])];
+function tenmeiResults(){
+ const history=tenmeiHistoricEntries();const result=(s?.teams||[]).map((t,i)=>({seat:i,name:t.name,army:tenmeiArmy(t),won:0,runnerUp:0,wins:0,streak:0,maxStreak:0,bestPower:0,isCPU:t.isCPU}));
+ for(const game of history){
+  const m=game.matches||[],teams=game.teams||[];
+  if(!m[6]?.result)continue;
+  const champ=Number(m[6].result.winner),other=Number(m[6].a===champ?m[6].b:m[6].a);
+  for(const t of teams){const rec=result[t.id];if(!rec)continue;
+   rec.won+=(t.id===champ?1:0);rec.runnerUp+=(t.id===other?1:0);
+   const teamPower=teamBattleStrength({...t,dead:[]}).value;
+   rec.bestPower=Math.max(rec.bestPower,Number.isFinite(teamPower)?teamPower:0);
+   if(t.id===champ){rec.streak+=1;rec.maxStreak=Math.max(rec.maxStreak,rec.streak)}else rec.streak=0;
+  }
+  for(const match of m){if(!match?.result||match.result.bye)continue;const r=result[match.result.winner];if(r)r.wins++}
+ }
+ return result.sort((a,b)=>b.won-a.won||b.wins-a.wins||b.runnerUp-a.runnerUp||a.seat-b.seat);
+}
+function tenmeiMVP(game){
+ const matches=(game.matches||[]).filter(m=>m.result&&!m.result.bye),teams=game.teams||[];
+ const scores=[];
+ for(const t of teams)for(const id of t.picks||[]){
+  const o=officer(id);let played=0,events=0,rescues=0,teamWins=0;
+  const killedIn= (t.dead||[]).find(x=>x.id===id)?.match||'';
+  let gone=false;
+  for(const m of matches){
+   if(m.a!==t.id&&m.b!==t.id)continue;
+   if(gone)continue;
+   played++;if(m.result.winner===t.id)teamWins++;
+   for(const leg of m.result.legs||[]){
+    if(leg.event?.winner===o.name)events++;
+    rescues+=(leg.rescues||[]).filter(x=>x.team===t.id&&x.name===o.name).length;
+   }
+   if(killedIn?.startsWith(m.id+' '))gone=true;
+  }
+  // MVP uses contributions that can be derived from the recorded results, not guessed kill credit.
+  const base=o.v[0]*.30+o.v[1]*.35+o.v[2]*.25+o.v[3]*.10;
+  const score=Math.round(played*base/5+events*22+rescues*15+teamWins*8+(played&&!gone?5:0));
+  scores.push({id,team:t.id,name:o.name,army:tenmeiArmy(t),score,played,events,rescues,teamWins});
+ }
+ return scores.sort((a,b)=>b.score-a.score||b.events-a.events||b.played-a.played||a.id-b.id)[0]||null;
+}
+function tenmeiRivalRecord(a,b){
+ if(a===null||b===null||a===undefined||b===undefined)return null;
+ let aw=0,bw=0;
+ for(const game of s?.history||[])for(const m of game.matches||[]){
+  if(!m.result||m.result.bye)continue;
+  if(!((m.a===a&&m.b===b)||(m.a===b&&m.b===a)))continue;
+  if(m.result.winner===a)aw++;else if(m.result.winner===b)bw++;
+ }
+ return aw+bw?{aw,bw,total:aw+bw}:null;
+}
+function tenmeiRivalHTML(m){const r=tenmeiRivalRecord(m.a,m.b);if(!r)return '';
+ return `<div class="tenmeiRival">⚔️ <b>宿命の再戦！</b>　過去${r.total}戦　${esc(tenmeiArmy(s.teams[m.a]))} ${r.aw}勝 − ${r.bw}勝 ${esc(tenmeiArmy(s.teams[m.b]))}</div>`;
+}
+function tenmeiRankHTML(){const records=tenmeiResults();
+ return `<section class="box tenmeiRecords"><h2>🏆 歴代王者・通算成績</h2><p class="small muted">同じ部屋での大会結果を集計。最大30大会分を記録します（CPUも対象）。</p><div class="tenmeiScroll"><table><thead><tr><th>軍団</th><th>優勝</th><th>準優勝</th><th>試合勝利</th><th>最多連覇</th><th>最高戦力</th></tr></thead><tbody>${records.map(r=>`<tr><td>${esc(r.army)}<small class="muted">${r.isCPU?' 🤖':''}</small></td><td>${r.won}</td><td>${r.runnerUp}</td><td>${r.wins}</td><td>${r.maxStreak}</td><td>${fmt(r.bestPower)}</td></tr>`).join('')}</tbody></table></div></section>`;
+}
+function tenmeiPopularityHTML(){if(!tenmeiPopularity?.length)return `<div class="muted">指名データがまだありません。</div>`;
+ const pop=[...tenmeiPopularity].sort((a,b)=>b.count-a.count||a.id-b.id).slice(0,8);
+ return `<section class="box tenmeiRecords"><h2>🎲 今大会の指名人気武将</h2><p class="small muted">ドラフト終了後に公開。落選後の再指名も1票として集計しています。</p><div class="tenmeiPopList">${pop.map((r,i)=>`<div class="tenmeiPop"><b>${i+1}位　${esc(officer(r.id).name)}</b><span>${r.count}票</span></div>`).join('')}</div></section>`;
+}
+function tenmeiMvpHTML(game){const best=tenmeiMVP(game);if(!best)return '';
+ return `<section class="box tenmeiMvp"><div class="tenmeiMvpKicker">🏅 大会MVP</div><div class="tenmeiMvpHero">${esc(best.name)}</div><div class="tenmeiMvpArmy">${esc(best.army)} / 評価 ${fmt(best.score)}点</div><div class="tenmeiMvpData">出陣 ${best.played}戦　・　勝ち戦 ${best.teamWins}　・　戦争イベント勝利 ${best.events}回　・　救出 ${best.rescues}回</div><p class="small muted">武将能力と実際の出陣・勝利・イベント・救出を合算した大会専用評価。討死させた敵の手柄は記録から特定できないため加点していません。</p></section>`;
+}
+
+// Show custom armies + colors in battles while preserving player-seat identifiers.
+battleVS=function(nameA,nameB,labelA='攻撃軍',labelB='防衛軍',extraA='',extraB=''){
+ const side=(name,label,detail,enemy=false)=>{const t=s?.teams?.find(t=>t.name===name), shown=t?tenmeiArmy(t):name;
+  return `<div class="battleSide ${enemy?'enemy':''}"><div class="battleSideLabel">${esc(label)}</div><div class="battleSideName">${t?tenmeiShield(t):''} ${esc(shown)}</div>${detail?`<div class="battleSideSmall">${esc(detail)}</div>`:''}</div>`};
+ return `<div class="battleVS">${side(nameA,labelA,extraA)}<div class="battleVsMark">VS</div>${side(nameB,labelB,extraB,true)}</div>`;
+};
+const tenmeiOldBuildScenes=buildBattleScenes;
+buildBattleScenes=function(m){const scenes=tenmeiOldBuildScenes(m),r=tenmeiRivalRecord(m.a,m.b);
+ if(r)scenes.unshift({kicker:'因縁の対決',title:'宿命の再戦！',html:`<div class="battleImpact">${esc(tenmeiArmy(s.teams[m.a]))} VS ${esc(tenmeiArmy(s.teams[m.b]))}</div><div class="battleSub">過去の対戦成績：${r.aw}勝 − ${r.bw}勝<br>今、決着の刻！</div>`});
+ if(m.round===3){
+  const award=tenmeiMVP({teams:s.teams,matches:s.matches});
+  if(award)scenes.push({kicker:'天下第一の名将',title:'大会MVP',html:`<div class="battleVictory">🏅 ${esc(award.name)}</div><div class="battleSub">${esc(award.army)}<br>評価 ${fmt(award.score)}点 ／ 出陣${award.played}試合 ／ 活躍イベント${award.events}回</div>`});
+  const score=tenmeiResults().find(t=>t.seat===m.result.winner);
+  if(score&&score.maxStreak>=3&&score.streak>=3)scenes.push({kicker:'天下に轟く覇業',title:'三連覇達成！',html:`<div class="battleVictory">🏆 ${esc(tenmeiArmy(s.teams[m.result.winner]))}</div><div class="battleSub">通算${score.streak}連覇！</div>`});
+ }
+ return scenes;
+};
+// Also make the 6/8-player round-end list use army labels and flags.
+roundSummaryRows=function(){return s.teams.map((t,i)=>{const id=t.picks[s.round],o=officer(id),power=teamBattleStrength(t);
+ return `<div class="roundSummaryRow"><div class="roundTeam"><span class="roundIndex">${i+1}</span><span class="roundTeamName">${tenmeiShield(t)} ${esc(tenmeiArmy(t))}<small class="muted">${esc(t.name)}</small></span></div><div class="roundPick"><span class="roundSmallLabel">今巡獲得</span><strong>${esc(o.name)}</strong><span class="roundTrait">${esc(o.trait)}</span></div><div class="roundTotal"><span>軍団戦力値</span><strong>${fmt(power.value)}</strong><small class="roundFightDetail">攻 ${fmt(power.attack)} / 守 ${fmt(power.defense)}</small></div></div>`;
+ }).join('')};
+const tenmeiOldRoster=onlineRoster;
+onlineRoster=function(){return s.teams.map((t,i)=>{const my=onlineSeat===i,chosen=s.awarded?.includes(i),status=chosen?'✅ 今巡獲得済み':t.isCPU?'🤖 自動指名':onlineSubmitted.includes(i)?'🔒 秘密指名済み':'⌛ 秘密指名待ち';
+ return `<div class="team ${my?'active':''}"><div class="teamHead"><b>${i+1}. ${tenmeiShield(t)} ${esc(tenmeiArmy(t))}</b><b>${t.picks.length}/${s.pickLimit}</b></div><div class="small muted">${esc(t.name)}${t.isCPU?' 🤖':''}</div><div class="small gold">${status}</div><div class="small">軍団戦力値：<b>${fmt(teamBattleStrength(t).value)}</b></div><small>${t.picks.length?t.picks.map(id=>esc(officer(id).name)).join(' ・ '):'まだ指名なし'}</small></div>`
+ }).join('')};
+
+const tenmeiOldLobby=onlineLobby;
+onlineLobby=function(){tenmeiOldLobby();
+ const mine=s.teams[onlineSeat],n=s.teams.length;
+ const settings=`<section class="box tenmeiRecords" style="margin-top:14px"><h2>🏳️ 軍団名・旗印</h2><p class="small muted">開始前に各自が設定。戦闘と一覧に表示されます。</p><label>軍団名<input id="tenmeiArmyName" maxlength="22" value="${esc(tenmeiArmy(mine))}"></label><label>旗印の色<select id="tenmeiFlagColor">${TENMEI_FLAGS.map((v,i)=>`<option value="${v}" ${tenmeiFlag(mine).toUpperCase()===v?'selected':''}>${['紅','蒼','金','翠','紫','銀','橙','青磁'][i]}</option>`).join('')}</select></label><button id="tenmeiSaveArmy" class="secondary fullwidth">🏳️ 軍団名と旗印を保存</button></section>`;
+ const root=$('app');root.insertAdjacentHTML('beforeend',settings+(s.history?.length?tenmeiRankHTML():''));
+ $('tenmeiSaveArmy').onclick=()=>onlineAction('tenmei_identity',{p_army:$('tenmeiArmyName').value,p_flag:$('tenmeiFlagColor').value});
+};
+
+// Shared cut-in: server holds the scene index. Only the host can change it.
+function tenmeiSyncScene(){const scene=s?.cinematic,el=cutinLayer();
+ if(s?.stage!=='tournament'||!scene){
+  tenmeiShownScene='';if(el.classList.contains('battle')){battleCinematic=null;hideCutinScreen()}return;
+ }
+ const m=s.matches?.[scene.matchIndex];if(!m?.result)return;
+ const scenes=buildBattleScenes(m),idx=Math.max(0,Math.min(Number(scene.step)||0,scenes.length-1));
+ const key=`${scene.sequence}:${scene.matchIndex}:${scene.step}`;
+ if(tenmeiShownScene===key&&el.classList.contains('battle'))return;
+ tenmeiShownScene=key;el.className='cutinOverlay show battle';el.innerHTML=battleCinematicHtml(scenes[idx],idx,scenes.length);
+ const next=$('battleNext'),skip=$('battleSkip');
+ if(isHost()){
+  next.textContent=idx===scenes.length-1?'✅ 終了して結果へ':'▶ 次へ（全員同期）';
+  next.onclick=()=>tenmeiSceneControl(idx===scenes.length-1?'close':'next',scene);
+  skip.textContent='⏭ 演出を終了';skip.onclick=()=>tenmeiSceneControl('close',scene);
+ }else{
+  next.textContent='👑 主催者の「次へ」を待機中';next.disabled=true;
+  skip.textContent='🔒 主催者の操作で進みます';skip.disabled=true;
+ }
+}
+async function tenmeiSceneControl(action,scene){if(!isHost()||onlineBusy)return;
+ try{onlineBusy=true;const data=await onlineRPC('tenmei_scene',{p_code:onlineSession.code,p_token:onlineSession.token,p_action:action,p_step:scene.step,p_sequence:scene.sequence});
+  await applyOnlineSnapshot(data,{skipReveal:true,skipMatch:true})}
+ catch(e){onlineError(e)}finally{onlineBusy=false}
+}
+const tenmeiOldApply=applyOnlineSnapshot;
+seenKey=function(){return 'tenmei_seen_'+onlineSession?.code+'_'+onlineSeat+'_t'+(s?.history?.length||0)};
+applyOnlineSnapshot=async function(data,opts={}){
+ const prevTournamentCount=s?.history?.length||0;
+ if((data?.state?.history?.length||0)!==prevTournamentCount){
+  onlineLastSeen=new Set();tenmeiShownScene='';onlineDrawQueue=[];onlineDrawQueuedKeys.clear();
+ }
+ const hasLog=Array.isArray(data?.state?.drawHistory);
+ tenmeiPopularity=Array.isArray(data?.popularity)?data.popularity:[];
+ // v2.2 server includes an append-only reveal history. Only animate from that
+ // history to avoid losing later lottery results while another scene is open.
+ await tenmeiOldApply(data,{...opts,skipMatch:true,skipReveal:hasLog?true:opts.skipReveal});
+ if(hasLog&&s?.stage==='draft'&&!opts.skipReveal){
+  for(const e of data.state.drawHistory){
+   const round=Number(e.round),wave=Number(e.wave),records=e.records;
+   if(!Number.isInteger(round)||!Number.isInteger(wave)||!Array.isArray(records))continue;
+   const key=round+':'+wave;
+   if(!onlineLastSeen.has(key)&&!onlineDrawQueuedKeys.has(key)){
+    onlineDrawQueue.push({round,wave,records,phase:String(e.phase||'retryResults')});
+    onlineDrawQueuedKeys.add(key);
+   }
+  }
+  if(onlineDrawQueue.length)setTimeout(playQueuedLottery,80);
+ }
+ tenmeiSyncScene();
+};
+// Continue polling under a local draft overlay. Draw history queues all reveals,
+// so slower spectators can review each lottery even after the host advances.
+onlineRefresh=async function(){if(!onlineSession||onlineBusy)return;
+ try{onlineBusy=true;const data=await onlineRPC('tenmei_snapshot',{p_code:onlineSession.code,p_token:onlineSession.token});
+  if(Number(data.revision)!==onlineRevision){onlineMessage='';await applyOnlineSnapshot(data,{skipReveal:false,skipMatch:true})}
+ }catch(e){onlineMessage='通信エラー：'+e.message;const status=$('onlineStatus');if(status)status.textContent=onlineMessage}
+ finally{onlineBusy=false}
+};
+// Host's verified battle is stored once, followed by a synchronized cinematic cursor.
+nextMatch=async function(){if(!isHost()||onlineBusy||s?.cinematic)return;const m=pendingMatch();if(!m)return;
+ if(!confirm(m.id+' を開始しますか？'))return;
+ const button=$('next');if(button)button.disabled=true;
+ const before=JSON.parse(JSON.stringify(s)),rev=onlineRevision;onlineBusy=true;
+ try{matchFight(m);const data=await onlineRPC('tenmei_battle',{p_code:onlineSession.code,p_token:onlineSession.token,p_revision:rev,p_teams:s.teams,p_matches:s.matches});
+  await applyOnlineSnapshot(data,{skipReveal:true,skipMatch:true})
+ }catch(e){s=before;onlineError(e);render()}finally{
+  onlineBusy=false;
+  // On a failed request the same room/match must remain usable without reload.
+  const step=$('next');if(step)step.disabled=!isHost()||!pendingMatch()||!!s?.cinematic;
+ }
+};
+const tenmeiOldTournament=onlineTournament;
+onlineTournament=function(){tenmeiOldTournament();
+ const hasChamp=!!s.matches?.[6]?.result;
+ const pending=pendingMatch();const app=$('app');
+ if(s.cinematic&&$('next'))$('next').disabled=true;
+ let extra='',rematchCard='';
+ if(pending){const r=tenmeiRivalRecord(pending.a,pending.b);if(r)extra+=tenmeiRivalHTML(pending)}
+ extra+=tenmeiPopularityHTML();
+ extra+=tenmeiRankHTML();
+ if(hasChamp){extra+=tenmeiMvpHTML({teams:s.teams,matches:s.matches});
+ const minHuman=onlineJoined.reduce((m,x)=>Math.max(m,x.seat+1),1),maxCPU=s.teams.length-minHuman;
+ rematchCard=`<section class="box tenmeiRematch"><h2>🔄 同じ部屋でもう一戦！</h2><p class="small muted">部屋コード・参加メンバー・通算成績を維持し、全武将・兵力・討死をリセット。新しいドラフトを始めます。</p>
+ ${isHost()?`<label>CPU人数<select id="tenmeiNextCPU">${Array.from({length:maxCPU+1},(_,i)=>`<option value="${i}" ${i===s.teams.length-s.humanCount?'selected':''}>${i}人</option>`).join('')}</select></label>
+ <label>武将数／ドラフト巡数<select id="tenmeiNextLimit">${[5,6,7,8,9,10].map(v=>`<option value="${v}" ${v===s.pickLimit?'selected':''}>${v}人／${v}巡</option>`).join('')}</select></label>
+ <button class="primary fullwidth" id="tenmeiRematch" ${s.cinematic?'disabled':''}>🏯 同じメンバーで次大会を準備</button>`:'<div class="onlineRibbon">👑 主催者が次大会の設定を選びます。この部屋で待機できます。</div>'}</section>`;
+ }
+ if(rematchCard){const champPanel=app.querySelector('.champ');if(champPanel)champPanel.insertAdjacentHTML('afterend',rematchCard);else extra+=rematchCard}
+ app.insertAdjacentHTML('beforeend',`<div class="tenmeiExtras">${extra}</div>`);
+ const rematch=$('tenmeiRematch');if(rematch)rematch.onclick=()=>{
+  if(!confirm('同じ部屋を維持して、次大会の準備に戻りますか？'))return;
+  onlineAction('tenmei_rematch',{p_cpu:Number($('tenmeiNextCPU').value),p_limit:Number($('tenmeiNextLimit').value)});
+ };
+};
+
+bootOnline();
+
+
+</script></body></html>
